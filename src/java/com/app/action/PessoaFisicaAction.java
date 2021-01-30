@@ -5,7 +5,9 @@
  */
 package com.app.action;
 
+import com.app.model.EnderecoModel;
 import com.app.model.PessoaFisicaModel;
+import com.app.model.TelefoneModel;
 import com.app.util.Errors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +33,13 @@ public class PessoaFisicaAction extends IDRAction {
 
     private void page(ActionForm form, HttpServletRequest request, Errors errors) {
         
-        PessoaFisicaModel pessaFisicaModel = new PessoaFisicaModel();
-        request.setAttribute("PessoaFisicaModel", pessaFisicaModel);
+        PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+        EnderecoModel endereco = new EnderecoModel();
+        TelefoneModel telefone = new TelefoneModel();
+        pessoaFisicaModel.setEndereco(endereco);
+        pessoaFisicaModel.setTelefone(telefone);
         
+        request.setAttribute("PessoaFisicaModel", pessoaFisicaModel);
     }
  
     
