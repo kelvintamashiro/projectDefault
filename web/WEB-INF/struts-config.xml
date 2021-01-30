@@ -42,7 +42,8 @@
         
         <action path="/PessoaFisica"
                 type="com.app.action.PessoaFisicaAction"
-                name="PessoaFisicaModel">
+                name="PessoaFisicaModel"
+                scope="request">
         
             <forward name="page"    path="/pessoa_fisica.jsp"/>
             
