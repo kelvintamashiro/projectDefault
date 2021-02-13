@@ -45,7 +45,8 @@
                 name="PessoaFisicaModel"
                 scope="request">
         
-            <forward name="page"    path="/pessoa_fisica.jsp"/>
+            <forward name="page"                path="/pessoa_fisica.jsp"/>
+            <forward name="save"                path="/pessoa_fisica.jsp"/>
             
         </action>
         
