@@ -11,6 +11,7 @@ import com.app.model.PessoaFisicaModel;
 import com.app.model.TelefoneModel;
 import com.app.util.Errors;
 import java.sql.Connection;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -26,10 +27,12 @@ public class PessoaFisicaAction extends IDRAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, Errors errors, String action) {
         String forward = action;
-        if (action.equals("page")) {
+        if (action.equals("page") || action.equals("pagePesquisa")) {
             this.page(form, request, errors);
         } else if (action.equals("save")) {
             this.save(form, request, errors);
+        } else if (action.equals("pesquisar")) {
+            this.pesquisar(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -47,7 +50,7 @@ public class PessoaFisicaAction extends IDRAction {
 
     private void save(ActionForm form, HttpServletRequest request, Errors errors) {
         PessoaFisicaModel pessoaFisicaModel = (PessoaFisicaModel) form;
-        
+
         //setar endereco no form
         EnderecoModel endereco = new EnderecoModel();
 
@@ -93,15 +96,36 @@ public class PessoaFisicaAction extends IDRAction {
                 if (idPessoa != 0) {
                     //salvar os dados de endereco pelo idPessoa
                     PessoaFisicaDAO.getInstance().saveAddress(conn, idPessoa, endereco);
-                    
-                    
+
                     //salvar os dados de telefone pelo idPessoa
+                    PessoaFisicaDAO.getInstance().savePhone(conn, idPessoa, telefone);
+
                     errors.error("Cadastro com Sucesso!!");
+
+                    this.page(form, request, errors);
                 } else {
                     errors.error("Ocorreu algum erro no sistema!!Favor contactar o suporte!");
                 }
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+
+    }
+
+    private void pesquisar(ActionForm form, HttpServletRequest request, Errors errors) {
+        PessoaFisicaModel pessoaFisicaModel = (PessoaFisicaModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            //pesquisar a pessoa ou por nome, email ou sexo
+            List<PessoaFisicaModel> listaPessoaFisica = PessoaFisicaDAO.getInstance().searchAll(conn, pessoaFisicaModel);
+            request.setAttribute("listaPessoaFisica", listaPessoaFisica);
+            request.setAttribute("PessoaFisicaModel", pessoaFisicaModel);
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

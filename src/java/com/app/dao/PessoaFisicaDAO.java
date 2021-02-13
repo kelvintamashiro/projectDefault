@@ -7,10 +7,13 @@ package com.app.dao;
 
 import com.app.model.EnderecoModel;
 import com.app.model.PessoaFisicaModel;
+import com.app.model.TelefoneModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -73,6 +76,50 @@ public class PessoaFisicaDAO {
         prep.setString(5, endereco.getCep());
         prep.execute();
         prep.close();
+    }
+
+    public void savePhone(Connection conn, int idPessoa, TelefoneModel telefone) throws SQLException {
+        String query = "INSERT into telefone (id_pessoa, numero, tipo_telefone) VALUES (?,?,?)";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idPessoa);
+        prep.setString(2, telefone.getNrTelefone());
+        prep.setString(3, telefone.getTipoTelefone());
+        prep.execute();
+        prep.close();
+    }
+
+    public List<PessoaFisicaModel> searchAll(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException {
+        List<PessoaFisicaModel> listaPessoa = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append("select * from pessoa p");
+        sb.append(" where 1 = 1");
+        if (pessoaFisicaModel.getNome() != null && !pessoaFisicaModel.getNome().equals("")) {
+            sb.append(" and p.nome like '%" + pessoaFisicaModel.getNome() + "%'");
+        }
+        if (pessoaFisicaModel.getEmail() != null && !pessoaFisicaModel.getEmail().equals("")) {
+            sb.append(" and p.email = '" + pessoaFisicaModel.getEmail() +"'");
+        }
+        if (pessoaFisicaModel.getSexo() != null && !pessoaFisicaModel.getSexo().equals("")) {
+            sb.append(" and p.sexo = '" + pessoaFisicaModel.getSexo() + "'");
+        }
+
+        System.out.println(sb.toString());
+        PreparedStatement prep = conn.prepareStatement(sb.toString());
+        ResultSet rs = prep.executeQuery();
+        while(rs.next()){
+            PessoaFisicaModel pessoa = new PessoaFisicaModel();
+            pessoa.setNome(rs.getString("nome"));
+            pessoa.setEmail(rs.getString("email"));
+            pessoa.setSexo(rs.getString("sexo"));
+            pessoa.setDataNascimento(rs.getString("data_nascimento"));
+            
+            listaPessoa.add(pessoa);
+        }
+        rs.close();
+        prep.close();
+        
+        return listaPessoa;
+
     }
 
 }
