@@ -33,6 +33,12 @@ public class PessoaFisicaAction extends IDRAction {
             this.save(form, request, errors);
         } else if (action.equals("pesquisar")) {
             this.pesquisar(form, request, errors);
+        } else if (action.equals("pageEditar")) {
+            this.pageEditar(form, request, errors);
+        } else if (action.equals("atualizar")) {
+            this.atualizar(form, request, errors);
+        } else if (action.equals("excluir")) {
+            this.excluir(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -123,15 +129,125 @@ public class PessoaFisicaAction extends IDRAction {
             conn = connectionPool.getConnection();
             //pesquisar a pessoa ou por nome, email ou sexo
             List<PessoaFisicaModel> listaPessoaFisica = PessoaFisicaDAO.getInstance().searchAll(conn, pessoaFisicaModel);
-            request.setAttribute("listaPessoaFisica", listaPessoaFisica);
+            if (listaPessoaFisica.size() > 0) {
+                request.setAttribute("listaPessoaFisica", listaPessoaFisica);
+                request.setAttribute("show", "true");
+            } else {
+                request.setAttribute("show", "false");
+            }
             request.setAttribute("PessoaFisicaModel", pessoaFisicaModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             connectionPool.free(conn);
         }
 
+    }
+
+    private void pageEditar(ActionForm form, HttpServletRequest request, Errors errors) {
+        PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            String idPessoa = request.getParameter("idPessoa");
+
+            pessoaFisicaModel = PessoaFisicaDAO.getInstance().obterDadosPessoaPorId(conn, idPessoa);
+
+            request.setAttribute("PessoaFisicaModel", pessoaFisicaModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+
+    }
+
+    private void atualizar(ActionForm form, HttpServletRequest request, Errors errors) {
+        PessoaFisicaModel pessoaFisicaModel = (PessoaFisicaModel) form;
+
+        //setar endereco no form
+        EnderecoModel endereco = new EnderecoModel();
+
+        String provincia = request.getParameter("provincia");
+        String cidade = request.getParameter("cidade");
+        String bairro = request.getParameter("bairro");
+        String dsEndereco = request.getParameter("dsEndereco");
+        String cep = request.getParameter("cep");
+
+        endereco.setProvincia(provincia);
+        endereco.setCidade(cidade);
+        endereco.setBairro(bairro);
+        endereco.setDsEndereco(dsEndereco);
+        endereco.setCep(cep);
+
+        pessoaFisicaModel.setEndereco(endereco);
+
+        //setar telefone no form
+        TelefoneModel telefone = new TelefoneModel();
+
+        String nrTelefone = request.getParameter("nrTelefone");
+        String tipoTelefone = request.getParameter("tipoTelefone");
+
+        telefone.setNrTelefone(nrTelefone);
+        telefone.setTipoTelefone(tipoTelefone);
+
+        pessoaFisicaModel.setTelefone(telefone);
+
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //verificar se ja existe email cadastrado para outro usuario
+            //se existir nao permite cadastrar novo usuario
+            boolean isExisteEmail = PessoaFisicaDAO.getInstance().isExisteEmailOutroUsuario(conn, pessoaFisicaModel.getEmail(), pessoaFisicaModel.getId());
+
+            if (isExisteEmail) {
+                errors.error("Esse e-mail já existe cadastrado em nosso banco de dados. Favor informar um outro.");
+            } else {
+                //update dados pesssoa
+                PessoaFisicaDAO.getInstance().updatePessoa(conn, pessoaFisicaModel);
+
+                //update dados de endereco pelo idPessoa
+                PessoaFisicaDAO.getInstance().updateAddress(conn, pessoaFisicaModel.getId(), endereco);
+
+                //update dados de telefone pelo idPessoa
+                PessoaFisicaDAO.getInstance().updatePhone(conn, pessoaFisicaModel.getId(), telefone);
+
+                errors.error("Atualizado com Sucesso!!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void excluir(ActionForm form, HttpServletRequest request, Errors errors) {
+        PessoaFisicaModel pessoaFisicaModel = (PessoaFisicaModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            String idPessoa = request.getParameter("idPessoa");
+            
+            //excluir pessoa por idPessoa
+            PessoaFisicaDAO.getInstance().deletePessoa(conn, idPessoa);
+            
+            //excluir telefone
+            PessoaFisicaDAO.getInstance().deletePhone(conn, idPessoa);
+            
+            //excluir endereco
+            PessoaFisicaDAO.getInstance().deleteAddress(conn, idPessoa);
+            
+            this.pesquisar(pessoaFisicaModel, request, errors);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
     }
 
 }

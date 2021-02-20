@@ -1,6 +1,6 @@
 <%-- 
-    Document   : pessoa_fisica
-    Created on : 23/jan/2021, 10:52:26
+    Document   : pessoa_fisica_editar
+    Created on : 20/fev/2021, 9:49:55
     Author     : macuser
 --%>
 
@@ -16,12 +16,9 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
         <script type="text/javascript">
-            function fCadastrar() {
+            function fAtualizar() {
                 var nome = document.getElementById("nome").value;
-                alert(nome);
                 var email = document.getElementById("email").value;
-                var login = document.getElementById("login").value;
-                var senha = document.getElementById("senha").value;
                 var sexo = document.getElementById("sexo").value;
                 var provincia = document.getElementById("provincia").value;
                 var cidade = document.getElementById("cidade").value;
@@ -31,7 +28,6 @@
                 var cep = document.getElementById("cep").value;
                 var tipoTelefone = document.getElementById("tipoTelefone").value;
                 var nrTelefone = document.getElementById("nrTelefone").value;
-                
 
                 if (nome.length < 5) {
                     alert("Deve ser informado o nome corretamente!!");
@@ -39,12 +35,6 @@
                 } else if (email.search('@') < 0) {
                     alert("Deve ser informado o e-mail corretamente!!");
                     document.getElementById("email").focus();
-                } else if (login.length < 4) {
-                    alert("Deve ser informado o login corretamente!!");
-                    document.getElementById("login").focus();
-                } else if (senha.length < 2) {
-                    alert("Deve ser informado a Senha corretamente!!");
-                    document.getElementById("senha").focus();
                 } else if (sexo === "") {
                     alert("Deve ser informado o Sexo corretamente!!");
                     document.getElementById("sexo").focus();
@@ -73,7 +63,7 @@
                     alert("Deve ser informado o Telefone corretamente!!");
                     document.getElementById("nrTelefone").focus();
                 } else {
-                    document.PessoaFisicaModel.action = "PessoaFisica.do?action=save&dataNascimento=" + dataNascimento;
+                    document.PessoaFisicaModel.action = "PessoaFisica.do?action=atualizar&dataNascimento=" + dataNascimento;
                     document.PessoaFisicaModel.submit();
                 }
 
@@ -90,10 +80,13 @@
         </logic:present>
 
         <div align="center">
-            <h1>Cadastro de Pessoa Física</h1>
+            <h1>Editar Dados da Pessoa Física</h1>
             <hr/>
         </div>
         <html:form action="PessoaFisica">
+            <bean:define name="PessoaFisicaModel" property="endereco" id="EnderecoModel"/>
+            <bean:define name="PessoaFisicaModel" property="telefone" id="TelefoneModel"/>
+            <html:hidden name="PessoaFisicaModel" property="id"/>
             <table width="80%" border="0" align="center" class="table-condensed">
                 <tr>
                     <td width="50%">
@@ -113,14 +106,8 @@
                 <tr>
                     <td width="33%">
                         <div class="col-lg-12">
-                            Login:
-                            <html:text styleClass="form-control" name="PessoaFisicaModel" property="login" styleId="login"/>   
-                        </div>
-                    </td>
-                    <td width="33%">
-                        <div class="col-lg-12">
-                            Senha:
-                            <html:password styleClass="form-control" name="PessoaFisicaModel" property="senha" styleId="senha"/>        
+                            Data de Nascimento:
+                            <input type="date" class="form-control" id="dataNascimento" value="<bean:write name="PessoaFisicaModel" property="dataNascimento"/>"/>
                         </div>
                     </td>
                     <td width="33%">
@@ -133,10 +120,15 @@
                             </html:select>
                         </div>
                     </td>
+                    <td width="33%">
+                        <div class="col-lg-12">
+                            CEP:
+                            <html:text styleClass="form-control" name="EnderecoModel" property="cep" styleId="cep"/>
+                        </div>
+                    </td>
                 </tr>
             </table>
-            <bean:define name="PessoaFisicaModel" property="endereco" id="EnderecoModel"/>
-            <bean:define name="PessoaFisicaModel" property="telefone" id="TelefoneModel"/>
+
             <table width="80%" border="0" align="center" class="table-condensed">
                 <tr>
                     <td width="50%">
@@ -194,36 +186,24 @@
                             </html:select>
                         </div>
                     </td>
-                    <td>
+                    <td width="50%">
                         <div class="col-lg-12">
                             Cidade:
                             <html:text styleClass="form-control" name="EnderecoModel" property="cidade" styleId="cidade"/>        
                         </div>
                     </td>
-                    <td>
-                        <div class="col-lg-12">
-                            Data de Nascimento:
-                            <input type="date" class="form-control" id="dataNascimento"/>
-                        </div>
-                    </td>
                 </tr>
                 <tr>
-                    <td width="33%">
+                    <td width="50%">
                         <div class="col-lg-12">
                             Endereço:
                             <html:text styleClass="form-control" name="EnderecoModel" property="dsEndereco" styleId="dsEndereco"/>   
                         </div>
                     </td>
-                    <td width="33%">
+                    <td width="50%">
                         <div class="col-lg-12">
                             Bairro:
                             <html:text styleClass="form-control" name="EnderecoModel" property="bairro" styleId="bairro"/>        
-                        </div>
-                    </td>
-                    <td width="33%">
-                        <div class="col-lg-12">
-                            CEP:
-                            <html:text styleClass="form-control" name="EnderecoModel" property="cep" styleId="cep"/>
                         </div>
                     </td>
                 </tr>
@@ -251,7 +231,7 @@
                 </tr>
                 <tr>
                     <td colspan="3" align="center">
-                        <input class="btn btn-success" type="button" value="CADASTRAR" onClick="fCadastrar();">
+                        <input class="btn btn-success" type="button" value="ATUALIZAR" onClick="fAtualizar();">
                     </td>
                 </tr>
             </table>
