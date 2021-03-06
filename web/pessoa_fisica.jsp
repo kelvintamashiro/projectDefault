@@ -18,7 +18,6 @@
         <script type="text/javascript">
             function fCadastrar() {
                 var nome = document.getElementById("nome").value;
-                alert(nome);
                 var email = document.getElementById("email").value;
                 var login = document.getElementById("login").value;
                 var senha = document.getElementById("senha").value;

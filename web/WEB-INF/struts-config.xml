@@ -28,7 +28,8 @@
 
 <struts-config>
     <form-beans>
-        <form-bean name="PessoaFisicaModel"  type="com.app.model.PessoaFisicaModel"/>
+        <form-bean name="PessoaFisicaModel"     type="com.app.model.PessoaFisicaModel"/>
+        <form-bean name="LoginModel"            type="com.app.model.LoginModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -39,6 +40,17 @@
     </global-forwards>
 
     <action-mappings>
+        
+        <action path="/Login"
+                type="com.app.action.LoginAction"
+                name="LoginModel"
+                scope="request">
+            
+            <forward name="page"                       path="/login.jsp"/>
+            <forward name="erroLogin"                  path="/login.jsp"/>
+            <forward name="sucessoLogin"               path="/tela_inicial.jsp"/>
+            
+        </action>  
         
         <action path="/PessoaFisica"
                 type="com.app.action.PessoaFisicaAction"
@@ -52,7 +64,6 @@
             <forward name="pageEditar"                  path="/pessoa_fisica_editar.jsp"/>
             <forward name="atualizar"                   path="/pessoa_fisica_editar.jsp"/>
             <forward name="excluir"                     path="/pessoa_fisica_pesquisar.jsp"/>
-            
         </action>
         
     </action-mappings>

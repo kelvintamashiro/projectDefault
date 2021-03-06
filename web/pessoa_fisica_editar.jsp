@@ -68,6 +68,11 @@
                 }
 
             }
+
+            function fVoltar() {
+                document.PessoaFisicaModel.action = "PessoaFisica.do?action=pagePesquisa";
+                document.PessoaFisicaModel.submit();
+            }
         </script>
 
     </head>
@@ -232,6 +237,7 @@
                 <tr>
                     <td colspan="3" align="center">
                         <input class="btn btn-success" type="button" value="ATUALIZAR" onClick="fAtualizar();">
+                        <input class="btn btn-default" type="button" value="VOLTAR" onClick="fVoltar();">
                     </td>
                 </tr>
             </table>
