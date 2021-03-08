@@ -15,7 +15,16 @@ public class LoginModel extends FormBasico {
     private String senha;
     private String nome;
     private String tipoLogin;
+    private int idPessoa;
 
+    public int getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+    
     public String getLogin() {
         return login;
     }

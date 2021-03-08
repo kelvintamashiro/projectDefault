@@ -11,6 +11,7 @@ import com.app.util.Errors;
 import java.sql.Connection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,11 +43,15 @@ public class LoginAction extends IDRAction {
         LoginModel loginModel = (LoginModel) form;
         String forward = "";
         Connection conn = null;
+        HttpSession session = request.getSession();
         try { 
             conn = connectionPool.getConnection();
             //verificar se o usuario informou um login e senha existente
-            boolean isLoginExiste = LoginDAO.getInstance().verificarLoginExistente(conn, loginModel);
-            if(isLoginExiste){
+            LoginModel login = LoginDAO.getInstance().verificarLoginExistente(conn, loginModel);
+            if(login.getNome() != null && !login.getNome().equals("")){
+                //obter os dados da pessoa
+                session.setAttribute("idPessoa", login.getIdPessoa());
+                session.setAttribute("nome", login.getNome());
                 forward = "sucessoLogin";
             } else {
                 errors.error("Login e/ou Senha estão incorretos. Favor verificar!!");

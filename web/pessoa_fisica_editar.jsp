@@ -83,6 +83,7 @@
                 alert('<bean:write name="errors"/>');
             </script>
         </logic:present>
+        <jsp:include page="topo.jsp"/>
 
         <div align="center">
             <h1>Editar Dados da Pessoa Física</h1>

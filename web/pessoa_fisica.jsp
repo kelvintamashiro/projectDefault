@@ -30,7 +30,7 @@
                 var cep = document.getElementById("cep").value;
                 var tipoTelefone = document.getElementById("tipoTelefone").value;
                 var nrTelefone = document.getElementById("nrTelefone").value;
-                
+
 
                 if (nome.length < 5) {
                     alert("Deve ser informado o nome corretamente!!");
@@ -87,6 +87,8 @@
                 alert('<bean:write name="errors"/>');
             </script>
         </logic:present>
+
+        <jsp:include page="topo.jsp"/>
 
         <div align="center">
             <h1>Cadastro de Pessoa Física</h1>

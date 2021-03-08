@@ -26,20 +26,22 @@ public class LoginDAO {
         return loginDao;
     }
 
-    public boolean verificarLoginExistente(Connection conn, LoginModel loginModel) throws SQLException {
-        boolean isLoginExiste = false;
+    public LoginModel verificarLoginExistente(Connection conn, LoginModel loginModel) throws SQLException {
         String query = "select * from pessoa p where p.email = ? and p.senha = ? and p.tipo_login = 1";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setString(1, loginModel.getLogin());
         prep.setString(2, loginModel.getSenha());
         ResultSet rs = prep.executeQuery();
+        LoginModel login = new LoginModel();
         if(rs.next()) {
-            isLoginExiste = true;
+            login.setIdPessoa(rs.getInt("id"));
+            login.setNome(rs.getString("nome"));
+            login.setTipoLogin(rs.getString("tipo_login"));
         }
         rs.close();
         prep.close();
         
-        return isLoginExiste;
+        return login;
     }
     
     

@@ -49,9 +49,22 @@
                 alert('<bean:write name="errors"/>');
             </script>
         </logic:present>
+        <jsp:include page="topo.jsp"/>
 
         <div align="center">
-            <h1>Pesquisa de Pessoa</h1>
+            <table width="100%" border="0" style="margin-top: 15px">
+                <tr>
+                    <td width="10%" align="center">
+                        <a href="tela_inicial.jsp" class="btn btn-info">Voltar</a>
+                    </td>
+                    <td align="center">
+                        <h1>Pesquisa de Pessoa</h1>
+                    </td>
+                    <td width="10%">
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
             <hr/>
         </div>
         <html:form action="PessoaFisica">
