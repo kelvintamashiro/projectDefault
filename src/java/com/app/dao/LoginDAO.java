@@ -6,6 +6,9 @@
 package com.app.dao;
 
 import com.app.model.LoginModel;
+import com.app.util.Criptografia;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,11 +29,12 @@ public class LoginDAO {
         return loginDao;
     }
 
-    public LoginModel verificarLoginExistente(Connection conn, LoginModel loginModel) throws SQLException {
+    public LoginModel verificarLoginExistente(Connection conn, LoginModel loginModel) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        Criptografia criptografia = new Criptografia();
         String query = "select * from pessoa p where p.email = ? and p.senha = ? and p.tipo_login = 1";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setString(1, loginModel.getLogin());
-        prep.setString(2, loginModel.getSenha());
+        prep.setString(2, criptografia.senhaCriptografada(loginModel.getSenha()));
         ResultSet rs = prep.executeQuery();
         LoginModel login = new LoginModel();
         if(rs.next()) {

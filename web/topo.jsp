@@ -28,7 +28,7 @@
                 </b>
             </td>
             <td width="25%" align="right">
-                <a href="AlterarSenha.do" class="btn btn-default">Alterar Senha</a>
+                <a href="Senha.do?action=pageAlterarSenha" class="btn btn-default">Alterar Senha</a>
                 <a href="desconectar.jsp" class="btn btn-danger">Deslogar</a>
             </td>
         </tr>

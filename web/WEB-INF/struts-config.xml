@@ -30,6 +30,7 @@
     <form-beans>
         <form-bean name="PessoaFisicaModel"     type="com.app.model.PessoaFisicaModel"/>
         <form-bean name="LoginModel"            type="com.app.model.LoginModel"/>
+        <form-bean name="SenhaModel"            type="com.app.model.SenhaModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -49,7 +50,6 @@
             <forward name="page"                       path="/login.jsp"/>
             <forward name="erroLogin"                  path="/login.jsp"/>
             <forward name="sucessoLogin"               path="/tela_inicial.jsp"/>
-            
         </action>  
         
         <action path="/PessoaFisica"
@@ -65,6 +65,15 @@
             <forward name="atualizar"                   path="/pessoa_fisica_editar.jsp"/>
             <forward name="excluir"                     path="/pessoa_fisica_pesquisar.jsp"/>
         </action>
+        
+        <action path="/Senha"
+                type="com.app.action.SenhaAction"
+                name="SenhaModel"
+                scope="request">
+            
+            <forward name="pageAlterarSenha"           path="/alterar_senha.jsp"/>
+            <forward name="alterarSenha"               path="/alterar_senha.jsp"/>
+        </action>  
         
     </action-mappings>
     

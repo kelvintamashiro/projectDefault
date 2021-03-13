@@ -8,6 +8,9 @@ package com.app.dao;
 import com.app.model.EnderecoModel;
 import com.app.model.PessoaFisicaModel;
 import com.app.model.TelefoneModel;
+import com.app.util.Criptografia;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,7 +64,8 @@ public class PessoaFisicaDAO {
         return isExiste;
     }
 
-    public int savePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException {
+    public int savePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        Criptografia criptografia = new Criptografia();
         int idPessoa = 0;
         String query = "INSERT into pessoa (nome, data_nascimento, sexo, login, senha, email) values (?,?,?,?,?,?)";
         PreparedStatement prep = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -69,7 +73,7 @@ public class PessoaFisicaDAO {
         prep.setString(2, pessoaFisicaModel.getDataNascimento());
         prep.setString(3, pessoaFisicaModel.getSexo());
         prep.setString(4, pessoaFisicaModel.getLogin());
-        prep.setString(5, pessoaFisicaModel.getSenha());
+        prep.setString(5, criptografia.senhaCriptografada(pessoaFisicaModel.getSenha()));
         prep.setString(6, pessoaFisicaModel.getEmail());
         prep.execute();
         ResultSet rs = prep.getGeneratedKeys();
@@ -237,6 +241,21 @@ public class PessoaFisicaDAO {
             prep.setString(1, idPessoa);
             prep.execute();
         }
+    }
+    
+    public String obterNomePessoaPorId(Connection conn, int idPessoa) throws SQLException {
+        String query = "select nome from pessoa where id = ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idPessoa);
+        ResultSet rs = prep.executeQuery();
+        String nomeUsuario = null;
+        if(rs.next()){
+            nomeUsuario = rs.getString("nome");
+        }
+        rs.close();
+        prep.close();
+        
+        return nomeUsuario;
     }
     
 }
