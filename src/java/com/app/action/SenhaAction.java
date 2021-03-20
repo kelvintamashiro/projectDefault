@@ -81,10 +81,15 @@ public class SenhaAction extends IDRAction {
                 String senhaNovaCripto = criptografia.senhaCriptografada(senhaModel.getSenhaNova());
                 SenhaDAO.getInstance().alterarSenhaPorId(conn, senhaModel.getIdPessoa(), senhaNovaCripto);
                 errors.error("Senha Alterada com Sucesso!!");
+                request.setAttribute("senhaAlterada", "true");
             } else {
             //se errado, da mensagem de erro
                 errors.error("Senha Atual Incorreta!!");
+                request.setAttribute("senhaAlterada", "false");
             }
+            
+            senhaModel.setSenhaAtual(null);
+            senhaModel.setSenhaNova(null);
             
             request.setAttribute("SenhaModel", senhaModel);
         } catch (Exception e) {

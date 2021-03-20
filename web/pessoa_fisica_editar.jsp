@@ -20,6 +20,7 @@
                 var nome = document.getElementById("nome").value;
                 var email = document.getElementById("email").value;
                 var sexo = document.getElementById("sexo").value;
+                var myNumber = document.getElementById("myNumber").value;
                 var provincia = document.getElementById("provincia").value;
                 var cidade = document.getElementById("cidade").value;
                 var dataNascimento = document.getElementById("dataNascimento").value;
@@ -38,6 +39,9 @@
                 } else if (sexo === "") {
                     alert("Deve ser informado o Sexo corretamente!!");
                     document.getElementById("sexo").focus();
+                } else if (myNumber === "") {
+                    alert("Deve ser informado o MyNumber corretamente!")
+                    document.getElementById("myNumber").focus();
                 } else if (provincia === "") {
                     alert("Deve ser informado a Provincia corretamente!!");
                     document.getElementById("provincia").focus();
@@ -108,7 +112,8 @@
                         </div>
                     </td>
                 </tr>
-
+            </table>
+            <table width="80%" border="0" align="center" class="table-condensed">
                 <tr>
                     <td width="33%">
                         <div class="col-lg-12">
@@ -128,16 +133,20 @@
                     </td>
                     <td width="33%">
                         <div class="col-lg-12">
+                            My Number:
+                            <html:text styleClass="form-control" name="PessoaFisicaModel" property="myNumber" styleId="myNumber"/>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="33%">
+                        <div class="col-lg-12">
                             CEP:
                             <html:text styleClass="form-control" name="EnderecoModel" property="cep" styleId="cep"/>
                         </div>
                     </td>
-                </tr>
-            </table>
-
-            <table width="80%" border="0" align="center" class="table-condensed">
-                <tr>
-                    <td width="50%">
+                    <td width="33%">
                         <div class="col-lg-12">
                             Província:
                             <html:select name="EnderecoModel" property="provincia" styleId="provincia" styleClass="form-control">
@@ -192,13 +201,15 @@
                             </html:select>
                         </div>
                     </td>
-                    <td width="50%">
+                    <td width="33%">
                         <div class="col-lg-12">
                             Cidade:
                             <html:text styleClass="form-control" name="EnderecoModel" property="cidade" styleId="cidade"/>        
                         </div>
                     </td>
                 </tr>
+            </table>
+            <table width="80%" border="0" align="center" class="table-condensed">
                 <tr>
                     <td width="50%">
                         <div class="col-lg-12">
@@ -225,7 +236,7 @@
                             </html:select>
                         </div>
                     </td>
-                    <td colspan="2">
+                    <td>
                         <div class="col-lg-12">
                             Número Telefone:
                             <html:text styleClass="form-control" name="TelefoneModel" property="nrTelefone" styleId="nrTelefone"/>

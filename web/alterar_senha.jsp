@@ -85,6 +85,26 @@
                     </td>
                 </tr>
             </table>
+
+            <logic:equal name="senhaAlterada" value="true" scope="request">
+                <div align="center" style="padding-top: 50px;">
+                    <div class="alert alert-success">
+                        <img src="imagens/checked.png" width="50px"/>
+                        <b><bean:write name="errors"/></b>
+                    </div>
+                </div>
+            </logic:equal>
+
+            <logic:equal name="senhaAlterada" value="false" scope="request">
+                <div align="center" style="padding-top: 50px;">
+                    <div class="alert alert-danger">
+                        <img src="imagens/cancel.png" width="50px"/>
+                        <b><bean:write name="errors"/></b>
+                    </div>
+                </div>
+            </logic:equal>
+
+
         </html:form>
     </body>
 </html>

@@ -28,8 +28,9 @@
                 </b>
             </td>
             <td width="25%" align="right">
+                <a href="tela_inicial.jsp" class="btn btn-info">Tela Inicial</a>
                 <a href="Senha.do?action=pageAlterarSenha" class="btn btn-default">Alterar Senha</a>
-                <a href="desconectar.jsp" class="btn btn-danger">Deslogar</a>
+                <a href="deslogar.jsp" class="btn btn-danger">Deslogar</a>
             </td>
         </tr>
         <tr>

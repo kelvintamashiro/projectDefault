@@ -18,9 +18,18 @@ public class PessoaFisicaModel extends FormBasico {
     private String login;
     private String senha;
     private String email;
+    private String myNumber;
     private EnderecoModel endereco;
     private TelefoneModel telefone;
 
+    public String getMyNumber() {
+        return myNumber;
+    }
+
+    public void setMyNumber(String myNumber) {
+        this.myNumber = myNumber;
+    }
+    
     public int getId() {
         return id;
     }

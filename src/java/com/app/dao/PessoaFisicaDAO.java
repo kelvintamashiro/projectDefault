@@ -67,7 +67,7 @@ public class PessoaFisicaDAO {
     public int savePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Criptografia criptografia = new Criptografia();
         int idPessoa = 0;
-        String query = "INSERT into pessoa (nome, data_nascimento, sexo, login, senha, email) values (?,?,?,?,?,?)";
+        String query = "INSERT into pessoa (nome, data_nascimento, sexo, login, senha, email, my_number) values (?,?,?,?,?,?,?)";
         PreparedStatement prep = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
         prep.setString(1, pessoaFisicaModel.getNome());
         prep.setString(2, pessoaFisicaModel.getDataNascimento());
@@ -75,6 +75,7 @@ public class PessoaFisicaDAO {
         prep.setString(4, pessoaFisicaModel.getLogin());
         prep.setString(5, criptografia.senhaCriptografada(pessoaFisicaModel.getSenha()));
         prep.setString(6, pessoaFisicaModel.getEmail());
+        prep.setString(7, pessoaFisicaModel.getMyNumber());
         prep.execute();
         ResultSet rs = prep.getGeneratedKeys();
         if (rs.next()) {
@@ -134,6 +135,7 @@ public class PessoaFisicaDAO {
             pessoa.setEmail(rs.getString("email"));
             pessoa.setSexo(rs.getString("sexo"));
             pessoa.setDataNascimento(rs.getString("data_nascimento"));
+            pessoa.setMyNumber(rs.getString("my_number"));
 
             listaPessoa.add(pessoa);
         }
@@ -145,7 +147,7 @@ public class PessoaFisicaDAO {
     }
 
     public PessoaFisicaModel obterDadosPessoaPorId(Connection conn, String idPessoa) throws SQLException {
-        String query = "select p.id, p.nome, p.data_nascimento, p.sexo, p.email, "
+        String query = "select p.id, p.nome, p.data_nascimento, p.sexo, p.email, p.my_number, "
                 + " ec.provincia, ec.cidade, ec.ds_endereco, ec.bairro, ec.cep, ec.status, "
                 + " t.numero, t.tipo_telefone"
                 + " from pessoa p, endereco ec, telefone t"
@@ -163,6 +165,7 @@ public class PessoaFisicaDAO {
             pessoaFisicaModel.setDataNascimento(rs.getString("data_nascimento"));
             pessoaFisicaModel.setSexo(rs.getString("sexo"));
             pessoaFisicaModel.setEmail(rs.getString("email"));
+            pessoaFisicaModel.setMyNumber(rs.getString("my_number"));
 
             EnderecoModel endereco = new EnderecoModel();
             endereco.setProvincia(rs.getString("provincia"));
@@ -185,13 +188,14 @@ public class PessoaFisicaDAO {
     }
 
     public void updatePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException {
-        String query = "UPDATE pessoa SET nome=?, data_nascimento=?, sexo=?, email=? WHERE id=?";
+        String query = "UPDATE pessoa SET nome=?, data_nascimento=?, sexo=?, email=?, my_number=? WHERE id=?";
         try (PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, pessoaFisicaModel.getNome());
             prep.setString(2, pessoaFisicaModel.getDataNascimento());
             prep.setString(3, pessoaFisicaModel.getSexo());
             prep.setString(4, pessoaFisicaModel.getEmail());
-            prep.setInt(5, pessoaFisicaModel.getId());
+            prep.setString(5, pessoaFisicaModel.getMyNumber());
+            prep.setInt(6, pessoaFisicaModel.getId());
             prep.execute();
         }
     }

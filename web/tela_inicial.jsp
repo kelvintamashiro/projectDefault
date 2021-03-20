@@ -21,10 +21,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Project Default - Tela Inicial</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <script language="javascript1.2" src="js/mizanscene.js"></script>
-        <script type="text/javascript" src="js/JQuery/js/jquery-1.3.2.js"></script>
         <link rel="stylesheet" media="all" type="text/css" href="css/estilo.css" />
-        <link rel="stylesheet" media="all" type="text/css" href="css/style_original.css" />
 
         <style>
             body {
@@ -37,7 +34,7 @@
     <body>
 
         <logic:notEqual name="nome" value="" scope="session">
-        <jsp:include page="topo.jsp"/>
+            <jsp:include page="topo.jsp"/>
             <div class="row" align="center" style="padding-top: 10%">
                 <div class="col-12 col-s-12">
                     <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do'">
@@ -55,6 +52,19 @@
                 </div>
             </div>
         </logic:notEqual>
+        <logic:equal name="nome" value="" scope="session">
+            <div style="padding-top: 20%">
+                <div class="alert alert-danger" align="center">
+                    <img src="imagens/cancel.png" width="50px"/>
+                    <br/>
+                    <br/>
+                    Você não está logado no sistema!!
+                    <br/>
+                    <br/>
+                    <a href="index.jsp" class="btn btn-default">Clique aqui para voltar a página de login</a>
+                </div>
+            </div>
+        </logic:equal>
 
         <div>
             <%--<jsp:include page="footer.jsp"/>--%>
