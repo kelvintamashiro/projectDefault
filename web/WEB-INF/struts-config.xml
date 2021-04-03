@@ -31,6 +31,7 @@
         <form-bean name="PessoaFisicaModel"     type="com.app.model.PessoaFisicaModel"/>
         <form-bean name="LoginModel"            type="com.app.model.LoginModel"/>
         <form-bean name="SenhaModel"            type="com.app.model.SenhaModel"/>
+        <form-bean name="VeiculoModel"          type="com.app.model.VeiculoModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -74,6 +75,17 @@
             <forward name="pageAlterarSenha"           path="/alterar_senha.jsp"/>
             <forward name="alterarSenha"               path="/alterar_senha.jsp"/>
         </action>  
+        
+        <action path="/TipoVeiculo"
+                type="com.app.action.TipoVeiculoAction"
+                name="VeiculoModel"
+                scope="request">
+            
+            <forward name="page"                        path="/tipo_veiculo.jsp"/>
+            <forward name="save"                        path="/tipo_veiculo.jsp"/>
+            <forward name="excluir"                     path="/tipo_veiculo.jsp"/>
+        </action>  
+        
         
     </action-mappings>
     

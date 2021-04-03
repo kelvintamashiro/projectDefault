@@ -43,12 +43,12 @@
                     <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do?action=pagePesquisa'">
                         Pesquisa <br/>de Pessoa
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = ''">
-                        Venda <br/>de Carro
+                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
+                        Gerenciador <br/>Tipo Veículos
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'links_doc_alunos.jsp'">
+<!--                    <button class="btn-tela" onclick="window.location.href = 'links_doc_alunos.jsp'">
                         Gerenciador <br/>Venda de Carro
-                    </button>
+                    </button>-->
                 </div>
             </div>
         </logic:notEqual>
