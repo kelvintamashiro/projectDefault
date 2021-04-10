@@ -46,6 +46,12 @@
                     <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
                         Gerenciador <br/>Tipo Veículos
                     </button>
+                    <button class="btn-tela" onclick="window.location.href = 'MarcaVeiculo.do'">
+                        Gerenciador <br/>Marca Veículos
+                    </button>
+                    <button class="btn-tela" onclick="window.location.href = 'NomeVeiculo.do'">
+                        Gerenciador <br/>Nome Veículos
+                    </button>
 <!--                    <button class="btn-tela" onclick="window.location.href = 'links_doc_alunos.jsp'">
                         Gerenciador <br/>Venda de Carro
                     </button>-->

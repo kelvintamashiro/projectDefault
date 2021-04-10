@@ -86,6 +86,27 @@
             <forward name="excluir"                     path="/tipo_veiculo.jsp"/>
         </action>  
         
+        <action path="/MarcaVeiculo"
+                type="com.app.action.MarcaVeiculoAction"
+                name="VeiculoModel"
+                scope="request">
+            
+            <forward name="page"                        path="/marca_veiculo.jsp"/>
+            <forward name="save"                        path="/marca_veiculo.jsp"/>
+            <forward name="excluir"                     path="/marca_veiculo.jsp"/>
+        </action> 
+         
+        <action path="/NomeVeiculo"
+                type="com.app.action.NomeVeiculoAction"
+                name="VeiculoModel"
+                scope="request">
+            
+            <forward name="page"                        path="/nome_veiculo.jsp"/>
+            <forward name="carregarMarcaVeiculo"        path="/nome_veiculo.jsp"/>
+            <forward name="save"                        path="/nome_veiculo.jsp"/>
+            <forward name="excluir"                     path="/nome_veiculo.jsp"/>
+        </action>  
+        
         
     </action-mappings>
     
