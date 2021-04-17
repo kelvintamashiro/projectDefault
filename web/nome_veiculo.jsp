@@ -19,23 +19,33 @@
                 document.VeiculoModel.action = "NomeVeiculo.do?action=carregarMarcaVeiculo";
                 document.VeiculoModel.submit();
             }
+            
+            function fCarregarVeiculosPorMarca() {
+                document.VeiculoModel.action = "NomeVeiculo.do?action=carregarVeiculoPorMarca";
+                document.VeiculoModel.submit();
+            }
 
             function fCadastrar() {
                 var idTipoVeiculo = document.getElementById("idTipoVeiculo").value;
-                var dsMarcaVeiculo = document.getElementById("dsMarcaVeiculo").value;
+                var idMarcaVeiculo = document.getElementById("idMarcaVeiculo").value;
+                var nomeVeiculo = document.getElementById("nomeVeiculo").value;
 
                 if (idTipoVeiculo == "") {
                     alert("Deve ser informado o Tipo de Veículo corretamente!!");
                     document.getElementById("idTipoVeiculo").focus();
-                } else if (dsMarcaVeiculo.length < 2) {
-                    alert("Deve ser informado o nome da marca do Veículo corretamente!!");
-                    document.getElementById("dsMarcaVeiculo").focus();
+                } else if (idMarcaVeiculo == "") {
+                    alert("Deve ser informado a marca do Veículo corretamente!!");
+                    document.getElementById("idMarcaVeiculo").focus();
+                } else if (nomeVeiculo.length < 2) {
+                    alert("Deve ser informado o nome do Veículo corretamente!!");
+                    document.getElementById("nomeVeiculo").focus();
                 } else {
-                    document.VeiculoModel.action = "MarcaVeiculo.do?action=save";
+                    document.VeiculoModel.action = "NomeVeiculo.do?action=save";
                     document.VeiculoModel.submit();
                 }
 
             }
+            
 
             function fExcluir(idMarcaVeiculo) {
                 if (confirm("Você deseja realmente excluir???")) {
@@ -58,7 +68,7 @@
             <jsp:include page="topo.jsp"/>
 
             <div align="center">
-                <h1>Gerenciador Nome de Veículo</h1>
+                <h1>Gerenciador de Veículo</h1>
                 <hr/>
             </div>
             <html:form action="NomeVeiculo">
@@ -77,69 +87,48 @@
                             <td>
                                 <div class="col-lg-12">
                                     Marca de Veículo:
-                                    <html:select property="idMarcaVeiculo" styleClass="form-control" styleId="idTipoVeiculo">
+                                    <html:select property="idMarcaVeiculo" styleClass="form-control" styleId="idMarcaVeiculo" onchange="fCarregarVeiculosPorMarca()">
                                         <html:option value="">Selecione</html:option>
                                         <html:options collection="listaMarcaVeiculo" property="idMarcaVeiculo" labelProperty="dsMarcaVeiculo"></html:options>
                                     </html:select>   
                                 </div>
                             </td>
                             <td>
-                            <div class="col-lg-12">
-                                Marca do Veículo:
-                                <html:text styleClass="form-control" name="VeiculoModel" property="dsMarcaVeiculo" styleId="dsMarcaVeiculo"/>        
-                            </div>
-                        </td>
+                                <div class="col-lg-12">
+                                    Nome do Veículo:
+                                    <html:text styleClass="form-control" name="VeiculoModel" property="nomeVeiculo" styleId="nomeVeiculo"/>        
+                                </div>
+                            </td>
+                            <td>
+                                <br/>
+                                <input class="btn btn-success" type="button" value="CADASTRAR" onClick="fCadastrar();">
+                            </td>
                         </logic:present>
 
-                        <!--                        <td>
-                                                    <br/>
-                                                    <input class="btn btn-success" type="button" value="CADASTRAR" onClick="fCadastrar();">
-                                                </td>-->
                     </tr>
                 </table>
+                
+                <logic:present name="listaVeiculoPorMarca" scope="session">
+                    <table width="60%" border="0" align="center" class="table-condensed">
+                        <tr>
+                            <td><b>Marca Veículo</b></td>
+                            <td><b>Nome Veículo</b></td>
+                        </tr>
+                        <logic:iterate name="listaVeiculoPorMarca" scope="session" id="listaNomeVeiculo">
+                            <tr>
+                                <td>
+                                    <bean:write name="listaNomeVeiculo" property="dsMarcaVeiculo"/>
+                                </td>
+                                <td>
+                                    <bean:write name="listaNomeVeiculo" property="nomeVeiculo"/>
+                                </td>
+                            </tr>
+                        </logic:iterate>
+                    </table>
+                </logic:present>
+                
             </html:form>
 
-            <div align="center" style="margin-top: 150px">
-                <h1>Lista Tipo/Marca de Veículo Cadastrados</h1>
-            </div>
-            <%--
-                        <logic:present name="listaMarcaVeiculo" scope="request">
-                            <table align="center" class="table">
-                                <tr style="background-color: #F4F4F4">
-                                    <td width='10%'>&nbsp;</td>
-                                    <td>
-                                        <b>ID</b>
-                                    </td>
-                                    <td>
-                                        <b>Tipo Veículo</b>
-                                    </td>
-                                    <td>
-                                        <b>Marca Veículo</b>
-                                    </td>
-                                    <td width='10%'>&nbsp;</td>
-                                    <td width='10%'>&nbsp;</td>
-                                </tr>
-                                <logic:iterate name="listaMarcaVeiculo" id="listaMarca" scope="request">
-                                    <tr>
-                                        <td width='10%'>&nbsp;</td>
-                                        <td>
-                                            <bean:write name="listaMarca" property="idMarcaVeiculo"/>
-                                        </td>
-                                        <td>
-                                            <bean:write name="listaMarca" property="dsTipoVeiculo"/>
-                                        </td>
-                                        <td>
-                                            <bean:write name="listaMarca" property="dsMarcaVeiculo"/>
-                                        </td>
-                                        <td width='10%'>
-                                            <input type="button" class="btn btn-danger" value="Excluir" onclick="fExcluir(<bean:write name="listaMarca" property="idMarcaVeiculo"/>)"/>
-                                        </td>
-                                        <td width='10%'>&nbsp;</td>
-                                    </tr>
-                                </logic:iterate>
-                            </table>
-                        </logic:present>
-            --%>
         </logic:notEqual>    
     </body>
 </html>

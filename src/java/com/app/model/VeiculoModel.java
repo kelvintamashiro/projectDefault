@@ -17,7 +17,25 @@ public class VeiculoModel extends FormBasico {
     private String dsTipoVeiculo;
     private int idMarcaVeiculo;
     private String dsMarcaVeiculo;
+    private int idVeiculo;
+    private String nomeVeiculo;
 
+    public int getIdVeiculo() {
+        return idVeiculo;
+    }
+
+    public void setIdVeiculo(int idVeiculo) {
+        this.idVeiculo = idVeiculo;
+    }
+
+    public String getNomeVeiculo() {
+        return nomeVeiculo;
+    }
+
+    public void setNomeVeiculo(String nomeVeiculo) {
+        this.nomeVeiculo = nomeVeiculo;
+    }
+    
     public int getIdMarcaVeiculo() {
         return idMarcaVeiculo;
     }

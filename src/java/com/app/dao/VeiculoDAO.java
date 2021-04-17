@@ -165,4 +165,52 @@ public class VeiculoDAO {
         return listaMarcaVeiculo;
     }
 
+    public boolean isExisteNomeVeiculo(Connection conn, String nomeVeiculo) throws SQLException {
+        String query = "select * from veiculo where nome_veiculo like ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setString(1, nomeVeiculo);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+
+        return false;
+    }
+
+    public void saveNomeVeiculo(Connection conn, VeiculoModel veiculoModel) throws SQLException {
+        String query = "INSERT INTO veiculo (id_tipo_veiculo, id_marca_veiculo, nome_veiculo) VALUES (?,?,?)";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, veiculoModel.getIdTipoVeiculo());
+        prep.setInt(2, veiculoModel.getIdMarcaVeiculo());
+        prep.setString(3, veiculoModel.getNomeVeiculo());
+        prep.execute();
+        prep.close();
+    }
+
+    public List<VeiculoModel> obterListaVeiculoPorMarca(Connection conn, int idMarcaVeiculo) throws SQLException {
+        List<VeiculoModel> listaMarcaVeiculo = new ArrayList<>();
+        String query = "select mv.ds_marca_veiculo, v.nome_veiculo, v.id"
+                + " from veiculo v, marca_veiculo mv"
+                + " where v.id_marca_veiculo = mv.id"
+                + " and v.id_marca_veiculo = ?"
+                + " order by v.nome_veiculo";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idMarcaVeiculo);
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            VeiculoModel marcaForm = new VeiculoModel();
+            marcaForm.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
+            marcaForm.setNomeVeiculo(rs.getString("nome_veiculo"));
+            marcaForm.setIdVeiculo(rs.getInt("id"));
+            
+            listaMarcaVeiculo.add(marcaForm);
+        }
+        rs.close();
+        prep.close();
+
+        return listaMarcaVeiculo;
+    }
+
 }

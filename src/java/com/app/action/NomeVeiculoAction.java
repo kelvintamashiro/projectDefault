@@ -35,6 +35,8 @@ public class NomeVeiculoAction extends IDRAction {
             this.save(form, request, errors);
         } else if (action.equals("excluir")) {
             this.excluir(form, request, errors);
+        } else if (action.equals("carregarVeiculoPorMarca")) {
+            this.carregarVeiculoPorMarca(form, request, errors);
         }
         return mapping.findForward(forward);
     }
@@ -45,6 +47,10 @@ public class NomeVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
+            //zerar variaveis da sessao
+            session.removeAttribute("listaTipoVeiculo");
+            session.removeAttribute("listaMarcaVeiculo");
+            session.removeAttribute("listaVeiculoPorMarca");
 
             //obter lista dos tipos de veiculos
             List<VeiculoModel> listaTipoVeiculo = VeiculoDAO.getInstance().obterListaTipoVeiculos(conn);
@@ -65,12 +71,36 @@ public class NomeVeiculoAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-//            //obter lista das marcas de veiculos ja cadastradas
+            //obter lista das marcas de veiculos ja cadastradas
             List<VeiculoModel> listaMarcaVeiculo = VeiculoDAO.getInstance().obterListaMarcaVeiculoPorTipo(conn, veiculoModel.getIdTipoVeiculo());
             session.setAttribute("listaMarcaVeiculo", listaMarcaVeiculo);
-        
+
             request.setAttribute("VeiculoModel", veiculoModel);
-        
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void carregarVeiculoPorMarca(ActionForm form, HttpServletRequest request, Errors errors) {
+        VeiculoModel veiculoModel = (VeiculoModel) form;
+        HttpSession session = request.getSession();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //obter lista dos veiculos cadastrado por marca
+            List<VeiculoModel> listaVeiculoPorMarca = VeiculoDAO.getInstance().obterListaVeiculoPorMarca(conn, veiculoModel.getIdMarcaVeiculo());
+
+            if (listaVeiculoPorMarca.size() > 0) {
+                session.setAttribute("listaVeiculoPorMarca", listaVeiculoPorMarca);
+            } else {
+                session.removeAttribute("listaVeiculoPorMarca");
+            }
+
+            request.setAttribute("VeiculoModel", veiculoModel);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -84,18 +114,21 @@ public class NomeVeiculoAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-            //validar se a marca ja existe cadastrada
-            boolean isExisteMarca = VeiculoDAO.getInstance().isExisteMarcaVeiculo(conn, veiculoModel.getDsMarcaVeiculo(), veiculoModel.getIdTipoVeiculo());
-            if (!isExisteMarca) {
+            //validar se o nome do veiculo ja existe cadastrada
+            boolean isExisteNomeVeiculo = VeiculoDAO.getInstance().isExisteNomeVeiculo(conn, veiculoModel.getNomeVeiculo());
+            if (!isExisteNomeVeiculo) {
                 //se nao existe pode realizar o cadastro
-                VeiculoDAO.getInstance().saveMarcaVeiculo(conn, veiculoModel);
-                veiculoModel.setDsMarcaVeiculo(null);
-                errors.error("Marca de Veiculo cadastrada!!");
+                VeiculoDAO.getInstance().saveNomeVeiculo(conn, veiculoModel);
+                veiculoModel.setNomeVeiculo(null);
+                errors.error("Veiculo cadastrado com Sucesso!!");
+                
+                //carregar lista de veiculos cadastrados por marca
+                
             } else {
                 //caso exista nao cadastra e manda mensagem na tela
-                errors.error("Esssa Marca de Veiculo já encontra-se cadastrada!!");
+                errors.error("Esssa Veiculo já encontra-se cadastrada!!");
             }
-            this.page(form, request, errors);
+//            this.page(form, request, errors);
             request.setAttribute("VeiculoModel", veiculoModel);
         } catch (Exception e) {
             e.printStackTrace();

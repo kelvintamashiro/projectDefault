@@ -39,6 +39,8 @@ public class PessoaFisicaAction extends IDRAction {
             this.atualizar(form, request, errors);
         } else if (action.equals("excluir")) {
             this.excluir(form, request, errors);
+        } else if (action.equals("visualizar")) {
+            this.visualizar(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -231,18 +233,36 @@ public class PessoaFisicaAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
             String idPessoa = request.getParameter("idPessoa");
-            
+
             //excluir pessoa por idPessoa
             PessoaFisicaDAO.getInstance().deletePessoa(conn, idPessoa);
-            
+
             //excluir telefone
             PessoaFisicaDAO.getInstance().deletePhone(conn, idPessoa);
-            
+
             //excluir endereco
             PessoaFisicaDAO.getInstance().deleteAddress(conn, idPessoa);
-            
+
             this.pesquisar(pessoaFisicaModel, request, errors);
-            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void visualizar(ActionForm form, HttpServletRequest request, Errors errors) {
+        PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            String idPessoa = request.getParameter("idPessoa");
+
+            pessoaFisicaModel = PessoaFisicaDAO.getInstance().obterDadosPessoaPorId(conn, idPessoa);
+
+            request.setAttribute("PessoaFisicaModel", pessoaFisicaModel);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

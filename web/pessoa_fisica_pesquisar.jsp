@@ -11,7 +11,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>JSP Page</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
@@ -24,18 +23,29 @@
                     alert("Um dos campos deve ser preenchido!!")
                 } else {
                     document.PessoaFisicaModel.action = "PessoaFisica.do?action=pesquisar";
+                    document.PessoaFisicaModel.target = "_self";
                     document.PessoaFisicaModel.submit();
                 }
             }
 
             function fEditar(idPessoa) {
                 document.PessoaFisicaModel.action = "PessoaFisica.do?action=pageEditar&idPessoa=" + idPessoa;
+                document.PessoaFisicaModel.target = "_self";
+                document.PessoaFisicaModel.submit();
+            }
+
+            function fVisualizar(idPessoa) {
+//                window.open("PessoaFisica.do?action=visualizar&idPessoa=" + idPessoa, "VisualizarCadastro", 400, 500);
+
+                document.PessoaFisicaModel.action = "PessoaFisica.do?action=visualizar&idPessoa=" + idPessoa;
+                document.PessoaFisicaModel.target = "_blank";
                 document.PessoaFisicaModel.submit();
             }
 
             function fExcluir(idPessoa) {
                 if (confirm("Você deseja realmente excluir???")) {
                     document.PessoaFisicaModel.action = "PessoaFisica.do?action=excluir&idPessoa=" + idPessoa;
+                    document.PessoaFisicaModel.target = "_self";
                     document.PessoaFisicaModel.submit();
                 }
             }
@@ -47,7 +57,7 @@
 
             <logic:present name="errors">
                 <script>
-                alert('<bean:write name="errors"/>');
+                    alert('<bean:write name="errors"/>');
                 </script>
             </logic:present>
             <jsp:include page="topo.jsp"/>
@@ -113,6 +123,7 @@
                                 <td><bean:write name="listaP" property="dataNascimento"/></td>
                                 <td><bean:write name="listaP" property="myNumber"/></td>
                                 <td>
+                                    <input type="button" class="btn btn-success" value="Visualizar" onclick="fVisualizar(<bean:write name="listaP" property="id"/>)"/>
                                     <input type="button" class="btn btn-info" value="Editar" onclick="fEditar(<bean:write name="listaP" property="id"/>)"/>
                                     <input type="button" class="btn btn-danger" value="Excluir" onclick="fExcluir(<bean:write name="listaP" property="id"/>)"/>
                                 </td>

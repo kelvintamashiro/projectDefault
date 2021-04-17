@@ -1,12 +1,6 @@
 <%-- 
-    Document   : tela_inicial
-    Created on : 6 de mar de 2021, 10:38:56
-    Author     : macuser
---%>
-
-<%-- 
-    Document   : tela_interativa
-    Created on : 24/02/2020, 20:47:19
+    Document   : gerenciador_veiculo
+    Created on : 17 de abr de 2021, 10:08:05
     Author     : macuser
 --%>
 
@@ -17,9 +11,8 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="js-disabled">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Project Default - Tela Inicial</title>
+        <title>Project Default - Gerenciador de Veículos</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" media="all" type="text/css" href="css/estilo.css" />
 
@@ -37,20 +30,11 @@
             <jsp:include page="topo.jsp"/>
             <div class="row" align="center" style="padding-top: 10%">
                 <div class="col-12 col-s-12">
-                    <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do'">
-                        Cadastro <br/>de Pessoa
+                    <button class="btn-tela2" onclick="window.location.href = 'NomeVeiculo.do'">
+                        Cadastrar <br/>Veículos
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do?action=pagePesquisa'">
-                        Pesquisa <br/>de Pessoa
-                    </button>
-                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
-                        Gerenciador <br/>Tipo Veículos
-                    </button>
-                    <button class="btn-tela" onclick="window.location.href = 'MarcaVeiculo.do'">
-                        Gerenciador <br/>Marca Veículos
-                    </button>
-                    <button class="btn-tela" onclick="window.location.href = 'NomeVeiculo.do'">
-                        Gerenciador <br/>Nome Veículos
+                    <button class="btn-tela2" onclick="window.location.href = 'gerenciador_veiculo.jsp'">
+                        Consultar <br/>Veículos
                     </button>
                 </div>
             </div>

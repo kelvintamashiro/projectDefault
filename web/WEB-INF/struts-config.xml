@@ -65,6 +65,7 @@
             <forward name="pageEditar"                  path="/pessoa_fisica_editar.jsp"/>
             <forward name="atualizar"                   path="/pessoa_fisica_editar.jsp"/>
             <forward name="excluir"                     path="/pessoa_fisica_pesquisar.jsp"/>
+            <forward name="visualizar"                  path="/pessoa_fisica_visualizar.jsp"/>
         </action>
         
         <action path="/Senha"
@@ -103,6 +104,7 @@
             
             <forward name="page"                        path="/nome_veiculo.jsp"/>
             <forward name="carregarMarcaVeiculo"        path="/nome_veiculo.jsp"/>
+            <forward name="carregarVeiculoPorMarca"     path="/nome_veiculo.jsp"/>
             <forward name="save"                        path="/nome_veiculo.jsp"/>
             <forward name="excluir"                     path="/nome_veiculo.jsp"/>
         </action>  
