@@ -189,6 +189,14 @@ public class VeiculoDAO {
         prep.close();
     }
 
+    public void excluirVeiculo(Connection conn, int idVeiculo) throws SQLException {
+        String query = "DELETE FROM veiculo WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idVeiculo);
+        prep.execute();
+        prep.close();
+    }
+
     public List<VeiculoModel> obterListaVeiculoPorMarca(Connection conn, int idMarcaVeiculo) throws SQLException {
         List<VeiculoModel> listaMarcaVeiculo = new ArrayList<>();
         String query = "select mv.ds_marca_veiculo, v.nome_veiculo, v.id"
@@ -204,7 +212,7 @@ public class VeiculoDAO {
             marcaForm.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
             marcaForm.setNomeVeiculo(rs.getString("nome_veiculo"));
             marcaForm.setIdVeiculo(rs.getInt("id"));
-            
+
             listaMarcaVeiculo.add(marcaForm);
         }
         rs.close();

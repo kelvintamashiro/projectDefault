@@ -70,6 +70,8 @@ public class NomeVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
+            
+            session.removeAttribute("listaVeiculoPorMarca");
 
             //obter lista das marcas de veiculos ja cadastradas
             List<VeiculoModel> listaMarcaVeiculo = VeiculoDAO.getInstance().obterListaMarcaVeiculoPorTipo(conn, veiculoModel.getIdTipoVeiculo());
@@ -123,6 +125,7 @@ public class NomeVeiculoAction extends IDRAction {
                 errors.error("Veiculo cadastrado com Sucesso!!");
                 
                 //carregar lista de veiculos cadastrados por marca
+                this.carregarVeiculoPorMarca(form, request, errors);
                 
             } else {
                 //caso exista nao cadastra e manda mensagem na tela
@@ -145,9 +148,9 @@ public class NomeVeiculoAction extends IDRAction {
             conn = connectionPool.getConnection();
 
             //excluir marca do veiculo
-            VeiculoDAO.getInstance().excluirMarcaVeiculo(conn, veiculoModel.getIdMarcaVeiculo());
-            errors.error("Marca de Veículo Excluída com Sucesso!!");
-            this.page(form, request, errors);
+            VeiculoDAO.getInstance().excluirVeiculo(conn, veiculoModel.getIdVeiculo());
+            errors.error("Veículo Excluído com Sucesso!!");
+            this.carregarVeiculoPorMarca(form, request, errors);
 
         } catch (Exception e) {
             e.printStackTrace();

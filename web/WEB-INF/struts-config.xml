@@ -32,6 +32,7 @@
         <form-bean name="LoginModel"            type="com.app.model.LoginModel"/>
         <form-bean name="SenhaModel"            type="com.app.model.SenhaModel"/>
         <form-bean name="VeiculoModel"          type="com.app.model.VeiculoModel"/>
+        <form-bean name="ControleVendasModel"   type="com.app.model.ControleVendasModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -107,6 +108,17 @@
             <forward name="carregarVeiculoPorMarca"     path="/nome_veiculo.jsp"/>
             <forward name="save"                        path="/nome_veiculo.jsp"/>
             <forward name="excluir"                     path="/nome_veiculo.jsp"/>
+        </action>  
+        
+        <action path="/ControleVendas"
+                type="com.app.action.ControleVendasAction"
+                name="ControleVendasModel"
+                scope="request">
+            
+            <forward name="page"                        path="/controle_vendas_page.jsp"/>
+            <forward name="carregarMarcaVeiculo"        path="/controle_vendas_page.jsp"/>
+            <forward name="carregarVeiculos"            path="/controle_vendas_page.jsp"/>
+            <forward name="validarVeiculo"              path="/controle_vendas_page.jsp"/>
         </action>  
         
         

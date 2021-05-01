@@ -19,7 +19,7 @@
                 document.VeiculoModel.action = "NomeVeiculo.do?action=carregarMarcaVeiculo";
                 document.VeiculoModel.submit();
             }
-            
+
             function fCarregarVeiculosPorMarca() {
                 document.VeiculoModel.action = "NomeVeiculo.do?action=carregarVeiculoPorMarca";
                 document.VeiculoModel.submit();
@@ -45,11 +45,11 @@
                 }
 
             }
-            
 
-            function fExcluir(idMarcaVeiculo) {
+
+            function fExcluir(idVeiculo) {
                 if (confirm("Você deseja realmente excluir???")) {
-                    document.VeiculoModel.action = "MarcaVeiculo.do?action=excluir&idMarcaVeiculo=" + idMarcaVeiculo;
+                    document.VeiculoModel.action = "NomeVeiculo.do?action=excluir&idVeiculo=" + idVeiculo;
                     document.VeiculoModel.submit();
                 }
             }
@@ -107,12 +107,17 @@
 
                     </tr>
                 </table>
-                
+
                 <logic:present name="listaVeiculoPorMarca" scope="session">
+                    <div align="center" style="margin-top: 100px">
+                        <h1>Lista de Veículo Cadastrados</h1>
+                    </div>
+
                     <table width="60%" border="0" align="center" class="table-condensed">
-                        <tr>
+                        <tr style="background-color: #F4F4F4">
                             <td><b>Marca Veículo</b></td>
                             <td><b>Nome Veículo</b></td>
+                            <td width='10%'>&nbsp;</td>
                         </tr>
                         <logic:iterate name="listaVeiculoPorMarca" scope="session" id="listaNomeVeiculo">
                             <tr>
@@ -122,11 +127,14 @@
                                 <td>
                                     <bean:write name="listaNomeVeiculo" property="nomeVeiculo"/>
                                 </td>
+                                <td width='10%'>
+                                    <input type="button" class="btn btn-danger" value="Excluir" onclick="fExcluir(<bean:write name="listaNomeVeiculo" property="idVeiculo"/>)"/>
+                                </td>
                             </tr>
                         </logic:iterate>
                     </table>
                 </logic:present>
-                
+
             </html:form>
 
         </logic:notEqual>    

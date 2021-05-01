@@ -4,12 +4,6 @@
     Author     : macuser
 --%>
 
-<%-- 
-    Document   : tela_interativa
-    Created on : 24/02/2020, 20:47:19
-    Author     : macuser
---%>
-
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
@@ -51,6 +45,9 @@
                     </button>
                     <button class="btn-tela" onclick="window.location.href = 'NomeVeiculo.do'">
                         Gerenciador <br/>Nome Veículos
+                    </button>
+                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do'">
+                        Controle <br/>de Vendas
                     </button>
                 </div>
             </div>
