@@ -119,6 +119,11 @@
             <forward name="carregarMarcaVeiculo"        path="/controle_vendas_page.jsp"/>
             <forward name="carregarVeiculos"            path="/controle_vendas_page.jsp"/>
             <forward name="validarVeiculo"              path="/controle_vendas_page.jsp"/>
+            <forward name="save"                        path="/controle_vendas_page.jsp"/>
+            <forward name="pesquisarVeiculosVenda"      path="/controle_vendas_pesquisar.jsp"/>
+            <forward name="carregarMarcaVeiculoP"       path="/controle_vendas_pesquisar.jsp"/>
+            <forward name="carregarVeiculosP"           path="/controle_vendas_pesquisar.jsp"/>
+            <forward name="pesquisarVeiculos"           path="/controle_vendas_pesquisar.jsp"/>
         </action>  
         
         

@@ -5,6 +5,7 @@
  */
 package com.app.action;
 
+import com.app.dao.ControleVendasDAO;
 import com.app.dao.VeiculoDAO;
 import com.app.model.ControleVendasModel;
 import com.app.model.VeiculoModel;
@@ -27,16 +28,20 @@ public class ControleVendasAction extends IDRAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, Errors errors, String action) {
         String forward = action;
-        if (action.equals("page")) {
+        if (action.equals("page") || action.equals("pesquisarVeiculosVenda")) {
             this.page(form, request, errors);
-        } else if (action.equals("carregarMarcaVeiculo")) {
+        } else if (action.equals("carregarMarcaVeiculo") || action.equals("carregarMarcaVeiculoP")) {
             this.carregarMarcaVeiculo(form, request, errors);
-        } else if (action.equals("carregarVeiculos")) {
+        } else if (action.equals("carregarVeiculos") || action.equals("carregarVeiculosP")) {
             this.carregarVeiculos(form, request, errors);
         } else if (action.equals("validarVeiculo")) {
             this.validarVeiculo(form, request, errors);
+        } else if (action.equals("save")) {
+            this.save(form, request, errors);
+        } else if (action.equals("pesquisarVeiculos")) {
+            this.pesquisarVeiculos(form, request, errors);
         }
-        
+
         return mapping.findForward(forward);
     }
 
@@ -47,7 +52,7 @@ public class ControleVendasAction extends IDRAction {
 
         try {
             conn = connectionPool.getConnection();
-            
+
             session.removeAttribute("listaTipoVeiculo");
             session.removeAttribute("listaMarcaVeiculo");
             session.removeAttribute("listaVeiculoPorMarca");
@@ -93,26 +98,65 @@ public class ControleVendasAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            
+
             //obter lista dos veiculos cadastrado por marca
             List<VeiculoModel> listaVeiculoPorMarca = VeiculoDAO.getInstance().obterListaVeiculoPorMarca(conn, controleVendasModel.getIdMarcaVeiculo());
             session.setAttribute("listaVeiculoPorMarca", listaVeiculoPorMarca);
-            
+
             session.setAttribute("ControleVendasModel", controleVendasModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             connectionPool.free(conn);
-        } 
+        }
     }
 
     private void validarVeiculo(ActionForm form, HttpServletRequest request, Errors errors) {
         ControleVendasModel controleVendasModel = (ControleVendasModel) form;
         HttpSession session = request.getSession();
-        
+
         request.setAttribute("detalhesVeiculo", "true");
         session.setAttribute("ControleVendasModel", controleVendasModel);
+    }
+
+    private void save(ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleVendasModel controleVendasModel = (ControleVendasModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            ControleVendasDAO.getInstance().save(conn, controleVendasModel);
+
+            controleVendasModel.setIdVeiculo(0);
+
+            errors.error("Salvo com Sucesso!!");
+            request.setAttribute("ControleVendasModel", controleVendasModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.error("Ocorreu um Erro!!");
+        } finally {
+            connectionPool.free(conn);
+        }
+
+    }
+
+    private void pesquisarVeiculos(ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleVendasModel controleVendasModel = (ControleVendasModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            
+            List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVeiculos(conn, controleVendasModel);
+            
+            request.setAttribute("listaVeiculos", listaVeiculos);
+            request.setAttribute("ControleVendasModel", controleVendasModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.error("Ocorreu um Erro!!");
+        } finally {
+            connectionPool.free(conn);
+        }
     }
 
 }

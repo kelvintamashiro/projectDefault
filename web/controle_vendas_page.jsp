@@ -28,6 +28,75 @@
                 document.ControleVendasModel.action = "ControleVendas.do?action=validarVeiculo";
                 document.ControleVendasModel.submit();
             }
+
+            function fSalvar() {
+                var idTipoVeiculo = document.ControleVendasModel.idTipoVeiculo.value;
+                var chassi = document.ControleVendasModel.chassi.value;
+                var cor = document.ControleVendasModel.cor.value;
+                var ano = document.ControleVendasModel.ano.value;
+                var cambio = document.ControleVendasModel.cambio.value;
+                var precoVenda = document.ControleVendasModel.precoVenda.value;
+                var motor = document.ControleVendasModel.motor.value;
+                var combustivel = document.ControleVendasModel.combustivel.value;
+                var km = document.ControleVendasModel.km.value;
+                var shaken = document.ControleVendasModel.shaken.value;
+                var capacidadePessoa = document.ControleVendasModel.capacidadePessoa.value;
+
+
+                if (chassi === "") {
+                    alert("Deve ser informado o Chassi");
+                    document.getElementById("chassi").focus();
+                } else if (cor === "") {
+                    alert("Deve ser informado a Cor");
+                    document.getElementById("cor").focus();
+                } else if (ano === "") {
+                    alert("Deve ser informado o Ano");
+                    document.getElementById("ano").focus();
+                } else if (cambio === "") {
+                    alert("Deve ser informado o Câmbio");
+                    document.getElementById("cambio").focus();
+                } else if (precoVenda.length < 4) {
+                    alert("Deve ser informado o Preco de Venda Corretamente");
+                    document.getElementById("precoVenda").focus();
+                } else if (motor === "") {
+                    alert("Deve ser informado o Motor");
+                    document.getElementById("motor").focus();
+                } else if (combustivel === "") {
+                    alert("Deve ser informado a Tipo de Combustível");
+                    document.getElementById("combustivel").focus();
+                } else if (km === "") {
+                    alert("Deve ser informado a quilometragem");
+                    document.getElementById("km").focus();
+                } else if (shaken === "") {
+                    alert("Deve ser informado o Shaken do veículo");
+                    document.getElementById("shaken").focus();
+                } else if (capacidadePessoa === "") {
+                    alert("Deve ser informado a capacidade de pessoas");
+                    document.getElementById("capacidadePessoa").focus();
+                } else {
+                    if (idTipoVeiculo != null && idTipoVeiculo == 1) {
+                        var nrPortas = document.ControleVendasModel.nrPortas.value;
+                        if (nrPortas === "") {
+                            alert("Deve ser informado o número de portas");
+                            document.getElementById("nrPortas").focus();
+                        } else {
+                            document.ControleVendasModel.action = "ControleVendas.do?action=save";
+                            document.ControleVendasModel.submit();
+                        }
+                    } else {
+                        var freio = document.ControleVendasModel.freio.value;
+                        if (freio === "") {
+                            alert("Deve ser informado o tipo de Freio");
+                            document.getElementById("freio").focus();
+                        } else {
+                            document.ControleVendasModel.action = "ControleVendas.do?action=save";
+                            document.ControleVendasModel.submit();
+                        }
+                    }
+                }
+
+
+            }
         </script>
 
     </head>
@@ -96,19 +165,19 @@
                             <td>
                                 <div class="col-lg-12">
                                     Chassi:
-                                    <html:text name="ControleVendasModel" property="chassi" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="chassi" styleId="chassi" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Cor:
-                                    <html:text name="ControleVendasModel" property="cor" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="cor" styleId="cor" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Ano:
-                                    <html:text name="ControleVendasModel" property="ano" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="ano" styleId="ano" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
@@ -127,25 +196,25 @@
                             <td>
                                 <div class="col-lg-12">
                                     Preço de Compra:
-                                    <html:text name="ControleVendasModel" property="precoCompra" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="precoCompra" styleId="precoCompra" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Preço de Venda:
-                                    <html:text name="ControleVendasModel" property="precoVenda" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="precoVenda" styleId="precoVenda" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Motor:
-                                    <html:text name="ControleVendasModel" property="motor" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="motor" styleId="motor" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Combustível:
-                                    <html:select name="ControleVendasModel" property="combustivel" styleClass="form-control" styleId="cambio">
+                                    <html:select name="ControleVendasModel" property="combustivel" styleClass="form-control" styleId="combustivel">
                                         <html:option value="">Selecione</html:option>
                                         <html:option value="E">Etanol</html:option>
                                         <html:option value="G">Gasolina</html:option>
@@ -159,13 +228,13 @@
                             <td>
                                 <div class="col-lg-12">
                                     KM rodados:
-                                    <html:text name="ControleVendasModel" property="km" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="km" styleId="km" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Shaken:
-                                    <html:text name="ControleVendasModel" property="shaken" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="shaken" styleId="shaken" styleClass="form-control"/>
                                 </div>
                             </td>
                             <td>
@@ -189,17 +258,28 @@
                             </td>
                             <td>
                                 <div class="col-lg-12">
-                                    N. Portas:
-                                    <html:select name="ControleVendasModel" property="nrPortas" styleClass="form-control" styleId="nrPortas">
-                                        <html:option value="">Selecione</html:option>
-                                        <html:option value="1">1</html:option>
-                                        <html:option value="2">2</html:option>
-                                        <html:option value="3">3</html:option>
-                                        <html:option value="4">4</html:option>
-                                        <html:option value="5">5</html:option>
-                                        <html:option value="6">6</html:option>
-                                        <html:option value="7">7</html:option>
-                                    </html:select>
+                                    <logic:equal name="ControleVendasModel" property="idTipoVeiculo" value="1">
+                                        N. Portas:
+                                        <html:select name="ControleVendasModel" property="nrPortas" styleClass="form-control" styleId="nrPortas">
+                                            <html:option value="">Selecione</html:option>
+                                            <html:option value="1">1</html:option>
+                                            <html:option value="2">2</html:option>
+                                            <html:option value="3">3</html:option>
+                                            <html:option value="4">4</html:option>
+                                            <html:option value="5">5</html:option>
+                                            <html:option value="6">6</html:option>
+                                            <html:option value="7">7</html:option>
+                                        </html:select>
+                                    </logic:equal>
+                                    <logic:equal name="ControleVendasModel" property="idTipoVeiculo" value="2">
+                                        Tipo de Freio:
+                                        <html:select name="ControleVendasModel" property="freio" styleClass="form-control" styleId="freio">
+                                            <html:option value="">Selecione</html:option>
+                                            <html:option value="Tambor">Tambor</html:option>
+                                            <html:option value="Disco">Disco</html:option>
+                                            <html:option value="ABS">ABS</html:option>
+                                        </html:select>
+                                    </logic:equal>
                                 </div>
                             </td>
                         </tr>
@@ -208,15 +288,15 @@
                                 <div class="col-lg-12">
                                     Detalhes Extras:
                                     <html:textarea name="ControleVendasModel" property="detalhesExtras" styleClass="form-control" rows="10"></html:textarea>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="height: 70px">
-                            <td colspan="4" align="center">
-                                <input class="btn btn-success" style="width: 200px" type="button" value="Salvar" onClick="fSalvar();">
-                            </td>
-                        </tr>
-                    </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="height: 70px">
+                                <td colspan="4" align="center">
+                                    <input class="btn btn-success" style="width: 200px" type="button" value="Salvar" onClick="fSalvar();">
+                                </td>
+                            </tr>
+                        </table>
                 </logic:equal>
 
             </html:form>

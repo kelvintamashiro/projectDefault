@@ -37,9 +37,9 @@
                     <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do?action=pagePesquisa'">
                         Pesquisa <br/>de Pessoa
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
+<!--                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
                         Gerenciador <br/>Tipo Veículos
-                    </button>
+                    </button>-->
                     <button class="btn-tela" onclick="window.location.href = 'MarcaVeiculo.do'">
                         Gerenciador <br/>Marca Veículos
                     </button>
@@ -48,6 +48,9 @@
                     </button>
                     <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do'">
                         Controle <br/>de Vendas
+                    </button>
+                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do?action=pesquisarVeiculosVenda'">
+                        Pesquisar Veículos<br/>à Venda
                     </button>
                 </div>
             </div>

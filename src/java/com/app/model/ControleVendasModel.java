@@ -37,7 +37,16 @@ public class ControleVendasModel extends FormBasico {
     private int capacidadePessoa;
     private int nrPortas;
     private String detalhesExtras;
+    private String freio;
 
+    public String getFreio() {
+        return freio;
+    }
+
+    public void setFreio(String freio) {
+        this.freio = freio;
+    }
+    
     public int getIdControleVendas() {
         return idControleVendas;
     }
