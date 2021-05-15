@@ -40,6 +40,8 @@ public class ControleVendasAction extends IDRAction {
             this.save(form, request, errors);
         } else if (action.equals("pesquisarVeiculos")) {
             this.pesquisarVeiculos(form, request, errors);
+        } else if (action.equals("detalhesVeiculo")) {
+            this.detalhesVeiculo(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -150,6 +152,23 @@ public class ControleVendasAction extends IDRAction {
             List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVeiculos(conn, controleVendasModel);
             
             request.setAttribute("listaVeiculos", listaVeiculos);
+            request.setAttribute("ControleVendasModel", controleVendasModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.error("Ocorreu um Erro!!");
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void detalhesVeiculo(ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleVendasModel controleVendasModel = (ControleVendasModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            
+            controleVendasModel = ControleVendasDAO.getInstance().detalhesVeiculo(conn, controleVendasModel.getIdControleVendas());
+            
             request.setAttribute("ControleVendasModel", controleVendasModel);
         } catch (Exception e) {
             e.printStackTrace();

@@ -22,13 +22,12 @@ public class ControleVendasModel extends FormBasico {
     private int idVeiculo;
     private String dsVeiculo;
     
-    
     //dados de detalhes do veiculo
     private String chassi;
     private String cor;
     private String ano;
-    private double precoCompra;
-    private double precoVenda;
+    private String precoCompra;
+    private String precoVenda;
     private String cambio;
     private String motor;
     private String combustivel;
@@ -38,7 +37,25 @@ public class ControleVendasModel extends FormBasico {
     private int nrPortas;
     private String detalhesExtras;
     private String freio;
+    private String dataInsercao;
+    private String dataVenda;
 
+    public String getDataInsercao() {
+        return dataInsercao;
+    }
+
+    public void setDataInsercao(String dataInsercao) {
+        this.dataInsercao = dataInsercao;
+    }
+
+    public String getDataVenda() {
+        return dataVenda;
+    }
+
+    public void setDataVenda(String dataVenda) {
+        this.dataVenda = dataVenda;
+    }
+    
     public String getFreio() {
         return freio;
     }
@@ -127,19 +144,19 @@ public class ControleVendasModel extends FormBasico {
         this.ano = ano;
     }
 
-    public double getPrecoCompra() {
+    public String getPrecoCompra() {
         return precoCompra;
     }
 
-    public void setPrecoCompra(double precoCompra) {
+    public void setPrecoCompra(String precoCompra) {
         this.precoCompra = precoCompra;
     }
 
-    public double getPrecoVenda() {
+    public String getPrecoVenda() {
         return precoVenda;
     }
 
-    public void setPrecoVenda(double precoVenda) {
+    public void setPrecoVenda(String precoVenda) {
         this.precoVenda = precoVenda;
     }
 

@@ -4,14 +4,14 @@
     Author     : macuser
 --%>
 
-<%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Controle de VeÌculo</title>
+        <title>Controle de Ve√≠culo</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
         <script type="text/javascript">
@@ -29,6 +29,10 @@
                 document.ControleVendasModel.action = "ControleVendas.do?action=pesquisarVeiculos";
                 document.ControleVendasModel.submit();
             }
+            
+            function fDetalhes(id){
+                window.open('ControleVendas.do?action=detalhesVeiculo&idControleVendas='+id,'DetalhesVeiculo','width=800; height=600');
+            } 
 
         </script>
 
@@ -45,7 +49,7 @@
             <jsp:include page="topo.jsp"/>
 
             <div align="center">
-                <h1>Pesquisa VeÌculos ‡ Venda</h1>
+                <h1>Pesquisa Ve√≠culos Vendidos</h1>
                 <hr/>
             </div>
             <html:form action="ControleVendas">
@@ -53,7 +57,7 @@
                     <tr>
                         <td>
                             <div class="col-lg-12">
-                                Tipo de VeÌculo:
+                                Tipo de Ve√≠culo:
                                 <html:select property="idTipoVeiculo" styleClass="form-control" styleId="idTipoVeiculo" onchange="fCarregarMarcaVeiculo()">
                                     <html:option value="">Selecione</html:option>
                                     <html:options collection="listaTipoVeiculo" property="idTipoVeiculo" labelProperty="dsTipoVeiculo"></html:options>
@@ -65,7 +69,7 @@
                         <logic:present name="listaMarcaVeiculo" scope="session">
                             <td>
                                 <div class="col-lg-12">
-                                    Marca de VeÌculo:
+                                    Marca de Ve√≠culo:
                                     <html:select property="idMarcaVeiculo" styleClass="form-control" styleId="idMarcaVeiculo" onchange="fCarregarVeiculosPorMarca()">
                                         <html:option value="">Selecione</html:option>
                                         <html:options collection="listaMarcaVeiculo" property="idMarcaVeiculo" labelProperty="dsMarcaVeiculo"></html:options>
@@ -78,7 +82,7 @@
                         <logic:present name="listaVeiculoPorMarca" scope="session">
                             <td>
                                 <div class="col-lg-12">
-                                    VeÌculo:
+                                    Ve√≠culo:
                                     <html:select property="idVeiculo" styleClass="form-control" styleId="idVeiculo">
                                         <html:option value="">Selecione</html:option>
                                         <html:options collection="listaVeiculoPorMarca" property="idVeiculo" labelProperty="nomeVeiculo"></html:options>
@@ -102,14 +106,49 @@
                         <table width="60%" border="0" align="center" class="table-condensed" style="background-color: #F4F4F4">
                             <tr>
                                 <td>
+                                    <b>ID:</b> <bean:write name="lista" property="idControleVendas"/>
+                                </td>
+                                <td>
                                     <b>Ano:</b> <bean:write name="lista" property="ano"/>
+                                </td>
+                                <td>
+                                    &nbsp;
                                 </td>
                             </tr>
                             <tr>
                                 <td>
+                                    <b>Tipo Ve√≠culo:</b> <bean:write name="lista" property="dsTipoVeiculo"/>
+                                </td>
+                                <td>
                                     <b>Cor:</b> <bean:write name="lista" property="cor"/>
                                 </td>
+                                <td>
+                                    <input class="btn btn-success" style="width: 150px" type="button" value="Detalhes" onClick="fDetalhes(<bean:write name="lista" property="idControleVendas"/>);">
+                                </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <b>Marca:</b> <bean:write name="lista" property="dsMarcaVeiculo"/>
+                                </td>
+                                <td>
+                                    <b>KM:</b> <bean:write name="lista" property="km"/>
+                                </td>
+                                <td>
+                                    <input class="btn btn-info" style="width: 150px" type="button" value="Editar" onClick="fEditar(<bean:write name="lista" property="idControleVendas"/>);">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Nome Ve√≠culo:</b> <bean:write name="lista" property="dsVeiculo"/>
+                                </td>
+                                <td>
+                                    <b>Pre√ßo:</b> <bean:write name="lista" property="precoVenda"/>
+                                </td>
+                                <td>
+                                    <input class="btn btn-danger" style="width: 150px" type="button" value="Excluir" onClick="fExcluir(<bean:write name="lista" property="idControleVendas"/>);">
+                                </td>
+                            </tr>
+
                         </table>
                         <br/>
                     </logic:iterate>
