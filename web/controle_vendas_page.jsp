@@ -41,6 +41,7 @@
                 var km = document.ControleVendasModel.km.value;
                 var shaken = document.ControleVendasModel.shaken.value;
                 var capacidadePessoa = document.ControleVendasModel.capacidadePessoa.value;
+                var dataVenda = document.getElementById("dataVenda").value;
 
 
                 if (chassi === "") {
@@ -80,7 +81,7 @@
                             alert("Deve ser informado o número de portas");
                             document.getElementById("nrPortas").focus();
                         } else {
-                            document.ControleVendasModel.action = "ControleVendas.do?action=save";
+                            document.ControleVendasModel.action = "ControleVendas.do?action=save&dataVenda=" + dataVenda;
                             document.ControleVendasModel.submit();
                         }
                     } else {
@@ -89,7 +90,7 @@
                             alert("Deve ser informado o tipo de Freio");
                             document.getElementById("freio").focus();
                         } else {
-                            document.ControleVendasModel.action = "ControleVendas.do?action=save";
+                            document.ControleVendasModel.action = "ControleVendas.do?action=save&dataVenda=" + dataVenda;
                             document.ControleVendasModel.submit();
                         }
                     }
@@ -115,7 +116,7 @@
                 <h1>Controle Vendas de Veículo</h1>
                 <hr/>
             </div>
-            <html:form action="ControleVendas">
+            <html:form action="ControleVendas" enctype="multipart/form-data">
                 <table width="60%" border="0" align="center" class="table-condensed">
                     <tr>
                         <td>
@@ -287,16 +288,33 @@
                             <td colspan="4">
                                 <div class="col-lg-12">
                                     Detalhes Extras:
-                                    <html:textarea name="ControleVendasModel" property="detalhesExtras" styleClass="form-control" rows="10"></html:textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="height: 70px">
-                                <td colspan="4" align="center">
-                                    <input class="btn btn-success" style="width: 200px" type="button" value="Salvar" onClick="fSalvar();">
-                                </td>
-                            </tr>
-                        </table>
+                                    <html:textarea name="ControleVendasModel" property="detalhesExtras" styleClass="form-control" rows="10">
+                                    </html:textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col-lg-12">
+                                    Data da Venda:
+                                    <input type="date" class="form-control" id="dataVenda"/>
+                                </div>
+                            </td>
+                            <td colspan="3">
+                                <div class="col-lg-12">
+                                    Escolha a imagem:
+                                    <html:file property="fileImg1" styleClass="form-control"/>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr style="height: 70px">
+                            <td colspan="4" align="center">
+                                <input class="btn btn-success" style="width: 200px" type="button" value="Salvar" onClick="fSalvar();">
+                            </td>
+                        </tr>
+                    </table>
                 </logic:equal>
 
             </html:form>

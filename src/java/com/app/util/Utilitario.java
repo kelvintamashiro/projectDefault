@@ -28,7 +28,7 @@ public class Utilitario {
         NumberFormat n = NumberFormat.getCurrencyInstance(Locale.JAPAN);
         String precoFormatado = n.format(valor);
 
-        return precoFormatado;
+        return precoFormatado.substring(1);
     }
 
 }

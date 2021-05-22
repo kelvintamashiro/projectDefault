@@ -5,6 +5,8 @@
  */
 package com.app.model;
 
+import org.apache.struts.upload.FormFile;
+
 /**
  *
  * @author macuser
@@ -39,7 +41,26 @@ public class ControleVendasModel extends FormBasico {
     private String freio;
     private String dataInsercao;
     private String dataVenda;
+    private FormFile fileImg1;
+    private String pathImg1;
 
+    public FormFile getFileImg1() {
+        return fileImg1;
+    }
+
+    public void setFileImg1(FormFile fileImg1) {
+        this.fileImg1 = fileImg1;
+    }
+
+    public String getPathImg1() {
+        return pathImg1;
+    }
+
+    public void setPathImg1(String pathImg1) {
+        this.pathImg1 = pathImg1;
+    }
+    
+    
     public String getDataInsercao() {
         return dataInsercao;
     }

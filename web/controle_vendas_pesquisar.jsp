@@ -29,10 +29,22 @@
                 document.ControleVendasModel.action = "ControleVendas.do?action=pesquisarVeiculos";
                 document.ControleVendasModel.submit();
             }
-            
-            function fDetalhes(id){
-                window.open('ControleVendas.do?action=detalhesVeiculo&idControleVendas='+id,'DetalhesVeiculo','width=800; height=600');
-            } 
+
+            function fDetalhes(id) {
+                window.open('ControleVendas.do?action=detalhesVeiculo&idControleVendas=' + id, 'DetalhesVeiculo', 'width=800; height=600');
+            }
+
+            function fEditar(id) {
+                document.ControleVendasModel.action = "ControleVendas.do?action=pageAtualizar&idControleVendas=" + id;
+                document.ControleVendasModel.submit();
+            }
+
+            function fExcluir(id) {
+                if (confirm("Deseja realmente excluir??")) {
+                    document.ControleVendasModel.action = "ControleVendas.do?action=excluir&idControleVendas=" + id;
+                    document.ControleVendasModel.submit();
+                }
+            }
 
         </script>
 
@@ -59,7 +71,7 @@
                             <div class="col-lg-12">
                                 Tipo de Veículo:
                                 <html:select property="idTipoVeiculo" styleClass="form-control" styleId="idTipoVeiculo" onchange="fCarregarMarcaVeiculo()">
-                                    <html:option value="">Selecione</html:option>
+                                    <html:option value="0">Selecione</html:option>
                                     <html:options collection="listaTipoVeiculo" property="idTipoVeiculo" labelProperty="dsTipoVeiculo"></html:options>
                                 </html:select>   
                             </div>
@@ -105,13 +117,13 @@
                     <logic:iterate name="listaVeiculos" id="lista" scope="request">
                         <table width="60%" border="0" align="center" class="table-condensed" style="background-color: #F4F4F4">
                             <tr>
-                                <td>
+                                <td width="30%">
                                     <b>ID:</b> <bean:write name="lista" property="idControleVendas"/>
                                 </td>
-                                <td>
+                                <td width="30%">
                                     <b>Ano:</b> <bean:write name="lista" property="ano"/>
                                 </td>
-                                <td>
+                                <td width="40%">
                                     &nbsp;
                                 </td>
                             </tr>

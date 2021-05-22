@@ -31,8 +31,8 @@ public class ControleVendasDAO {
 
     public void save(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
         String query = "INSERT INTO controle_vendas (id_tipo_veiculo, id_marca_veiculo, id_veiculo, chassi, cor, ano, preco_compra, preco_venda,"
-                + " cambio, motor, combustivel, km, shaken, capacidade_pessoa, nr_portas, detalhes_extras, freio, data_insercao) "
-                + " VALUES (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, now())";
+                + " cambio, motor, combustivel, km, shaken, capacidade_pessoa, nr_portas, detalhes_extras, freio, data_venda, data_insercao, path_img_1) "
+                + " VALUES (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, now(),?)";
 
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setInt(1, controleVendasModel.getIdTipoVeiculo());
@@ -41,8 +41,8 @@ public class ControleVendasDAO {
         prep.setString(4, controleVendasModel.getChassi());
         prep.setString(5, controleVendasModel.getCor());
         prep.setString(6, controleVendasModel.getAno());
-        prep.setString(7, controleVendasModel.getPrecoCompra());
-        prep.setString(8, controleVendasModel.getPrecoVenda());
+        prep.setString(7, controleVendasModel.getPrecoCompra().replace(",", "").replace(".", ""));
+        prep.setString(8, controleVendasModel.getPrecoVenda().replace(",", "").replace(".", ""));
         prep.setString(9, controleVendasModel.getCambio());
         prep.setString(10, controleVendasModel.getMotor());
         prep.setString(11, controleVendasModel.getCombustivel());
@@ -52,6 +52,8 @@ public class ControleVendasDAO {
         prep.setInt(15, controleVendasModel.getNrPortas());
         prep.setString(16, controleVendasModel.getDetalhesExtras());
         prep.setString(17, controleVendasModel.getFreio());
+        prep.setString(18, controleVendasModel.getDataVenda());
+        prep.setString(19, controleVendasModel.getPathImg1());
         prep.execute();
         prep.close();
     }
@@ -125,8 +127,8 @@ public class ControleVendasDAO {
             controlForm.setShaken(rs.getString("shaken"));
             controlForm.setCapacidadePessoa(rs.getInt("capacidade_pessoa"));
             controlForm.setNrPortas(rs.getInt("nr_portas"));
-            controlForm.setDetalhesExtras(rs.getString("detalhes_extras"));
             controlForm.setFreio(rs.getString("freio"));
+            controlForm.setDetalhesExtras(rs.getString("detalhes_extras"));
             controlForm.setDataInsercao(rs.getString("data_insercao"));
             controlForm.setDataVenda(rs.getString("data_venda"));
             controlForm.setCor(rs.getString("cor"));
@@ -146,6 +148,42 @@ public class ControleVendasDAO {
         rs.close();
         prep.close();
         return controlForm;
+    }
+
+    public void atualizar(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
+
+        String query = "UPDATE controle_vendas SET chassi=?, cor=?, ano=?, preco_compra=?, preco_venda=?, "
+                + " cambio=?, motor=?, combustivel=?, km=?, shaken=?, capacidade_pessoa=?, nr_portas=?, detalhes_extras=?, freio=?, data_venda = ? "
+                + " WHERE id=?";
+
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setString(1, controleVendasModel.getChassi());
+        prep.setString(2, controleVendasModel.getCor());
+        prep.setString(3, controleVendasModel.getAno());
+        prep.setString(4, controleVendasModel.getPrecoCompra().replace(",", "").replace(".", ""));
+        prep.setString(5, controleVendasModel.getPrecoVenda().replace(",", "").replace(".", ""));
+        prep.setString(6, controleVendasModel.getCambio());
+        prep.setString(7, controleVendasModel.getMotor());
+        prep.setString(8, controleVendasModel.getCombustivel());
+        prep.setString(9, controleVendasModel.getKm());
+        prep.setString(10, controleVendasModel.getShaken());
+        prep.setInt(11, controleVendasModel.getCapacidadePessoa());
+        prep.setInt(12, controleVendasModel.getNrPortas());
+        prep.setString(13, controleVendasModel.getDetalhesExtras());
+        prep.setString(14, controleVendasModel.getFreio());
+        prep.setString(15, controleVendasModel.getDataVenda());
+        prep.setInt(16, controleVendasModel.getIdControleVendas());
+        prep.execute();
+        prep.close();
+
+    }
+
+    public void excluir(Connection conn, int idControleVendas) throws SQLException {
+        String query = "DELETE FROM controle_vendas WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idControleVendas);
+        prep.execute();
+        prep.close();
     }
 
 }

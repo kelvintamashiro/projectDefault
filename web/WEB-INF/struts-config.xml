@@ -125,6 +125,9 @@
             <forward name="carregarVeiculosP"           path="/controle_vendas_pesquisar.jsp"/>
             <forward name="pesquisarVeiculos"           path="/controle_vendas_pesquisar.jsp"/>
             <forward name="detalhesVeiculo"             path="/controle_vendas_detalhes.jsp"/>
+            <forward name="pageAtualizar"               path="/controle_vendas_atualizar.jsp"/>
+            <forward name="atualizar"                   path="/controle_vendas_atualizar.jsp"/>
+            <forward name="excluir"                     path="/controle_vendas_pesquisar.jsp"/>
             
         </action>  
         
