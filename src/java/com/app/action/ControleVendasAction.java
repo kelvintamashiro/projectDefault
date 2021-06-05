@@ -140,14 +140,20 @@ public class ControleVendasAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
+            String folderImg = ControleVendasModel.folderImg;
+
             //fazer upload da imagem caso tenha no servidor na pasta imagens_veiculos e salvar no banco
             boolean isMultipart = FileUpload.isMultipartContent(request);
-            String path = getServlet().getServletContext().getRealPath("/") + "imagens_veiculos";
+            String path = getServlet().getServletContext().getRealPath("/") + folderImg;
             String nomeArquivo = null;
 
             if (isMultipart) {
                 FormFile formFile = controleVendasModel.getFileImg1();
-                nomeArquivo = controleVendasModel.getIdVeiculo() + ".jpg";
+                nomeArquivo = controleVendasModel.getChassi() + ".jpg";
+
+                //colocar o caminho da pasta e do nome do arquivo
+                String pathImg = folderImg + "/" + nomeArquivo;
+                controleVendasModel.setPathImg1(pathImg);
 
                 File folder = new File(path);
                 if (!folder.exists()) {
@@ -164,7 +170,7 @@ public class ControleVendasAction extends IDRAction {
 
             }
 
-            //ControleVendasDAO.getInstance().save(conn, controleVendasModel);
+            ControleVendasDAO.getInstance().save(conn, controleVendasModel);
             controleVendasModel.setIdVeiculo(0);
 
             errors.error("Salvo com Sucesso!!");
@@ -219,6 +225,34 @@ public class ControleVendasAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
+
+            String folderImg = ControleVendasModel.folderImg;
+
+            //fazer upload da imagem caso tenha no servidor na pasta imagens_veiculos e salvar no banco
+            boolean isMultipart = FileUpload.isMultipartContent(request);
+            String path = getServlet().getServletContext().getRealPath("/") + folderImg;
+            String nomeArquivo = null;
+
+            if (isMultipart) {
+                FormFile formFile = controleVendasModel.getFileImg1();
+                nomeArquivo = controleVendasModel.getChassi() + ".jpg";
+
+                //colocar o caminho da pasta e do nome do arquivo
+                String pathImg = folderImg + "/" + nomeArquivo;
+                controleVendasModel.setPathImg1(pathImg);
+
+                File folder = new File(path);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+
+                File newFile = new File(path, nomeArquivo);
+                FileOutputStream fos = new FileOutputStream(newFile);
+                fos.write(formFile.getFileData());
+                fos.flush();
+                fos.close();
+
+            }
 
             ControleVendasDAO.getInstance().atualizar(conn, controleVendasModel);
 

@@ -13,6 +13,8 @@ import org.apache.struts.upload.FormFile;
  */
 public class ControleVendasModel extends FormBasico {
     
+    public static String folderImg = "imagens_veiculos";
+    
     private int idControleVendas;
     
     private int idTipoVeiculo;

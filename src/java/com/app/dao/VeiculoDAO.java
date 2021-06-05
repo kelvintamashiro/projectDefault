@@ -45,7 +45,7 @@ public class VeiculoDAO {
         ResultSet rs = prep.executeQuery();
         if (rs.next()) {
             return true;
-        }
+        } 
         rs.close();
         prep.close();
 

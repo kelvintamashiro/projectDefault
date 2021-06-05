@@ -86,6 +86,7 @@ public class ControleVendasDAO {
             controlForm.setDsTipoVeiculo(rs.getString("ds_tipo_veiculo"));
             controlForm.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
             controlForm.setDsVeiculo(rs.getString("nome_veiculo"));
+            controlForm.setPathImg1(rs.getString("path_img_1"));
 
             long precoVendaSemFormatacao = rs.getLong("preco_venda");
             String precoVendaFormatado = Utilitario.getInstance().formatacaoIene(precoVendaSemFormatacao);
@@ -143,6 +144,8 @@ public class ControleVendasDAO {
             long precoVendaSemFormatacao = rs.getLong("preco_venda");
             String precoVendaFormatado = Utilitario.getInstance().formatacaoIene(precoVendaSemFormatacao);
             controlForm.setPrecoVenda(precoVendaFormatado);
+            
+            controlForm.setPathImg1(rs.getString("path_img_1"));
 
         }
         rs.close();
@@ -153,7 +156,8 @@ public class ControleVendasDAO {
     public void atualizar(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
 
         String query = "UPDATE controle_vendas SET chassi=?, cor=?, ano=?, preco_compra=?, preco_venda=?, "
-                + " cambio=?, motor=?, combustivel=?, km=?, shaken=?, capacidade_pessoa=?, nr_portas=?, detalhes_extras=?, freio=?, data_venda = ? "
+                + " cambio=?, motor=?, combustivel=?, km=?, shaken=?, capacidade_pessoa=?, nr_portas=?, "
+                + " detalhes_extras=?, freio=?, data_venda = ?, path_img_1 = ? "
                 + " WHERE id=?";
 
         PreparedStatement prep = conn.prepareStatement(query);
@@ -172,7 +176,8 @@ public class ControleVendasDAO {
         prep.setString(13, controleVendasModel.getDetalhesExtras());
         prep.setString(14, controleVendasModel.getFreio());
         prep.setString(15, controleVendasModel.getDataVenda());
-        prep.setInt(16, controleVendasModel.getIdControleVendas());
+        prep.setString(16, controleVendasModel.getPathImg1());
+        prep.setInt(17, controleVendasModel.getIdControleVendas());
         prep.execute();
         prep.close();
 

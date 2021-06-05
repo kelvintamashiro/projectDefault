@@ -99,7 +99,7 @@
                 <h1>Controle Vendas de Veículo - Atualizar</h1>
                 <hr/>
             </div>
-            <html:form action="ControleVendas">
+            <html:form action="ControleVendas" enctype="multipart/form-data">
                 <html:hidden property="idControleVendas"/>
                 <html:hidden property="idTipoVeiculo"/>
                 <table width="60%" border="0" align="center" class="table-condensed">
@@ -256,13 +256,21 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr style="height: 70px">
-                            <td colspan="4" align="center">
-                                <input class="btn btn-success" style="width: 200px" type="button" value="Atualizar" onClick="fAtualizar();">
-                                <a href="ControleVendas.do?action=pesquisarVeiculosVenda" class="btn btn-default" style="width: 200px">Voltar</a>
-                            </td>
-                        </tr>
-                    </table>
+                        <tr>
+                            <td colspan="4">
+                                <div class="col-lg-12">
+                                    Escolha a imagem:
+                                <html:file name="ControleVendasModel" property="fileImg1" styleClass="form-control"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height: 70px">
+                        <td colspan="4" align="center">
+                            <input class="btn btn-success" style="width: 200px" type="button" value="Atualizar" onClick="fAtualizar();">
+                            <a href="ControleVendas.do?action=pesquisarVeiculosVenda" class="btn btn-default" style="width: 200px">Voltar</a>
+                        </td>
+                    </tr>
+                </table>
 
             </html:form>
 

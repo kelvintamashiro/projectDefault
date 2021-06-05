@@ -117,14 +117,17 @@
                     <logic:iterate name="listaVeiculos" id="lista" scope="request">
                         <table width="60%" border="0" align="center" class="table-condensed" style="background-color: #F4F4F4">
                             <tr>
-                                <td width="30%">
+                                <td width="25%">
                                     <b>ID:</b> <bean:write name="lista" property="idControleVendas"/>
                                 </td>
-                                <td width="30%">
+                                <td width="25%">
                                     <b>Ano:</b> <bean:write name="lista" property="ano"/>
                                 </td>
-                                <td width="40%">
+                                <td width="25%">
                                     &nbsp;
+                                </td>
+                                <td width="25%" rowspan="4" align="center">
+                                    <img src="<bean:write name="lista" property="pathImg1"/>" width="200px"/>
                                 </td>
                             </tr>
                             <tr>
@@ -135,7 +138,7 @@
                                     <b>Cor:</b> <bean:write name="lista" property="cor"/>
                                 </td>
                                 <td>
-                                    <input class="btn btn-success" style="width: 150px" type="button" value="Detalhes" onClick="fDetalhes(<bean:write name="lista" property="idControleVendas"/>);">
+                                    <input class="btn btn-warning" style="width: 150px" type="button" value="Detalhes" onClick="fDetalhes(<bean:write name="lista" property="idControleVendas"/>);">
                                 </td>
                             </tr>
                             <tr>
@@ -146,7 +149,7 @@
                                     <b>KM:</b> <bean:write name="lista" property="km"/>
                                 </td>
                                 <td>
-                                    <input class="btn btn-info" style="width: 150px" type="button" value="Editar" onClick="fEditar(<bean:write name="lista" property="idControleVendas"/>);">
+                                    <input class="btn btn-primary" style="width: 150px" type="button" value="Editar" onClick="fEditar(<bean:write name="lista" property="idControleVendas"/>);">
                                 </td>
                             </tr>
                             <tr>

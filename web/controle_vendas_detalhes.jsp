@@ -31,6 +31,10 @@
             <html:form action="ControleVendas">
                 <h1 align="center">Detalhes do Veículo</h1>
                 <hr/>
+                <div align="center">
+                    <img src="<bean:write name="ControleVendasModel" property="pathImg1"/>" width="80%"/>
+                </div>
+                <br/>
                 <table width="80%" border="1" align="center" class="table-condensed">
                     <tr>
                         <td width="50%">

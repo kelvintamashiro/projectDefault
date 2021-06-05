@@ -37,9 +37,9 @@
                     <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do?action=pagePesquisa'">
                         Pesquisa <br/>de Pessoa
                     </button>
-<!--                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
-                        Gerenciador <br/>Tipo Veículos
-                    </button>-->
+                    <!--                    <button class="btn-tela" onclick="window.location.href = 'TipoVeiculo.do'">
+                                            Gerenciador <br/>Tipo Veículos
+                                        </button>-->
                     <button class="btn-tela" onclick="window.location.href = 'MarcaVeiculo.do'">
                         Gerenciador <br/>Marca Veículos
                     </button>
@@ -51,6 +51,16 @@
                     </button>
                     <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do?action=pesquisarVeiculosVenda'">
                         Pesquisar Veículos<br/>à Venda
+                    </button>
+                </div>
+            </div>
+            <div class="row" align="center" style="padding-top: 10px">
+                <div class="col-12 col-s-12">
+                    <button class="btn-tela" onclick="window.location.href = 'Shaken.do'">
+                        Cadastro<br/>de Shaken
+                    </button>
+                    <button class="btn-tela" onclick="window.location.href = 'Shaken.do?action=pesquisar'">
+                        Controle<br/>de Shaken
                     </button>
                 </div>
             </div>

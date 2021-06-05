@@ -33,6 +33,7 @@
         <form-bean name="SenhaModel"            type="com.app.model.SenhaModel"/>
         <form-bean name="VeiculoModel"          type="com.app.model.VeiculoModel"/>
         <form-bean name="ControleVendasModel"   type="com.app.model.ControleVendasModel"/>
+        <form-bean name="ShakenModel"           type="com.app.model.ShakenModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -128,8 +129,15 @@
             <forward name="pageAtualizar"               path="/controle_vendas_atualizar.jsp"/>
             <forward name="atualizar"                   path="/controle_vendas_atualizar.jsp"/>
             <forward name="excluir"                     path="/controle_vendas_pesquisar.jsp"/>
-            
         </action>  
+        
+        <action path="/Shaken"
+                type="com.app.action.ShakenAction"
+                name="ShakenModel"
+                scope="request">
+            
+            <forward name="page"                        path="/shaken_page.jsp"/>
+        </action> 
         
         
     </action-mappings>
