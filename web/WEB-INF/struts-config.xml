@@ -137,6 +137,12 @@
                 scope="request">
             
             <forward name="page"                        path="/shaken_page.jsp"/>
+            <forward name="carregarMarcaVeiculo"        path="/shaken_page.jsp"/>
+            <forward name="carregarVeiculos"            path="/shaken_page.jsp"/>
+            <forward name="validarVeiculo"              path="/shaken_page.jsp"/>
+            <forward name="salvarShaken"                path="/shaken_page.jsp"/>
+            
+            
         </action> 
         
         
