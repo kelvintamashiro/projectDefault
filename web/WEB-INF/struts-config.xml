@@ -141,6 +141,8 @@
             <forward name="carregarVeiculos"            path="/shaken_page.jsp"/>
             <forward name="validarVeiculo"              path="/shaken_page.jsp"/>
             <forward name="salvarShaken"                path="/shaken_page.jsp"/>
+            <forward name="pageControle"                path="/shaken_page_controle.jsp"/>
+            <forward name="pesquisarShaken"             path="/shaken_page_controle.jsp"/>
             
             
         </action> 

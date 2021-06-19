@@ -43,6 +43,10 @@ public class ShakenAction extends IDRAction {
             this.validarVeiculo(form, request, errors);
         } else if (action.equals("salvarShaken")) {
             this.salvarShaken(form, request, errors);
+        } else if (action.equals("pageControle")) {
+            this.pageControle(form, request, errors);
+        } else if (action.equals("pesquisarShaken")) {
+            this.pesquisarShaken(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -161,21 +165,58 @@ public class ShakenAction extends IDRAction {
 
                 //verificar se eu preciso salvar na tabela controle_shaken
                 if (shakenModel.getQtdParcelas() > 1) {
-                    Date date = new Date();
-                    LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    int month = localDate.getMonthValue();
-                    
-                    for (int i = 0; i < shakenModel.getQtdParcelas(); i++) {
-                        month = month + 1;
+                    LocalDate dataAtual = LocalDate.now(ZoneId.systemDefault());
+                    for (int i = 1; i <= shakenModel.getQtdParcelas(); i++) {
+                        dataAtual = dataAtual.plusMonths(1);
+                        int month = dataAtual.getMonth().getValue();
                         ShakenDAO.getInstance().salvarControleShaken(conn, idShaken, shakenModel.getDiaPagamentoPrestacao(), month, vlParcelas);
                     }
                 }
-
+                errors.error("Shaken cadastrado com Sucesso!!!");
+                this.page(form, request, errors);
             }
 
             request.setAttribute("detalhesVeiculo", "true");
             request.setAttribute("ShakenModel", shakenModel);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void pageControle(ActionForm form, HttpServletRequest request, Errors errors) {
+        ShakenModel shakenModel = new ShakenModel();
+        HttpSession session = request.getSession();
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //obter lista de pessoas cadastradas com shaken
+            List<ShakenModel> listaPessoasComShaken = ShakenDAO.getInstance().obterPessoasComShaken(conn);
+
+            session.setAttribute("listaPessoasComShaken", listaPessoasComShaken);
+            request.setAttribute("ShakenModel", shakenModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void pesquisarShaken(ActionForm form, HttpServletRequest request, Errors errors) {
+        ShakenModel shakenModel = (ShakenModel) form;
+
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //pesquisar os shakens de uma determinada pessoa
+            List<ShakenModel> listaShaken = ShakenDAO.getInstance().obterListaShakenPorPessoa(conn, shakenModel.getIdPessoa());
+
+            request.setAttribute("listaShaken", listaShaken);
+            request.setAttribute("ShakenModel", shakenModel);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

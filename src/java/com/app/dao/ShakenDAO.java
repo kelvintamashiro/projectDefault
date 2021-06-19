@@ -6,10 +6,13 @@
 package com.app.dao;
 
 import com.app.model.ShakenModel;
+import com.app.util.Utilitario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -38,7 +41,7 @@ public class ShakenDAO {
         prep.setInt(3, shakenModel.getIdTipoVeiculo());
         prep.setInt(4, shakenModel.getIdMarcaVeiculo());
         prep.setInt(5, shakenModel.getIdVeiculo());
-        prep.setString(6, shakenModel.getValorGasto());
+        prep.setString(6, shakenModel.getValorGasto().replace(",", "").replace(".", ""));
         prep.setInt(7, vlCobrado);
         prep.setInt(8, shakenModel.getDiaPagamentoPrestacao());
         prep.setString(9, shakenModel.getAnoVeiculo());
@@ -69,6 +72,78 @@ public class ShakenDAO {
         prep.setInt(4, vlParcelas);
         prep.execute();
         prep.close();
+    }
+
+    public List<ShakenModel> obterPessoasComShaken(Connection conn) throws SQLException {
+        List<ShakenModel> listaPessoasComShaken = new ArrayList<>();
+        String query = "select p.id, p.nome "
+                + " from pessoa p, shaken s"
+                + " where p.id = s.id_pessoa"
+                + " group by p.id"
+                + " order by p.nome";
+
+        PreparedStatement prep = conn.prepareStatement(query);
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            ShakenModel shakenModel = new ShakenModel();
+            shakenModel.setIdPessoa(rs.getInt("id"));
+            shakenModel.setNomePessoa(rs.getString("nome"));
+
+            listaPessoasComShaken.add(shakenModel);
+        }
+        rs.close();
+        prep.close();
+
+        return listaPessoasComShaken;
+    }
+
+    public List<ShakenModel> obterListaShakenPorPessoa(Connection conn, int idPessoa) throws SQLException {
+        List<ShakenModel> listaShaken = new ArrayList<>();
+        String query = "select tp.ds_tipo_veiculo, mc.ds_marca_veiculo, v.nome_veiculo, s.id, s.data_realizacao, s.data_vencimento, "
+                + " s.valor_cobrado, s.dia_pagamento_prestacao,"
+                + " s.ano_veiculo, s.chassi, s.observacao, s.qtd_parcelas, s.valor_entrada, s.valor_restante"
+                + " from shaken s, tipo_veiculo tp, marca_veiculo mc, veiculo v"
+                + " where"
+                + " s.id_tipo_veiculo = tp.id"
+                + " and s.id_marca_veiculo = mc.id"
+                + " and s.id_veiculo = v.id"
+                + " and s.id_pessoa = ?"
+                + " order by s.data_vencimento desc";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idPessoa);
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            ShakenModel shakenModel = new ShakenModel();
+            shakenModel.setDsTipoVeiculo(rs.getString("ds_tipo_veiculo"));
+            shakenModel.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
+            shakenModel.setNomeVeiculo(rs.getString("nome_veiculo"));
+            shakenModel.setId(rs.getInt("id"));
+            shakenModel.setDataRealizacao(rs.getString("data_realizacao"));
+            shakenModel.setDataVencimento(rs.getString("data_vencimento"));
+            shakenModel.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento_prestacao"));
+            shakenModel.setAnoVeiculo(rs.getString("ano_veiculo"));
+            shakenModel.setChassi(rs.getString("chassi"));
+            shakenModel.setObservacao(rs.getString("observacao"));
+            shakenModel.setQtdParcelas(rs.getInt("qtd_parcelas"));
+
+            long vlCobrado = rs.getLong("valor_cobrado");
+            String vlCobradoFormatado = Utilitario.getInstance().formatacaoIene(vlCobrado);
+            shakenModel.setValorCobrado(vlCobradoFormatado);
+
+            long vlEntrada = rs.getLong("valor_entrada");
+            String vlEntradaFormatado = Utilitario.getInstance().formatacaoIene(vlEntrada);
+            shakenModel.setValorEntrada(vlEntradaFormatado);
+
+            long vlRestante = rs.getLong("valor_restante");
+            String vlRestanteFormatado = Utilitario.getInstance().formatacaoIene(vlRestante);
+            shakenModel.setValorRestante(vlRestanteFormatado);
+
+            listaShaken.add(shakenModel);
+        }
+        rs.close();
+        prep.close();
+
+        return listaShaken;
     }
 
 }

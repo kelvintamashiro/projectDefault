@@ -59,7 +59,7 @@
                     <button class="btn-tela" onclick="window.location.href = 'Shaken.do'">
                         Cadastro<br/>de Shaken
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'Shaken.do?action=pesquisar'">
+                    <button class="btn-tela" onclick="window.location.href = 'Shaken.do?action=pageControle'">
                         Controle<br/>de Shaken
                     </button>
                 </div>

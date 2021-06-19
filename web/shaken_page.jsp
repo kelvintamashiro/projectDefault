@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Controle de Veículo</title>
+        <title>Cadastro de Shaken</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <script language="javascript" src="js/mizanscene.js"></script>
 
