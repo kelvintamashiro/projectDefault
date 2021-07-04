@@ -12,10 +12,9 @@ package com.app.model;
 public class ShakenModel extends VeiculoModel {
 
     private int id;
+    private int idControle;
     private String dataRealizacao;
     private String dataVencimento;
-    private String valorCobrado;
-    private String valorGasto;
     private int qtdParcelas;
     private int diaPagamentoPrestacao;
     private String anoVeiculo;
@@ -26,8 +25,39 @@ public class ShakenModel extends VeiculoModel {
     private String enderecoPessoa;
     private String telefonePessoa;
     private String valorEntrada;
+    private String valorGasto;
+    private String valorCobrado;
     private String valorRestante;
+    private String valorParcela;
+    private String valorParcelaPaga;
+    private String dataPagamento;
+    private String dataPagamentoRealizado;
+    private int status; //1 = pago e 0 = nao pago
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    public String getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(String dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+
+    public String getDataPagamentoRealizado() {
+        return dataPagamentoRealizado;
+    }
+
+    public void setDataPagamentoRealizado(String dataPagamentoRealizado) {
+        this.dataPagamentoRealizado = dataPagamentoRealizado;
+    }
+    
     public String getValorEntrada() {
         return valorEntrada;
     }
@@ -50,6 +80,29 @@ public class ShakenModel extends VeiculoModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+    public int getIdControle() {
+        return idControle;
+    }
+
+    public void setIdControle(int idControle) {
+        this.idControle = idControle;
+    }
+
+    public String getValorParcela() {
+        return valorParcela;
+    }
+
+    public void setValorParcela(String valorParcela) {
+        this.valorParcela = valorParcela;
+    }
+
+    public String getValorParcelaPaga() {
+        return valorParcelaPaga;
+    }
+
+    public void setValorParcelaPaga(String valorParcelaPaga) {
+        this.valorParcelaPaga = valorParcelaPaga;
     }
 
     public String getDataRealizacao() {

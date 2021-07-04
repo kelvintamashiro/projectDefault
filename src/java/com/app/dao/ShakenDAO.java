@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +64,12 @@ public class ShakenDAO {
 
     }
 
-    public void salvarControleShaken(Connection conn, int idShaken, int diaPagamentoPrestacao, int mesPagamento, int vlParcelas) throws SQLException {
-        String query = "INSERT INTO controle_shaken (id_shaken, dia_pagamento, mes_pagamento, valor) VALUES (?,?,?,?)";
+    public void salvarControleShaken(Connection conn, int idShaken, int diaPagamentoPrestacao, String dataPagamento, int vlParcelas) throws SQLException {
+        String query = "INSERT INTO controle_shaken (id_shaken, dia_pagamento, data_pagamento, valor) VALUES (?,?,?,?)";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setInt(1, idShaken);
         prep.setInt(2, diaPagamentoPrestacao);
-        prep.setInt(3, mesPagamento);
+        prep.setString(3, dataPagamento);
         prep.setInt(4, vlParcelas);
         prep.execute();
         prep.close();
@@ -144,6 +145,102 @@ public class ShakenDAO {
         prep.close();
 
         return listaShaken;
+    }
+
+    public List<ShakenModel> obterListaParcelasPorID(Connection conn, int id) throws SQLException {
+        List<ShakenModel> listaParcelas = new ArrayList<>();
+        String query = "select * from controle_shaken where id_shaken = ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            ShakenModel shakenModel = new ShakenModel();
+            shakenModel.setIdControle(rs.getInt("id"));
+            shakenModel.setId(rs.getInt("id_shaken"));
+            shakenModel.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento"));
+            shakenModel.setDataPagamento(rs.getString("data_pagamento"));
+            shakenModel.setDataPagamentoRealizado(rs.getString("data_pagamento_realizado"));
+            shakenModel.setStatus(rs.getInt("status"));
+
+            long vlCobrado = rs.getLong("valor");
+            String vlCobradoFormatado = Utilitario.getInstance().formatacaoIene(vlCobrado);
+            shakenModel.setValorParcela(vlCobradoFormatado);
+            
+            long vlPago = rs.getLong("valor_pago");
+            String vlPagoFormatado = Utilitario.getInstance().formatacaoIene(vlPago);
+            shakenModel.setValorParcelaPaga(vlPagoFormatado);
+
+            listaParcelas.add(shakenModel);
+        }
+        rs.close();
+        prep.close();
+
+        return listaParcelas;
+    }
+
+    public ShakenModel obterDadosShakenPorID(Connection conn, int id) throws SQLException {
+        String query = "select tp.ds_tipo_veiculo, mc.ds_marca_veiculo, v.nome_veiculo, s.id, s.data_realizacao, s.data_vencimento, "
+                + " s.valor_cobrado, s.dia_pagamento_prestacao,"
+                + " s.ano_veiculo, s.chassi, s.observacao, s.qtd_parcelas, s.valor_entrada, s.valor_restante"
+                + " from shaken s, tipo_veiculo tp, marca_veiculo mc, veiculo v"
+                + " where"
+                + " s.id_tipo_veiculo = tp.id"
+                + " and s.id_marca_veiculo = mc.id"
+                + " and s.id_veiculo = v.id"
+                + " and s.id = ?"
+                + " order by s.data_vencimento desc";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        ShakenModel shakenModel = new ShakenModel();
+        while (rs.next()) {
+            shakenModel.setDsTipoVeiculo(rs.getString("ds_tipo_veiculo"));
+            shakenModel.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
+            shakenModel.setNomeVeiculo(rs.getString("nome_veiculo"));
+            shakenModel.setId(rs.getInt("id"));
+            shakenModel.setDataRealizacao(rs.getString("data_realizacao"));
+            shakenModel.setDataVencimento(rs.getString("data_vencimento"));
+            shakenModel.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento_prestacao"));
+            shakenModel.setAnoVeiculo(rs.getString("ano_veiculo"));
+            shakenModel.setChassi(rs.getString("chassi"));
+            shakenModel.setObservacao(rs.getString("observacao"));
+            shakenModel.setQtdParcelas(rs.getInt("qtd_parcelas"));
+
+            long vlCobrado = rs.getLong("valor_cobrado");
+            String vlCobradoFormatado = Utilitario.getInstance().formatacaoIene(vlCobrado);
+            shakenModel.setValorCobrado(vlCobradoFormatado);
+
+            long vlEntrada = rs.getLong("valor_entrada");
+            String vlEntradaFormatado = Utilitario.getInstance().formatacaoIene(vlEntrada);
+            shakenModel.setValorEntrada(vlEntradaFormatado);
+
+            long vlRestante = rs.getLong("valor_restante");
+            String vlRestanteFormatado = Utilitario.getInstance().formatacaoIene(vlRestante);
+            shakenModel.setValorRestante(vlRestanteFormatado);
+        }
+        rs.close();
+        prep.close();
+
+        return shakenModel;
+    }
+
+    public void atualizarControleShaken(Connection conn, ShakenModel shakenModel) throws SQLException {
+        String query = "UPDATE controle_shaken SET data_pagamento_realizado=?, valor_pago=?, status=1 WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setString(1, shakenModel.getDataPagamentoRealizado());
+        prep.setString(2, shakenModel.getValorParcelaPaga());
+        prep.setInt(3, shakenModel.getIdControle());
+        prep.execute();
+        prep.close();
+    }
+
+    public void atualizarValorRestante(Connection conn, int valorRestanteAtualizado, int id) throws SQLException {
+        String query = "UPDATE shaken SET valor_restante=? WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, valorRestanteAtualizado);
+        prep.setInt(2, id);
+        prep.execute();
+        prep.close();
     }
 
 }

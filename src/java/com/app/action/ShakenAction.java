@@ -15,7 +15,6 @@ import com.app.util.Errors;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +46,10 @@ public class ShakenAction extends IDRAction {
             this.pageControle(form, request, errors);
         } else if (action.equals("pesquisarShaken")) {
             this.pesquisarShaken(form, request, errors);
+        } else if (action.equals("editarPagamentoShaken")) {
+            this.editarPagamentoShaken(form, request, errors);
+        } else if (action.equals("atualizarParcelaShaken")) {
+            this.atualizarParcelaShaken(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -168,8 +171,15 @@ public class ShakenAction extends IDRAction {
                     LocalDate dataAtual = LocalDate.now(ZoneId.systemDefault());
                     for (int i = 1; i <= shakenModel.getQtdParcelas(); i++) {
                         dataAtual = dataAtual.plusMonths(1);
-                        int month = dataAtual.getMonth().getValue();
-                        ShakenDAO.getInstance().salvarControleShaken(conn, idShaken, shakenModel.getDiaPagamentoPrestacao(), month, vlParcelas);
+
+                        if (shakenModel.getDiaPagamentoPrestacao() == 30 && dataAtual.getMonth().getValue() == 2) {
+                            dataAtual = dataAtual.withDayOfMonth(28);
+                        } else {
+                            dataAtual = dataAtual.withDayOfMonth(shakenModel.getDiaPagamentoPrestacao());
+                        }
+
+                        String dataFormatada = String.valueOf(dataAtual);
+                        ShakenDAO.getInstance().salvarControleShaken(conn, idShaken, shakenModel.getDiaPagamentoPrestacao(), dataFormatada, vlParcelas);
                     }
                 }
                 errors.error("Shaken cadastrado com Sucesso!!!");
@@ -216,6 +226,59 @@ public class ShakenAction extends IDRAction {
             List<ShakenModel> listaShaken = ShakenDAO.getInstance().obterListaShakenPorPessoa(conn, shakenModel.getIdPessoa());
 
             request.setAttribute("listaShaken", listaShaken);
+            request.setAttribute("ShakenModel", shakenModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void editarPagamentoShaken(ActionForm form, HttpServletRequest request, Errors errors) {
+        ShakenModel shakenModel = (ShakenModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //obter dados do shaken por ID shaken
+            shakenModel = ShakenDAO.getInstance().obterDadosShakenPorID(conn, shakenModel.getId());
+
+            //pesquisar os shakens para pagamento por ID shaken
+            List<ShakenModel> listaParcelas = ShakenDAO.getInstance().obterListaParcelasPorID(conn, shakenModel.getId());
+
+            request.setAttribute("listaParcelas", listaParcelas);
+            request.setAttribute("ShakenModel", shakenModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void atualizarParcelaShaken(ActionForm form, HttpServletRequest request, Errors errors) {
+        ShakenModel shakenModel = (ShakenModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+  
+            //atualizar os dados da tabela controle_shaken
+            ShakenDAO.getInstance().atualizarControleShaken(conn, shakenModel);
+            
+            //atualizar o valor restante na tabela shaken
+            int vlParcelaPaga = Integer.parseInt(shakenModel.getValorParcelaPaga().replace(",", "").replace(".", ""));
+            int vlValorRestante = Integer.parseInt(shakenModel.getValorRestante().replace(",", "").replace(".", ""));
+            
+            int valorRestanteAtualizado = vlValorRestante - vlParcelaPaga;
+            
+            ShakenDAO.getInstance().atualizarValorRestante(conn, valorRestanteAtualizado, shakenModel.getId());
+            
+            //obter dados do shaken atualizar por ID shaken
+            shakenModel = ShakenDAO.getInstance().obterDadosShakenPorID(conn, shakenModel.getId());
+            
+            //pesquisar os shakens atualizado para pagamento por ID shaken
+            List<ShakenModel> listaParcelas = ShakenDAO.getInstance().obterListaParcelasPorID(conn, shakenModel.getId());
+
+            request.setAttribute("listaParcelas", listaParcelas);
             request.setAttribute("ShakenModel", shakenModel);
         } catch (Exception e) {
             e.printStackTrace();

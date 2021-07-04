@@ -28,6 +28,11 @@
                 }
 
             }
+
+            function fEditar(id) {
+                document.ShakenModel.action = "Shaken.do?action=editarPagamentoShaken&id=" + id;
+                document.ShakenModel.submit();
+            }
         </script>
 
     </head>
@@ -83,7 +88,7 @@
                                         <b>Data Próximo Vencimento:</b> <bean:write name="lista" property="dataVencimento"/>
                                     </td>
                                     <td width="25%" rowspan="2" align="center">
-                                        <input class="btn btn-primary" style="width: 150px; height: 50px" type="button" value="Editar Pagamento" onClick="fDetalhes(<bean:write name="lista" property="id"/>);">
+                                        <input class="btn btn-primary" style="width: 150px; height: 50px" type="button" value="Editar Pagamento" onClick="fEditar(<bean:write name="lista" property="id"/>);">
                                     </td>
                                 </tr>
                                 <tr>
@@ -96,7 +101,7 @@
                                     <td width="25%">
                                         <b>Nome Veículo:</b> <bean:write name="lista" property="nomeVeiculo"/>
                                     </td>
-                               
+
                                 </tr>
                                 <tr>
                                     <td width="25%">
@@ -108,7 +113,7 @@
                                     <td width="25%">
                                         <b>Dia Pagamento:</b> <bean:write name="lista" property="diaPagamentoPrestacao"/>
                                     </td>
-                                     <td width="25%" rowspan="2" align="center">
+                                    <td width="25%" rowspan="2" align="center">
                                         <input class="btn btn-danger" style="width: 150px;  height: 50px" type="button" value="Excluir" onClick="fDetalhes(<bean:write name="lista" property="id"/>);">
                                     </td>
                                 </tr>
