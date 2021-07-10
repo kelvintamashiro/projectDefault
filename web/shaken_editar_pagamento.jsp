@@ -90,13 +90,13 @@
                         </tr>
                         <tr>
                             <td width="25%">
-                                <b>Valor Cobrado:</b> <bean:write name="ShakenModel" property="valorCobrado"/>
+                                <b>Valor Cobrado:</b> ¥<bean:write name="ShakenModel" property="valorCobrado"/>
                             </td>
                             <td width="25%">
-                                <b>Valor Entrada:</b> <bean:write name="ShakenModel" property="valorEntrada"/>
+                                <b>Valor Entrada:</b> ¥<bean:write name="ShakenModel" property="valorEntrada"/>
                             </td>
-                            <td width="25%">
-                                <b>Valor Restante:</b> <bean:write name="ShakenModel" property="valorRestante"/>
+                            <td width="25%" style="color: red">
+                                <b>Valor Restante: ¥<bean:write name="ShakenModel" property="valorRestante"/></b>
                                 <html:hidden name="ShakenModel" property="valorRestante"/>
                             </td>
                         </tr>
@@ -115,6 +115,11 @@
                     <logic:iterate id="lista" name="listaParcelas" scope="request">
                         <div style="border: 0px solid black; padding: 20px; background-color: #F4F4F4;">
                             <table width="60%" border="0" align="center" class="table-condensed">
+                                <tr>
+                                    <td colspan="4" style="color: blue">
+                                        <b>Parcela <%=i%>: </b>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td width="5%">
                                         <b>ID:</b> <bean:write name="lista" property="idControle"/>
@@ -149,7 +154,7 @@
                                             <input type="text" name="valorParcela" value="" onkeypress="return(validarConteudo(event, 'numero'));" id="valorParcela<%=i%>" class="form-control">
                                         </logic:equal>
                                         <logic:equal name="lista" property="status" value="1">
-                                            <html:text name="lista" property="valorParcela" styleId="valorParcela" styleClass="form-control" onkeypress="return(validarConteudo(event, 'numero'));" readonly="true"/>
+                                            <html:text name="lista" property="valorParcelaPaga" styleId="valorParcelaPaga" styleClass="form-control" onkeypress="return(validarConteudo(event, 'numero'));" readonly="true"/>
                                         </logic:equal>
                                     </td>    
                                     <td>

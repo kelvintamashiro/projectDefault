@@ -50,6 +50,8 @@ public class ShakenAction extends IDRAction {
             this.editarPagamentoShaken(form, request, errors);
         } else if (action.equals("atualizarParcelaShaken")) {
             this.atualizarParcelaShaken(form, request, errors);
+        } else if (action.equals("excluirShaken")) {
+            this.excluirShaken(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -260,25 +262,65 @@ public class ShakenAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-  
+
             //atualizar os dados da tabela controle_shaken
             ShakenDAO.getInstance().atualizarControleShaken(conn, shakenModel);
-            
+
             //atualizar o valor restante na tabela shaken
             int vlParcelaPaga = Integer.parseInt(shakenModel.getValorParcelaPaga().replace(",", "").replace(".", ""));
             int vlValorRestante = Integer.parseInt(shakenModel.getValorRestante().replace(",", "").replace(".", ""));
-            
+
             int valorRestanteAtualizado = vlValorRestante - vlParcelaPaga;
-            
+
             ShakenDAO.getInstance().atualizarValorRestante(conn, valorRestanteAtualizado, shakenModel.getId());
-            
+
             //obter dados do shaken atualizar por ID shaken
             shakenModel = ShakenDAO.getInstance().obterDadosShakenPorID(conn, shakenModel.getId());
-            
+
             //pesquisar os shakens atualizado para pagamento por ID shaken
             List<ShakenModel> listaParcelas = ShakenDAO.getInstance().obterListaParcelasPorID(conn, shakenModel.getId());
 
             request.setAttribute("listaParcelas", listaParcelas);
+            request.setAttribute("ShakenModel", shakenModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void excluirShaken(ActionForm form, HttpServletRequest request, Errors errors) {
+        ShakenModel shakenModel = (ShakenModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            //verificar se existe pelo menos uma parcela paga para o controle_shaken
+            boolean isExistePagamento = ShakenDAO.getInstance().verificaPagamentoShaken(conn, shakenModel.getId());
+
+            //verificar se o valor restante eh maior que 0
+            boolean isExisteValorRestante = ShakenDAO.getInstance().verificaValorRestante(conn, shakenModel.getId());
+
+            if (!isExistePagamento && isExisteValorRestante) {
+                //se nao existe nenhum pagamento, eu devo pegar todas as parcelas pelo ID do Shaken para poder excluir
+                List<ShakenModel> listaParcelas = ShakenDAO.getInstance().obterListaParcelasPorID(conn, shakenModel.getId());
+                for (ShakenModel parcela : listaParcelas) {
+                    //deletar cada parcela pelo id do IDCONTROLE
+                    ShakenDAO.getInstance().excluirControleShaken(conn, parcela.getIdControle());
+                }
+
+                //e por fim eu excluo da tabela shaken pelo ID shaken
+                ShakenDAO.getInstance().excluirShaken(conn, shakenModel.getId());
+                errors.error("Exclusão Realizada com Sucesso!!");
+
+            } else {
+                errors.error("Não pode ser excluído, pois já possui uma parcela paga.");
+            }
+
+            //pesquisar os shakens de uma determinada pessoa
+            List<ShakenModel> listaShaken = ShakenDAO.getInstance().obterListaShakenPorPessoa(conn, shakenModel.getIdPessoa());
+
+            request.setAttribute("listaShaken", listaShaken);
             request.setAttribute("ShakenModel", shakenModel);
         } catch (Exception e) {
             e.printStackTrace();

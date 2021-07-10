@@ -101,7 +101,7 @@ public class ShakenDAO {
     public List<ShakenModel> obterListaShakenPorPessoa(Connection conn, int idPessoa) throws SQLException {
         List<ShakenModel> listaShaken = new ArrayList<>();
         String query = "select tp.ds_tipo_veiculo, mc.ds_marca_veiculo, v.nome_veiculo, s.id, s.data_realizacao, s.data_vencimento, "
-                + " s.valor_cobrado, s.dia_pagamento_prestacao,"
+                + " s.valor_cobrado, s.dia_pagamento_prestacao, s.id_pessoa, "
                 + " s.ano_veiculo, s.chassi, s.observacao, s.qtd_parcelas, s.valor_entrada, s.valor_restante"
                 + " from shaken s, tipo_veiculo tp, marca_veiculo mc, veiculo v"
                 + " where"
@@ -119,6 +119,7 @@ public class ShakenDAO {
             shakenModel.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
             shakenModel.setNomeVeiculo(rs.getString("nome_veiculo"));
             shakenModel.setId(rs.getInt("id"));
+            shakenModel.setIdPessoa(rs.getInt("id_pessoa"));
             shakenModel.setDataRealizacao(rs.getString("data_realizacao"));
             shakenModel.setDataVencimento(rs.getString("data_vencimento"));
             shakenModel.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento_prestacao"));
@@ -239,6 +240,52 @@ public class ShakenDAO {
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setInt(1, valorRestanteAtualizado);
         prep.setInt(2, id);
+        prep.execute();
+        prep.close();
+    }
+
+    public boolean verificaPagamentoShaken(Connection conn, int id) throws SQLException {
+        boolean isExistePagamento = false;
+        String query = "select * from controle_shaken c where c.id_shaken = ? and c.status = 1";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        if(rs.next()) {
+            isExistePagamento = true;
+        }
+        rs.close();
+        prep.close();
+        
+        return isExistePagamento;
+    }
+
+    public boolean verificaValorRestante(Connection conn, int id) throws SQLException {
+        boolean isExisteValorRestante = false;
+        String query = "select * from shaken s where s.id = ? and s.valor_restante > 0";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        if(rs.next()) {
+            isExisteValorRestante = true;
+        }
+        rs.close();
+        prep.close();
+        
+        return isExisteValorRestante;
+    }
+
+    public void excluirControleShaken(Connection conn, int idControle) throws SQLException {
+        String query = "DELETE FROM controle_shaken WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idControle);
+        prep.execute();
+        prep.close();
+    }
+
+    public void excluirShaken(Connection conn, int id) throws SQLException {
+        String query = "DELETE FROM shaken WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
         prep.execute();
         prep.close();
     }

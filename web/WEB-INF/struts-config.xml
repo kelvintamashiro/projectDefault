@@ -143,6 +143,7 @@
             <forward name="salvarShaken"                path="/shaken_page.jsp"/>
             <forward name="pageControle"                path="/shaken_page_controle.jsp"/>
             <forward name="pesquisarShaken"             path="/shaken_page_controle.jsp"/>
+            <forward name="excluirShaken"               path="/shaken_page_controle.jsp"/>
             <forward name="editarPagamentoShaken"       path="/shaken_editar_pagamento.jsp"/>
             <forward name="atualizarParcelaShaken"      path="/shaken_editar_pagamento.jsp"/>
             

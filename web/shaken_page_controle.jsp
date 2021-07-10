@@ -33,6 +33,13 @@
                 document.ShakenModel.action = "Shaken.do?action=editarPagamentoShaken&id=" + id;
                 document.ShakenModel.submit();
             }
+
+            function fExcluir(id, idPessoa) {
+                if (confirm("Deseja realmente EXCLUIR??")) {
+                    document.ShakenModel.action = "Shaken.do?action=excluirShaken&id=" + id + "&idPessoa=" + idPessoa;
+                    document.ShakenModel.submit();
+                }
+            }
         </script>
 
     </head>
@@ -114,7 +121,7 @@
                                         <b>Dia Pagamento:</b> <bean:write name="lista" property="diaPagamentoPrestacao"/>
                                     </td>
                                     <td width="25%" rowspan="2" align="center">
-                                        <input class="btn btn-danger" style="width: 150px;  height: 50px" type="button" value="Excluir" onClick="fDetalhes(<bean:write name="lista" property="id"/>);">
+                                        <input class="btn btn-danger" style="width: 150px;  height: 50px" type="button" value="Excluir" onClick="fExcluir(<bean:write name="lista" property="id"/>, <bean:write name="lista" property="idPessoa"/>);">
                                     </td>
                                 </tr>
                                 <tr>
