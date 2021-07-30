@@ -30,7 +30,7 @@ public class ControleVendasDAO {
     }
 
     public void save(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
-        String query = "INSERT INTO controle_vendas (id_tipo_veiculo, id_marca_veiculo, id_veiculo, chassi, cor, ano, preco_compra, preco_venda,"
+        String query = "INSERT INTO venda_veiculo (id_tipo_veiculo, id_marca_veiculo, id_veiculo, chassi, cor, ano, preco_compra, preco_venda,"
                 + " cambio, motor, combustivel, km, shaken, capacidade_pessoa, nr_portas, detalhes_extras, freio, data_venda, data_insercao, path_img_1) "
                 + " VALUES (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, now(),?)";
 
@@ -62,7 +62,7 @@ public class ControleVendasDAO {
         List<ControleVendasModel> listaVeiculos = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo");
-        sb.append(" from controle_vendas c, tipo_veiculo tp, marca_veiculo mv, veiculo v");
+        sb.append(" from venda_veiculo c, tipo_veiculo tp, marca_veiculo mv, veiculo v");
         sb.append(" where c.id_tipo_veiculo = tp.id");
         sb.append(" and c.id_marca_veiculo = mv.id");
         sb.append(" and c.id_veiculo = v.id");
@@ -105,7 +105,7 @@ public class ControleVendasDAO {
         ControleVendasModel controlForm = new ControleVendasModel();
 
         String query = "select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo "
-                + " from controle_vendas c, tipo_veiculo tp, marca_veiculo mv, veiculo v"
+                + " from venda_veiculo c, tipo_veiculo tp, marca_veiculo mv, veiculo v"
                 + " where c.id_tipo_veiculo = tp.id"
                 + " and c.id_marca_veiculo = mv.id"
                 + " and c.id_veiculo = v.id"
@@ -155,7 +155,7 @@ public class ControleVendasDAO {
 
     public void atualizar(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
 
-        String query = "UPDATE controle_vendas SET chassi=?, cor=?, ano=?, preco_compra=?, preco_venda=?, "
+        String query = "UPDATE venda_veiculo SET chassi=?, cor=?, ano=?, preco_compra=?, preco_venda=?, "
                 + " cambio=?, motor=?, combustivel=?, km=?, shaken=?, capacidade_pessoa=?, nr_portas=?, "
                 + " detalhes_extras=?, freio=?, data_venda = ?, path_img_1 = ? "
                 + " WHERE id=?";
@@ -184,7 +184,7 @@ public class ControleVendasDAO {
     }
 
     public void excluir(Connection conn, int idControleVendas) throws SQLException {
-        String query = "DELETE FROM controle_vendas WHERE id=?";
+        String query = "DELETE FROM venda_veiculo WHERE id=?";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setInt(1, idControleVendas);
         prep.execute();

@@ -306,7 +306,58 @@
                                     <html:file property="fileImg1" styleClass="form-control"/>
                                 </div>
                             </td>
-
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col-lg-12">
+                                    Pessoa:
+                                    <html:select property="idPessoa" styleClass="form-control" styleId="idPessoa">
+                                        <html:option value="">Selecione</html:option>
+                                        <html:options collection="listaPessoaFisica" property="id" labelProperty="nome"></html:options>
+                                    </html:select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-lg-12">
+                                    Valor de Entrada:
+                                    <html:text name="ControleVendasModel" property="valorEntrada" styleId="valorEntrada" styleClass="form-control" onkeypress="return(validarConteudo(event,'numero'));"/>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-lg-12">
+                                    Quantidade Parcelas:
+                                    <html:select property="qtdParcelas" styleClass="form-control" styleId="qtdParcelas">
+                                        <html:option value="1">1</html:option>
+                                        <html:option value="2">2</html:option>
+                                        <html:option value="3">3</html:option>
+                                        <html:option value="4">4</html:option>
+                                        <html:option value="5">5</html:option>
+                                        <html:option value="5">5</html:option>
+                                        <html:option value="6">6</html:option>
+                                        <html:option value="7">7</html:option>
+                                        <html:option value="8">8</html:option>
+                                        <html:option value="9">9</html:option>
+                                        <html:option value="10">10</html:option>
+                                        <html:option value="11">11</html:option>
+                                        <html:option value="12">12</html:option>
+                                    </html:select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-lg-12">
+                                    Dia Pagamento Prestação:
+                                    <html:select name="ControleVendasModel" property="diaPagamentoPrestacao" styleClass="form-control">
+                                        <html:option value="0">Pagamento à vista</html:option>
+                                        <html:option value="1">1</html:option>
+                                        <html:option value="5">5</html:option>
+                                        <html:option value="10">10</html:option>
+                                        <html:option value="15">15</html:option>
+                                        <html:option value="20">20</html:option>
+                                        <html:option value="25">25</html:option>
+                                        <html:option value="30">30</html:option>
+                                    </html:select>
+                                </div>
+                            </td>
                         </tr>
 
                         <tr style="height: 70px">
@@ -315,6 +366,9 @@
                             </td>
                         </tr>
                     </table>
+                    <div style="padding-top: 150px;">
+                        &n&nbsp;
+                    </div>
                 </logic:equal>
 
             </html:form>

@@ -11,7 +11,7 @@ package com.app.model;
  */
 public class ShakenModel extends VeiculoModel {
 
-    private int id;
+    private int id; //id do shaken
     private int idControle;
     private String dataRealizacao;
     private String dataVencimento;

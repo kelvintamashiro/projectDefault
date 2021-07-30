@@ -45,6 +45,54 @@ public class ControleVendasModel extends FormBasico {
     private String dataVenda;
     private FormFile fileImg1;
     private String pathImg1;
+    
+    private int idPessoa;
+    private int qtdParcelas;
+    private String valorEntrada;
+    private String valorRestante;
+    private int diaPagamentoPrestacao;
+
+    public int getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
+    public int getQtdParcelas() {
+        return qtdParcelas;
+    }
+
+    public void setQtdParcelas(int qtdParcelas) {
+        this.qtdParcelas = qtdParcelas;
+    }
+
+    public String getValorEntrada() {
+        return valorEntrada;
+    }
+
+    public void setValorEntrada(String valorEntrada) {
+        this.valorEntrada = valorEntrada;
+    }
+
+    public String getValorRestante() {
+        return valorRestante;
+    }
+
+    public void setValorRestante(String valorRestante) {
+        this.valorRestante = valorRestante;
+    }
+
+    public int getDiaPagamentoPrestacao() {
+        return diaPagamentoPrestacao;
+    }
+
+    public void setDiaPagamentoPrestacao(int diaPagamentoPrestacao) {
+        this.diaPagamentoPrestacao = diaPagamentoPrestacao;
+    }
+    
+    
 
     public FormFile getFileImg1() {
         return fileImg1;

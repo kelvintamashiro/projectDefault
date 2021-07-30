@@ -29,7 +29,7 @@
 
         <logic:notEqual name="nome" value="" scope="session">
             <jsp:include page="topo.jsp"/>
-            <div class="row" align="center" style="padding-top: 10%">
+            <div class="row" align="center" style="padding-top: 6%">
                 <div class="col-12 col-s-12">
                     <button class="btn-tela" onclick="window.location.href = 'PessoaFisica.do'">
                         Cadastro <br/>de Pessoa
@@ -41,26 +41,27 @@
                                             Gerenciador <br/>Tipo Veículos
                                         </button>-->
                     <button class="btn-tela" onclick="window.location.href = 'MarcaVeiculo.do'">
-                        Gerenciador <br/>Marca Veículos
+                        Cadastro <br/>Marca Veículos
                     </button>
                     <button class="btn-tela" onclick="window.location.href = 'NomeVeiculo.do'">
-                        Gerenciador <br/>Nome Veículos
+                        Cadastro <br/>Nome Veículos
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do'">
-                        Controle <br/>de Vendas
-                    </button>
-                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do?action=pesquisarVeiculosVenda'">
-                        Pesquisar Veículos<br/>à Venda
-                    </button>
+
                 </div>
             </div>
             <div class="row" align="center" style="padding-top: 10px">
                 <div class="col-12 col-s-12">
+                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do'">
+                        Vendas <br/>de Veículos
+                    </button>
+                    <button class="btn-tela" onclick="window.location.href = 'ControleVendas.do?action=pesquisarVeiculosVenda'">
+                        Controle <br/>Veículos Vendidos
+                    </button>
                     <button class="btn-tela" onclick="window.location.href = 'Shaken.do'">
                         Cadastro<br/>de Shaken
                     </button>
                     <button class="btn-tela" onclick="window.location.href = 'Shaken.do?action=pageControle'">
-                        Controle<br/>de Shaken
+                        Shaken<br/>Realizados
                     </button>
                 </div>
             </div>

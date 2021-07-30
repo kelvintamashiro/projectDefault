@@ -263,16 +263,24 @@ public class ShakenAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-            //atualizar os dados da tabela controle_shaken
-            ShakenDAO.getInstance().atualizarControleShaken(conn, shakenModel);
-
-            //atualizar o valor restante na tabela shaken
             int vlParcelaPaga = Integer.parseInt(shakenModel.getValorParcelaPaga().replace(",", "").replace(".", ""));
             int vlValorRestante = Integer.parseInt(shakenModel.getValorRestante().replace(",", "").replace(".", ""));
-
             int valorRestanteAtualizado = vlValorRestante - vlParcelaPaga;
 
-            ShakenDAO.getInstance().atualizarValorRestante(conn, valorRestanteAtualizado, shakenModel.getId());
+            //verificar se é a ultima parcela, se for eu preciso fazer uma logica para que o valor seja igual o valor restante
+            boolean isUltimaParcela = ShakenDAO.getInstance().isUltimaParcelaAberta(conn, shakenModel.getId());
+            if (isUltimaParcela && valorRestanteAtualizado != 0) {
+                //se for a ultima parcela aberta -> o valor pago deve ser igual ao valor restante
+                errors.error("O valor da última parcela deve ser igual ao valor Restante. O valor deve ser: " + vlValorRestante);
+
+            } else {
+                //atualizar os dados da tabela controle_shaken
+                ShakenDAO.getInstance().atualizarControleShaken(conn, shakenModel);
+
+                //atualizar o valor restante na tabela shaken
+                ShakenDAO.getInstance().atualizarValorRestante(conn, valorRestanteAtualizado, shakenModel.getId());
+
+            }
 
             //obter dados do shaken atualizar por ID shaken
             shakenModel = ShakenDAO.getInstance().obterDadosShakenPorID(conn, shakenModel.getId());
@@ -281,6 +289,7 @@ public class ShakenAction extends IDRAction {
             List<ShakenModel> listaParcelas = ShakenDAO.getInstance().obterListaParcelasPorID(conn, shakenModel.getId());
 
             request.setAttribute("listaParcelas", listaParcelas);
+
             request.setAttribute("ShakenModel", shakenModel);
         } catch (Exception e) {
             e.printStackTrace();

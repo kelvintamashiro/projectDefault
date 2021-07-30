@@ -290,4 +290,26 @@ public class ShakenDAO {
         prep.close();
     }
 
+    public boolean isUltimaParcelaAberta(Connection conn, int id) throws SQLException {
+        boolean isUltimaParcela = true;
+        String query = "select * from controle_shaken where id_shaken = ? and status = 0 order by id";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        List<ShakenModel> listaParcelasAbertas = new ArrayList<>();
+        while(rs.next()) {
+            ShakenModel shakenModel = new ShakenModel();
+            shakenModel.setIdControle(rs.getInt("id"));
+            listaParcelasAbertas.add(shakenModel);
+        }
+        rs.close();
+        prep.close();
+        
+        if(listaParcelasAbertas.size() > 1) {
+            isUltimaParcela = false;
+        }
+        
+        return isUltimaParcela;
+    }
+
 }

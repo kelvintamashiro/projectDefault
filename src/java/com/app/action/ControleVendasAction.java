@@ -6,13 +6,16 @@
 package com.app.action;
 
 import com.app.dao.ControleVendasDAO;
+import com.app.dao.PessoaFisicaDAO;
 import com.app.dao.VeiculoDAO;
 import com.app.model.ControleVendasModel;
+import com.app.model.PessoaFisicaModel;
 import com.app.model.VeiculoModel;
 import com.app.util.Errors;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -128,10 +131,24 @@ public class ControleVendasAction extends IDRAction {
 
     private void validarVeiculo(ActionForm form, HttpServletRequest request, Errors errors) {
         ControleVendasModel controleVendasModel = (ControleVendasModel) form;
+        Connection conn = null;
         HttpSession session = request.getSession();
+        try {
+            conn = connectionPool.getConnection();
 
-        request.setAttribute("detalhesVeiculo", "true");
-        session.setAttribute("ControleVendasModel", controleVendasModel);
+            //obter lista de pessoas cadastradas
+            PessoaFisicaModel pessoaFisicaModel = new PessoaFisicaModel();
+            List<PessoaFisicaModel> listaPessoaFisica = PessoaFisicaDAO.getInstance().searchAll(conn, pessoaFisicaModel);
+            session.setAttribute("listaPessoaFisica", listaPessoaFisica);
+            
+            request.setAttribute("detalhesVeiculo", "true");
+            session.setAttribute("ControleVendasModel", controleVendasModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
     }
 
     private void save(ActionForm form, HttpServletRequest request, Errors errors) {
