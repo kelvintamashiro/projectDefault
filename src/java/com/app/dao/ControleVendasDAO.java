@@ -29,12 +29,14 @@ public class ControleVendasDAO {
         return controleVendasDAO;
     }
 
-    public void save(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
+    public int save(Connection conn, ControleVendasModel controleVendasModel, int vlEntrada, int vlCobrado, int vlRestante) throws SQLException {
+        int idVendaVeiculo = 0;
         String query = "INSERT INTO venda_veiculo (id_tipo_veiculo, id_marca_veiculo, id_veiculo, chassi, cor, ano, preco_compra, preco_venda,"
-                + " cambio, motor, combustivel, km, shaken, capacidade_pessoa, nr_portas, detalhes_extras, freio, data_venda, data_insercao, path_img_1) "
-                + " VALUES (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, now(),?)";
+                + " cambio, motor, combustivel, km, shaken, capacidade_pessoa, nr_portas, detalhes_extras, freio, data_venda, data_insercao,"
+                + " path_img_1, id_pessoa, qtd_parcelas, valor_entrada, valor_restante, dia_pagamento_prestacao) "
+                + " VALUES (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, now(),?,?,?,?,?,?)";
 
-        PreparedStatement prep = conn.prepareStatement(query);
+        PreparedStatement prep = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
         prep.setInt(1, controleVendasModel.getIdTipoVeiculo());
         prep.setInt(2, controleVendasModel.getIdMarcaVeiculo());
         prep.setInt(3, controleVendasModel.getIdVeiculo());
@@ -42,7 +44,7 @@ public class ControleVendasDAO {
         prep.setString(5, controleVendasModel.getCor());
         prep.setString(6, controleVendasModel.getAno());
         prep.setString(7, controleVendasModel.getPrecoCompra().replace(",", "").replace(".", ""));
-        prep.setString(8, controleVendasModel.getPrecoVenda().replace(",", "").replace(".", ""));
+        prep.setInt(8, vlCobrado);
         prep.setString(9, controleVendasModel.getCambio());
         prep.setString(10, controleVendasModel.getMotor());
         prep.setString(11, controleVendasModel.getCombustivel());
@@ -54,18 +56,31 @@ public class ControleVendasDAO {
         prep.setString(17, controleVendasModel.getFreio());
         prep.setString(18, controleVendasModel.getDataVenda());
         prep.setString(19, controleVendasModel.getPathImg1());
+        prep.setInt(20, controleVendasModel.getIdPessoa());
+        prep.setInt(21, controleVendasModel.getQtdParcelas());
+        prep.setInt(22, vlEntrada);
+        prep.setInt(23, vlRestante);
+        prep.setInt(24, controleVendasModel.getDiaPagamentoPrestacao());
         prep.execute();
+        ResultSet rs = prep.getGeneratedKeys();
+        if (rs.next()) {
+            idVendaVeiculo = rs.getInt(1);
+        }
+        rs.close();
         prep.close();
+
+        return idVendaVeiculo;
     }
 
     public List<ControleVendasModel> pesquisarVeiculos(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
         List<ControleVendasModel> listaVeiculos = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        sb.append(" select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo");
-        sb.append(" from venda_veiculo c, tipo_veiculo tp, marca_veiculo mv, veiculo v");
+        sb.append(" select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo, p.nome");
+        sb.append(" from venda_veiculo c, tipo_veiculo tp, marca_veiculo mv, veiculo v, pessoa p");
         sb.append(" where c.id_tipo_veiculo = tp.id");
         sb.append(" and c.id_marca_veiculo = mv.id");
         sb.append(" and c.id_veiculo = v.id");
+        sb.append(" and c.id_pessoa = p.id");
         sb.append(" and c.id_tipo_veiculo = ").append(controleVendasModel.getIdTipoVeiculo());
         if (controleVendasModel.getIdMarcaVeiculo() != 0) {
             sb.append(" and c.id_marca_veiculo = ").append(controleVendasModel.getIdMarcaVeiculo());
@@ -78,7 +93,7 @@ public class ControleVendasDAO {
         ResultSet rs = prep.executeQuery();
         while (rs.next()) {
             ControleVendasModel controlForm = new ControleVendasModel();
-            controlForm.setIdControleVendas(rs.getInt("id"));
+            controlForm.setIdVendaVeiculo(rs.getInt("id"));
             controlForm.setIdVeiculo(rs.getInt("id_veiculo"));
             controlForm.setAno(rs.getString("ano"));
             controlForm.setKm(rs.getString("km"));
@@ -87,6 +102,19 @@ public class ControleVendasDAO {
             controlForm.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
             controlForm.setDsVeiculo(rs.getString("nome_veiculo"));
             controlForm.setPathImg1(rs.getString("path_img_1"));
+            controlForm.setIdPessoa(rs.getInt("id_pessoa"));
+            controlForm.setNomePessoa(rs.getString("nome"));
+            controlForm.setQtdParcelas(rs.getInt("qtd_parcelas"));
+
+            long vlEntrada = rs.getLong("valor_entrada");
+            String vlEntradaFormatado = Utilitario.getInstance().formatacaoIene(vlEntrada);
+            controlForm.setValorEntrada(vlEntradaFormatado);
+
+            long vlRestante = rs.getLong("valor_restante");
+            String vlRestanteFormatado = Utilitario.getInstance().formatacaoIene(vlRestante);
+            controlForm.setValorRestante(vlRestanteFormatado);
+
+            controlForm.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento_prestacao"));
 
             long precoVendaSemFormatacao = rs.getLong("preco_venda");
             String precoVendaFormatado = Utilitario.getInstance().formatacaoIene(precoVendaSemFormatacao);
@@ -115,7 +143,7 @@ public class ControleVendasDAO {
         prep.setInt(1, idControleVendas);
         ResultSet rs = prep.executeQuery();
         if (rs.next()) {
-            controlForm.setIdControleVendas(rs.getInt("id"));
+            controlForm.setIdVendaVeiculo(rs.getInt("id"));
             controlForm.setIdTipoVeiculo(rs.getInt("id_tipo_veiculo"));
             controlForm.setIdMarcaVeiculo(rs.getInt("id_marca_veiculo"));
             controlForm.setIdVeiculo(rs.getInt("id_veiculo"));
@@ -144,7 +172,7 @@ public class ControleVendasDAO {
             long precoVendaSemFormatacao = rs.getLong("preco_venda");
             String precoVendaFormatado = Utilitario.getInstance().formatacaoIene(precoVendaSemFormatacao);
             controlForm.setPrecoVenda(precoVendaFormatado);
-            
+
             controlForm.setPathImg1(rs.getString("path_img_1"));
 
         }
@@ -177,18 +205,110 @@ public class ControleVendasDAO {
         prep.setString(14, controleVendasModel.getFreio());
         prep.setString(15, controleVendasModel.getDataVenda());
         prep.setString(16, controleVendasModel.getPathImg1());
-        prep.setInt(17, controleVendasModel.getIdControleVendas());
+        prep.setInt(17, controleVendasModel.getIdVendaVeiculo());
         prep.execute();
         prep.close();
 
     }
 
-    public void excluir(Connection conn, int idControleVendas) throws SQLException {
+    public void excluir(Connection conn, int idVendaVeiculo) throws SQLException {
         String query = "DELETE FROM venda_veiculo WHERE id=?";
         PreparedStatement prep = conn.prepareStatement(query);
-        prep.setInt(1, idControleVendas);
+        prep.setInt(1, idVendaVeiculo);
         prep.execute();
         prep.close();
+    }
+
+    public void salvarControleVendaVeiculo(Connection conn, int idVendaVeiculo, int diaPagamentoPrestacao, String dataPagamento, int vlParcelas) throws SQLException {
+        String query = "INSERT INTO controle_venda_veiculo (id_venda_veiculo, dia_pagamento, data_pagamento, valor) VALUES (?,?,?,?)";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idVendaVeiculo);
+        prep.setInt(2, diaPagamentoPrestacao);
+        prep.setString(3, dataPagamento);
+        prep.setInt(4, vlParcelas);
+        prep.execute();
+        prep.close();
+    }
+
+    public ControleVendasModel obterDadosVeiculosIdControleVendas(Connection conn, int idVendaVeiculo) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo, p.nome");
+        sb.append(" from venda_veiculo c, tipo_veiculo tp, marca_veiculo mv, veiculo v, pessoa p");
+        sb.append(" where c.id_tipo_veiculo = tp.id");
+        sb.append(" and c.id_marca_veiculo = mv.id");
+        sb.append(" and c.id_veiculo = v.id");
+        sb.append(" and c.id_pessoa = p.id");
+        sb.append(" and c.id = ").append(idVendaVeiculo);
+
+        PreparedStatement prep = conn.prepareStatement(sb.toString());
+        ResultSet rs = prep.executeQuery();
+        ControleVendasModel controlForm = new ControleVendasModel();
+        if (rs.next()) {
+            controlForm.setIdVendaVeiculo(rs.getInt("id"));
+            controlForm.setIdVeiculo(rs.getInt("id_veiculo"));
+            controlForm.setAno(rs.getString("ano"));
+            controlForm.setKm(rs.getString("km"));
+            controlForm.setCor(rs.getString("cor"));
+            controlForm.setDsTipoVeiculo(rs.getString("ds_tipo_veiculo"));
+            controlForm.setDsMarcaVeiculo(rs.getString("ds_marca_veiculo"));
+            controlForm.setDsVeiculo(rs.getString("nome_veiculo"));
+            controlForm.setPathImg1(rs.getString("path_img_1"));
+            controlForm.setIdPessoa(rs.getInt("id_pessoa"));
+            controlForm.setNomePessoa(rs.getString("nome"));
+            controlForm.setQtdParcelas(rs.getInt("qtd_parcelas"));
+            controlForm.setDataVenda(rs.getString("data_venda"));
+
+            long vlEntrada = rs.getLong("valor_entrada");
+            String vlEntradaFormatado = Utilitario.getInstance().formatacaoIene(vlEntrada);
+            controlForm.setValorEntrada(vlEntradaFormatado);
+
+            long vlRestante = rs.getLong("valor_restante");
+            String vlRestanteFormatado = Utilitario.getInstance().formatacaoIene(vlRestante);
+            controlForm.setValorRestante(vlRestanteFormatado);
+
+            controlForm.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento_prestacao"));
+
+            long precoVendaSemFormatacao = rs.getLong("preco_venda");
+            String precoVendaFormatado = Utilitario.getInstance().formatacaoIene(precoVendaSemFormatacao);
+            controlForm.setPrecoVenda(precoVendaFormatado);
+
+        }
+        rs.close();
+        prep.close();
+        return controlForm;
+    }
+
+    public List<ControleVendasModel> obterListaParcelas(Connection conn, int idControleVendas) throws SQLException {
+        List<ControleVendasModel> listaParcelas = new ArrayList<>();
+        String query = "select * from controle_venda_veiculo where id_venda_veiculo = ? order by id";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idControleVendas);
+
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            ControleVendasModel controleVendas = new ControleVendasModel();
+            controleVendas.setIdControleVenda(rs.getInt("id"));
+            controleVendas.setIdVendaVeiculo(rs.getInt("id_venda_veiculo"));
+            controleVendas.setDiaPagamentoPrestacao(rs.getInt("dia_pagamento"));
+            controleVendas.setDataPagamento(rs.getString("data_pagamento"));
+            controleVendas.setDataPagamentoRealizado(rs.getString("data_pagamento_realizado"));
+            controleVendas.setStatus(rs.getInt("status"));
+
+            long vlCobrado = rs.getLong("valor");
+            String vlCobradoFormatado = Utilitario.getInstance().formatacaoIene(vlCobrado);
+            controleVendas.setValorParcela(vlCobradoFormatado);
+
+            long vlPago = rs.getLong("valor_pago");
+            String vlPagoFormatado = Utilitario.getInstance().formatacaoIene(vlPago);
+            controleVendas.setValorParcelaPaga(vlPagoFormatado);
+
+            listaParcelas.add(controleVendas);
+        }
+        rs.close();
+        prep.close();
+
+        return listaParcelas;
+
     }
 
 }

@@ -15,7 +15,8 @@ public class ControleVendasModel extends FormBasico {
     
     public static String folderImg = "imagens_veiculos";
     
-    private int idControleVendas;
+    private int idVendaVeiculo;
+    private int idControleVenda;
     
     private int idTipoVeiculo;
     private String dsTipoVeiculo;
@@ -47,10 +48,56 @@ public class ControleVendasModel extends FormBasico {
     private String pathImg1;
     
     private int idPessoa;
+    private String nomePessoa;
     private int qtdParcelas;
     private String valorEntrada;
     private String valorRestante;
     private int diaPagamentoPrestacao;
+    private String dataPagamento;
+    private String dataPagamentoRealizado;
+    private int status;
+    private String valorParcela;
+    private String valorParcelaPaga;
+
+    public String getValorParcela() {
+        return valorParcela;
+    }
+
+    public void setValorParcela(String valorParcela) {
+        this.valorParcela = valorParcela;
+    }
+
+    public String getValorParcelaPaga() {
+        return valorParcelaPaga;
+    }
+
+    public void setValorParcelaPaga(String valorParcelaPaga) {
+        this.valorParcelaPaga = valorParcelaPaga;
+    }
+    
+    public String getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(String dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+
+    public String getDataPagamentoRealizado() {
+        return dataPagamentoRealizado;
+    }
+
+    public void setDataPagamentoRealizado(String dataPagamentoRealizado) {
+        this.dataPagamentoRealizado = dataPagamentoRealizado;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getIdPessoa() {
         return idPessoa;
@@ -58,6 +105,14 @@ public class ControleVendasModel extends FormBasico {
 
     public void setIdPessoa(int idPessoa) {
         this.idPessoa = idPessoa;
+    }
+
+    public String getNomePessoa() {
+        return nomePessoa;
+    }
+
+    public void setNomePessoa(String nomePessoa) {
+        this.nomePessoa = nomePessoa;
     }
 
     public int getQtdParcelas() {
@@ -134,13 +189,21 @@ public class ControleVendasModel extends FormBasico {
     public void setFreio(String freio) {
         this.freio = freio;
     }
-    
-    public int getIdControleVendas() {
-        return idControleVendas;
+
+    public int getIdVendaVeiculo() {
+        return idVendaVeiculo;
     }
 
-    public void setIdControleVendas(int idControleVendas) {
-        this.idControleVendas = idControleVendas;
+    public void setIdVendaVeiculo(int idVendaVeiculo) {
+        this.idVendaVeiculo = idVendaVeiculo;
+    }
+
+    public int getIdControleVenda() {
+        return idControleVenda;
+    }
+
+    public void setIdControleVenda(int idControleVenda) {
+        this.idControleVenda = idControleVenda;
     }
 
     public int getIdTipoVeiculo() {

@@ -184,9 +184,9 @@ public class ShakenAction extends IDRAction {
                         ShakenDAO.getInstance().salvarControleShaken(conn, idShaken, shakenModel.getDiaPagamentoPrestacao(), dataFormatada, vlParcelas);
                     }
                 }
-                errors.error("Shaken cadastrado com Sucesso!!!");
-                this.page(form, request, errors);
             }
+            errors.error("Shaken cadastrado com Sucesso!!!");
+            this.page(form, request, errors);
 
             request.setAttribute("detalhesVeiculo", "true");
             request.setAttribute("ShakenModel", shakenModel);

@@ -100,7 +100,7 @@
                 <hr/>
             </div>
             <html:form action="ControleVendas" enctype="multipart/form-data">
-                <html:hidden property="idControleVendas"/>
+                <html:hidden property="idVendaVeiculo"/>
                 <html:hidden property="idTipoVeiculo"/>
                 <table width="60%" border="0" align="center" class="table-condensed">
                     <tr>
@@ -161,13 +161,13 @@
                         <td>
                             <div class="col-lg-12">
                                 Preço de Compra:
-                                <html:text name="ControleVendasModel" property="precoCompra" styleId="precoCompra" styleClass="form-control"/>
+                                <html:text name="ControleVendasModel" property="precoCompra" styleId="precoCompra" styleClass="form-control" readonly="true"/>
                             </div>
                         </td>
                         <td>
                             <div class="col-lg-12">
                                 Preço de Venda:
-                                <html:text name="ControleVendasModel" property="precoVenda" styleId="precoVenda" styleClass="form-control"/>
+                                <html:text name="ControleVendasModel" property="precoVenda" styleId="precoVenda" styleClass="form-control" readonly="true"/>
                             </div>
                         </td>
                         <td>

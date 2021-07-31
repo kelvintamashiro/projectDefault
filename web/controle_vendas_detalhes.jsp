@@ -38,7 +38,7 @@
                 <table width="80%" border="1" align="center" class="table-condensed">
                     <tr>
                         <td width="50%">
-                            <b>ID:</b> <bean:write name="ControleVendasModel" property="idControleVendas"/>
+                            <b>ID:</b> <bean:write name="ControleVendasModel" property="idVendaVeiculo"/>
                         </td>
                         <td>
                             <b>Tipo Veículo:</b> <bean:write name="ControleVendasModel" property="dsTipoVeiculo"/>

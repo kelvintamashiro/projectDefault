@@ -12,6 +12,7 @@
     <head>
         <title>Controle de Veículo</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <script language="javascript" src="js/mizanscene.js"></script>
 
         <script type="text/javascript">
             function fCarregarMarcaVeiculo() {
@@ -42,7 +43,10 @@
                 var shaken = document.ControleVendasModel.shaken.value;
                 var capacidadePessoa = document.ControleVendasModel.capacidadePessoa.value;
                 var dataVenda = document.getElementById("dataVenda").value;
-
+                var idPessoa = document.ControleVendasModel.idPessoa.value;
+                var qtdParcelas = document.ControleVendasModel.qtdParcelas.value;
+                var valorEntrada = document.ControleVendasModel.valorEntrada.value;
+                var diaPagamentoPrestacao = document.ControleVendasModel.diaPagamentoPrestacao.value;
 
                 if (chassi === "") {
                     alert("Deve ser informado o Chassi");
@@ -74,7 +78,16 @@
                 } else if (capacidadePessoa === "") {
                     alert("Deve ser informado a capacidade de pessoas");
                     document.getElementById("capacidadePessoa").focus();
-                } else {
+                }  else if (idPessoa === "") {
+                    alert("Deve ser informado a Pessoa que foi realizada a Venda do Veículo");
+                    document.getElementById("idPessoa").focus();
+                } else if (valorEntrada.length < 1) {
+                    alert("Deve ser informado o valor de Entrada mesmo que for 0 (Zero) ");
+                    document.getElementById("valorEntrada").focus();
+                } else if (qtdParcelas > 1 && diaPagamentoPrestacao == 0){
+                    alert("A quantidade de parcela não pode ser superior a 1, caso o pagamento seja à Vista. Ou você escolhe um dia de pagamento ou informar a quantidade de parcela 1 para pagamento à vista")
+                } 
+                else {
                     if (idTipoVeiculo != null && idTipoVeiculo == 1) {
                         var nrPortas = document.ControleVendasModel.nrPortas.value;
                         if (nrPortas === "") {
@@ -197,13 +210,13 @@
                             <td>
                                 <div class="col-lg-12">
                                     Preço de Compra:
-                                    <html:text name="ControleVendasModel" property="precoCompra" styleId="precoCompra" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="precoCompra" styleId="precoCompra" styleClass="form-control" onkeypress="return(validarConteudo(event, 'numero'));"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="col-lg-12">
                                     Preço de Venda:
-                                    <html:text name="ControleVendasModel" property="precoVenda" styleId="precoVenda" styleClass="form-control"/>
+                                    <html:text name="ControleVendasModel" property="precoVenda" styleId="precoVenda" styleClass="form-control" onkeypress="return(validarConteudo(event, 'numero'));"/>
                                 </div>
                             </td>
                             <td>
@@ -297,7 +310,7 @@
                             <td>
                                 <div class="col-lg-12">
                                     Data da Venda:
-                                    <input type="date" class="form-control" id="dataVenda"/>
+                                    <input type="date" class="form-control" id="dataVenda" name="dataVenda"/>
                                 </div>
                             </td>
                             <td colspan="3">

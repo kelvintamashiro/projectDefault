@@ -31,19 +31,24 @@
             }
 
             function fDetalhes(id) {
-                window.open('ControleVendas.do?action=detalhesVeiculo&idControleVendas=' + id, 'DetalhesVeiculo', 'width=800; height=600');
+                window.open('ControleVendas.do?action=detalhesVeiculo&idVendaVeiculo=' + id, 'DetalhesVeiculo', 'width=800; height=600');
             }
 
             function fEditar(id) {
-                document.ControleVendasModel.action = "ControleVendas.do?action=pageAtualizar&idControleVendas=" + id;
+                document.ControleVendasModel.action = "ControleVendas.do?action=pageAtualizar&idVendaVeiculo=" + id;
                 document.ControleVendasModel.submit();
             }
 
             function fExcluir(id) {
                 if (confirm("Deseja realmente excluir??")) {
-                    document.ControleVendasModel.action = "ControleVendas.do?action=excluir&idControleVendas=" + id;
+                    document.ControleVendasModel.action = "ControleVendas.do?action=excluir&idVendaVeiculo=" + id;
                     document.ControleVendasModel.submit();
                 }
+            }
+            
+            function fParcelas(id) {
+                document.ControleVendasModel.action = "ControleVendas.do?action=pageParcela&idVendaVeiculo=" + id;
+                document.ControleVendasModel.submit();
             }
 
         </script>
@@ -117,54 +122,88 @@
                     <logic:iterate name="listaVeiculos" id="lista" scope="request">
                         <table width="60%" border="0" align="center" class="table-condensed" style="background-color: #F4F4F4">
                             <tr>
-                                <td width="25%">
-                                    <b>ID:</b> <bean:write name="lista" property="idControleVendas"/>
-                                </td>
-                                <td width="25%">
-                                    <b>Ano:</b> <bean:write name="lista" property="ano"/>
-                                </td>
-                                <td width="25%">
-                                    &nbsp;
-                                </td>
-                                <td width="25%" rowspan="4" align="center">
-                                    <img src="<bean:write name="lista" property="pathImg1"/>" width="200px"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Tipo Veículo:</b> <bean:write name="lista" property="dsTipoVeiculo"/>
-                                </td>
-                                <td>
-                                    <b>Cor:</b> <bean:write name="lista" property="cor"/>
-                                </td>
-                                <td>
-                                    <input class="btn btn-warning" style="width: 150px" type="button" value="Detalhes" onClick="fDetalhes(<bean:write name="lista" property="idControleVendas"/>);">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Marca:</b> <bean:write name="lista" property="dsMarcaVeiculo"/>
-                                </td>
-                                <td>
-                                    <b>KM:</b> <bean:write name="lista" property="km"/>
-                                </td>
-                                <td>
-                                    <input class="btn btn-primary" style="width: 150px" type="button" value="Editar" onClick="fEditar(<bean:write name="lista" property="idControleVendas"/>);">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Nome Veículo:</b> <bean:write name="lista" property="dsVeiculo"/>
-                                </td>
-                                <td>
-                                    <b>Preço:</b> <bean:write name="lista" property="precoVenda"/>
-                                </td>
-                                <td>
-                                    <input class="btn btn-danger" style="width: 150px" type="button" value="Excluir" onClick="fExcluir(<bean:write name="lista" property="idControleVendas"/>);">
-                                </td>
-                            </tr>
+                                <td style="padding-left: 30px"> <!-- coluna 1 -->
+                                    <table border="0">
+                                        <tr>
+                                            <td width="20%">
+                                                <b>ID:</b> <bean:write name="lista" property="idVendaVeiculo"/>
+                                            </td>
+                                            <td width="20%">
+                                                <b>Ano:</b> <bean:write name="lista" property="ano"/>
+                                            </td>
+                                            <td width="20%">
+                                                <b>Tipo Veículo:</b> <bean:write name="lista" property="dsTipoVeiculo"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Cor:</b> <bean:write name="lista" property="cor"/>
+                                            </td>
+                                            <td>
+                                                <b>Marca:</b> <bean:write name="lista" property="dsMarcaVeiculo"/>
+                                            </td>
+                                            <td>
+                                                <b>KM:</b> <bean:write name="lista" property="km"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Nome Veículo:</b> <bean:write name="lista" property="dsVeiculo"/>
+                                            </td>
+                                            <td>
+                                                <b>Preço Venda:</b> <bean:write name="lista" property="precoVenda"/>
+                                            </td>
+                                            <td>
+                                                <b>Valor Restante:</b> <bean:write name="lista" property="valorRestante"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Pessoa Venda:</b> <bean:write name="lista" property="nomePessoa"/>
+                                            </td>
+                                            <td>
+                                                <b>Valor Entrada:</b> <bean:write name="lista" property="valorEntrada"/>
+                                            </td>
+                                            <td>
+                                                <b>Quantidade Parcelas:</b> <bean:write name="lista" property="qtdParcelas"/>
+                                            </td>
 
+                                        </tr>
+                                    </table>
+                                </td> 
+                                <td> <!-- coluna 2 -->
+                                    <table border="0">
+                                        <tr>
+                                            <td style="padding: 5px">
+                                                <input class="btn btn-warning" style="width: 100px" type="button" value="Detalhes" onClick="fDetalhes(<bean:write name="lista" property="idVendaVeiculo"/>);">
+                                            </td>
+                                            <td>
+                                                <input class="btn btn-primary" style="width: 100px" type="button" value="Editar" onClick="fEditar(<bean:write name="lista" property="idVendaVeiculo"/>);">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px">
+                                                <input class="btn btn-default" style="width: 100px" type="button" value="Parcelas" onClick="fParcelas(<bean:write name="lista" property="idVendaVeiculo"/>);">
+                                            </td>
+                                            <td>
+                                                <input class="btn btn-danger" style="width: 100px" type="button" value="Excluir" onClick="fExcluir(<bean:write name="lista" property="idVendaVeiculo"/>);">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td> 
+                                <td>
+                                    <table border="0">
+                                        <tr>
+                                            <td>
+                                                <img src="<bean:write name="lista" property="pathImg1"/>" width="200px"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
+
+                        
                         <br/>
                     </logic:iterate>
                 </logic:present>
