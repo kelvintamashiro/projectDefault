@@ -189,7 +189,7 @@ public class PessoaFisicaDAO {
 
     public void updatePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException {
         String query = "UPDATE pessoa SET nome=?, data_nascimento=?, sexo=?, email=?, my_number=? WHERE id=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, pessoaFisicaModel.getNome());
             prep.setString(2, pessoaFisicaModel.getDataNascimento());
             prep.setString(3, pessoaFisicaModel.getSexo());
@@ -202,7 +202,7 @@ public class PessoaFisicaDAO {
 
     public void updateAddress(Connection conn, int idPessoa, EnderecoModel endereco) throws SQLException {
         String query = "UPDATE endereco SET provincia=?, cidade=?, ds_endereco=?, cep=?, bairro=? WHERE id_pessoa=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, endereco.getProvincia());
             prep.setString(2, endereco.getCidade());
             prep.setString(3, endereco.getDsEndereco());
@@ -215,7 +215,7 @@ public class PessoaFisicaDAO {
 
     public void updatePhone(Connection conn, int idPessoa, TelefoneModel telefone) throws SQLException {
         String query = "UPDATE telefone SET numero=?, tipo_telefone=? WHERE id_pessoa=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, telefone.getNrTelefone());
             prep.setString(2, telefone.getTipoTelefone());
             prep.setInt(3, idPessoa);
@@ -225,7 +225,7 @@ public class PessoaFisicaDAO {
 
     public void deletePessoa(Connection conn, String idPessoa) throws SQLException {
         String query = "DELETE FROM pessoa WHERE id=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, idPessoa);
             prep.execute();
         }
@@ -233,33 +233,51 @@ public class PessoaFisicaDAO {
 
     public void deletePhone(Connection conn, String idPessoa) throws SQLException {
         String query = "DELETE FROM telefone WHERE id_pessoa=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, idPessoa);
             prep.execute();
         }
     }
-    
+
     public void deleteAddress(Connection conn, String idPessoa) throws SQLException {
         String query = "DELETE FROM endereco WHERE id_pessoa=?";
-        try (PreparedStatement prep = conn.prepareStatement(query)) {
+        try ( PreparedStatement prep = conn.prepareStatement(query)) {
             prep.setString(1, idPessoa);
             prep.execute();
         }
     }
-    
+
     public String obterNomePessoaPorId(Connection conn, int idPessoa) throws SQLException {
         String query = "select nome from pessoa where id = ?";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setInt(1, idPessoa);
         ResultSet rs = prep.executeQuery();
         String nomeUsuario = null;
-        if(rs.next()){
+        if (rs.next()) {
             nomeUsuario = rs.getString("nome");
         }
         rs.close();
         prep.close();
-        
+
         return nomeUsuario;
     }
-    
+
+    public boolean isExisteVinculo(Connection conn, String idPessoa) throws SQLException {
+        String query = "select id_pessoa from venda_veiculo v where v.id_pessoa = ?"
+                + " union"
+                + " select id_pessoa from shaken s where s.id_pessoa = ?";
+        
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setString(1, idPessoa);
+        prep.setString(2, idPessoa);
+        ResultSet rs = prep.executeQuery();
+        if(rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+        
+        return false;
+    }
+
 }

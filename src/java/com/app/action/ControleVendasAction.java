@@ -36,8 +36,10 @@ public class ControleVendasAction extends IDRAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, Errors errors, String action) {
         String forward = action;
-        if (action.equals("page") || action.equals("pesquisarVeiculosVenda")) {
+        if (action.equals("page")) {
             this.page(form, request, errors);
+        } else if (action.equals("pesquisarVeiculosVenda")) {
+            this.pesquisarVeiculosVenda(form, request, errors);
         } else if (action.equals("carregarMarcaVeiculo") || action.equals("carregarMarcaVeiculoP")) {
             this.carregarMarcaVeiculo(form, request, errors);
         } else if (action.equals("carregarVeiculos") || action.equals("carregarVeiculosP")) {
@@ -58,6 +60,8 @@ public class ControleVendasAction extends IDRAction {
             this.excluir(form, request, errors);
         } else if (action.equals("pageParcela")) {
             this.pageParcela(form, request, errors);
+        } else if (action.equals("atualizarPacela")) {
+            this.atualizarPacela(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -75,6 +79,37 @@ public class ControleVendasAction extends IDRAction {
             session.removeAttribute("listaMarcaVeiculo");
             session.removeAttribute("listaVeiculoPorMarca");
             session.removeAttribute("ControleVendasModel");
+
+            //obter lista dos tipos de veiculos
+            List<VeiculoModel> listaTipoVeiculo = VeiculoDAO.getInstance().obterListaTipoVeiculos(conn);
+            session.setAttribute("listaTipoVeiculo", listaTipoVeiculo);
+
+            controleVendasModel.setIdTipoVeiculo(0);
+            session.setAttribute("ControleVendasModel", controleVendasModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+    
+    private void pesquisarVeiculosVenda(ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleVendasModel controleVendasModel = new ControleVendasModel();
+        HttpSession session = request.getSession();
+        Connection conn = null;
+
+        try {
+            conn = connectionPool.getConnection();
+
+            session.removeAttribute("listaTipoVeiculo");
+            session.removeAttribute("listaMarcaVeiculo");
+            session.removeAttribute("listaVeiculoPorMarca");
+            session.removeAttribute("ControleVendasModel");
+            
+            //carregar lista de pessoas que ja compraram veiculos
+            List<ControleVendasModel> listaPessoasVendaVeiculo = ControleVendasDAO.getInstance().obterPessoasComVendaVeiculo(conn);
+            session.setAttribute("listaPessoasVendaVeiculo", listaPessoasVendaVeiculo);
 
             //obter lista dos tipos de veiculos
             List<VeiculoModel> listaTipoVeiculo = VeiculoDAO.getInstance().obterListaTipoVeiculos(conn);
@@ -208,10 +243,10 @@ public class ControleVendasAction extends IDRAction {
                 //pagamento parcelado, nem que seja 1 parcela
                 isOK = true;
             }
-            
+
             if (isOK) {
                 int idVendaVeiculo = ControleVendasDAO.getInstance().save(conn, controleVendasModel, vlEntrada, vlCobrado, vlRestante);
-                
+
                 //verificar se eu preciso salvar na tabela controle_venda_veiculo
                 if (controleVendasModel.getQtdParcelas() > 1) {
                     LocalDate dataAtual = LocalDate.now(ZoneId.systemDefault());
@@ -222,17 +257,16 @@ public class ControleVendasAction extends IDRAction {
                         } else {
                             dataAtual = dataAtual.withDayOfMonth(controleVendasModel.getDiaPagamentoPrestacao());
                         }
-                        
+
                         String dataFormatada = String.valueOf(dataAtual);
                         //salvar na tabela controle_venda_veiculo
                         ControleVendasDAO.getInstance().salvarControleVendaVeiculo(conn, idVendaVeiculo, controleVendasModel.getDiaPagamentoPrestacao(), dataFormatada, vlParcelas);
-                        
-                    }
-                    
-                }
-                
-            }
 
+                    }
+
+                }
+
+            }
 
             errors.error("Salvo com Sucesso!!");
             controleVendasModel.setIdVeiculo(0);
@@ -254,7 +288,7 @@ public class ControleVendasAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-            List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVeiculos(conn, controleVendasModel);
+            List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVendaVeiculos(conn, controleVendasModel);
 
             request.setAttribute("listaVeiculos", listaVeiculos);
             request.setAttribute("ControleVendasModel", controleVendasModel);
@@ -335,14 +369,31 @@ public class ControleVendasAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-            ControleVendasDAO.getInstance().excluir(conn, controleVendasModel.getIdVendaVeiculo());
+            //verificar se ja existe alguma parcela paga na tabela controle_venda_veiculo
+            //se nao tiver, pode ser excluido, mas se ja tiver deve alertar
+            boolean isExistePagamento = ControleVendasDAO.getInstance().verificaPagamentoVeiculo(conn, controleVendasModel.getIdVendaVeiculo());
+
+            //verificar se o valor restante eh maior que 0
+            boolean isExisteValorRestante = ControleVendasDAO.getInstance().verificaValorRestante(conn, controleVendasModel.getIdVendaVeiculo());
+
+            if (!isExistePagamento && isExisteValorRestante) {
+                //se nao existe nenhum pagamento, eu devo pegar todas as parcelas pelo ID do Controle Vendas para poder excluir
+                List<ControleVendasModel> listaParcelas = ControleVendasDAO.getInstance().obterListaParcelasPorID(conn, controleVendasModel.getIdVendaVeiculo());
+                for (ControleVendasModel parcela : listaParcelas) {
+                    //deletar cada parcela pelo id do IDCONTROLE
+                    ControleVendasDAO.getInstance().excluirControleVendaVeiculo(conn, parcela.getIdControleVenda());
+                }
+
+                ControleVendasDAO.getInstance().excluir(conn, controleVendasModel.getIdVendaVeiculo());
+                errors.error("Excluído com Sucesso!!");
+            } else {
+                errors.error("Não pode ser excluído, pois já possui uma parcela paga.");
+            }
 
             //carregar a lista atualizada
-            List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVeiculos(conn, controleVendasModel);
+            List<ControleVendasModel> listaVeiculos = ControleVendasDAO.getInstance().pesquisarVendaVeiculos(conn, controleVendasModel);
 
             request.setAttribute("listaVeiculos", listaVeiculos);
-
-            errors.error("Excluído com Sucesso!!");
             request.setAttribute("ControleVendasModel", controleVendasModel);
         } catch (Exception e) {
             e.printStackTrace();
@@ -357,16 +408,55 @@ public class ControleVendasAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            
+
             //obter dados do veiculo pelo id_controle_venda
             controleVendasModel = ControleVendasDAO.getInstance().obterDadosVeiculosIdControleVendas(conn, controleVendasModel.getIdVendaVeiculo());
-            
-            
+
             //obter lista das parcelas do veiculo
-            List<ControleVendasModel> listaParcelas = ControleVendasDAO.getInstance().obterListaParcelas(conn, controleVendasModel.getIdControleVenda());
-            
+            List<ControleVendasModel> listaParcelas = ControleVendasDAO.getInstance().obterListaParcelasPorID(conn, controleVendasModel.getIdVendaVeiculo());
+
+            request.setAttribute("listaParcelas", listaParcelas);
             request.setAttribute("ControleVendasModel", controleVendasModel);
-            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void atualizarPacela(ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleVendasModel controleVendas = (ControleVendasModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+
+            int vlParcelaPaga = Integer.parseInt(controleVendas.getValorParcelaPaga().replace(",", "").replace(".", "").replace(" ", ""));
+            int vlValorRestante = Integer.parseInt(controleVendas.getValorRestante().replace(",", "").replace(".", ""));
+            int valorRestanteAtualizado = vlValorRestante - vlParcelaPaga;
+
+            //verificar se é a ultima parcela, se for eu preciso fazer uma logica para que o valor seja igual o valor restante
+            boolean isUltimaParcela = ControleVendasDAO.getInstance().isUltimaParcelaAberta(conn, controleVendas.getIdVendaVeiculo());
+            if (isUltimaParcela && valorRestanteAtualizado != 0) {
+                //se for a ultima parcela aberta -> o valor pago deve ser igual ao valor restante
+                errors.error("O valor da última parcela deve ser igual ao valor Restante. O valor deve ser: " + vlValorRestante);
+
+            } else {
+                //atualizar os dados da tabela controle_shaken
+                ControleVendasDAO.getInstance().atualizarParcelaVeiculo(conn, controleVendas);
+
+                //atualizar o valor restante na tabela shaken
+                ControleVendasDAO.getInstance().atualizarValorRestante(conn, valorRestanteAtualizado, controleVendas.getIdVendaVeiculo());
+
+            }
+
+            //obter dados do veiculo atualizar por ID
+            controleVendas = ControleVendasDAO.getInstance().obterDadosVeiculosIdControleVendas(conn, controleVendas.getIdVendaVeiculo());
+
+            List<ControleVendasModel> listaParcelas = ControleVendasDAO.getInstance().obterListaParcelasPorID(conn, controleVendas.getIdVendaVeiculo());
+
+            request.setAttribute("listaParcelas", listaParcelas);
+            request.setAttribute("ControleVendasModel", controleVendas);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

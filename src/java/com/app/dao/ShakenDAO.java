@@ -229,7 +229,7 @@ public class ShakenDAO {
         String query = "UPDATE controle_shaken SET data_pagamento_realizado=?, valor_pago=?, status=1 WHERE id=?";
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setString(1, shakenModel.getDataPagamentoRealizado());
-        prep.setString(2, shakenModel.getValorParcelaPaga());
+        prep.setString(2, shakenModel.getValorParcelaPaga().replace(",", "").replace(".", "").replace(" ", ""));
         prep.setInt(3, shakenModel.getIdControle());
         prep.execute();
         prep.close();

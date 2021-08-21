@@ -74,6 +74,17 @@
                     <tr>
                         <td>
                             <div class="col-lg-12">
+                                Nome Pessoa:
+                                <html:select property="idPessoa" styleClass="form-control" styleId="idPessoa">
+                                    <html:option value="0">Selecione</html:option>
+                                    <html:options collection="listaPessoasVendaVeiculo" property="idPessoa" labelProperty="nomePessoa"></html:options>
+                                </html:select>   
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="col-lg-12">
                                 Tipo de Veículo:
                                 <html:select property="idTipoVeiculo" styleClass="form-control" styleId="idTipoVeiculo" onchange="fCarregarMarcaVeiculo()">
                                     <html:option value="0">Selecione</html:option>

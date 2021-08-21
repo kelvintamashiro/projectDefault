@@ -221,4 +221,12 @@ public class VeiculoDAO {
         return listaMarcaVeiculo;
     }
 
+    public boolean isExisteMarcaEmUso(Connection conn, int idMarcaVeiculo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean isExisteVeiculoEmUso(Connection conn, int idVeiculo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

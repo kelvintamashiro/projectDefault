@@ -72,7 +72,7 @@ public class ControleVendasDAO {
         return idVendaVeiculo;
     }
 
-    public List<ControleVendasModel> pesquisarVeiculos(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
+    public List<ControleVendasModel> pesquisarVendaVeiculos(Connection conn, ControleVendasModel controleVendasModel) throws SQLException {
         List<ControleVendasModel> listaVeiculos = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select c.*, tp.ds_tipo_veiculo, mv.ds_marca_veiculo, v.nome_veiculo, p.nome");
@@ -87,6 +87,9 @@ public class ControleVendasDAO {
         }
         if (controleVendasModel.getIdVeiculo() != 0) {
             sb.append(" and c.id_veiculo = ").append(controleVendasModel.getIdVeiculo());
+        }
+        if(controleVendasModel.getIdPessoa() != 0) {
+           sb.append(" and c.id_pessoa = ").append(controleVendasModel.getIdPessoa());
         }
 
         PreparedStatement prep = conn.prepareStatement(sb.toString());
@@ -278,11 +281,11 @@ public class ControleVendasDAO {
         return controlForm;
     }
 
-    public List<ControleVendasModel> obterListaParcelas(Connection conn, int idControleVendas) throws SQLException {
+    public List<ControleVendasModel> obterListaParcelasPorID(Connection conn, int idVendaVeiculo) throws SQLException {
         List<ControleVendasModel> listaParcelas = new ArrayList<>();
         String query = "select * from controle_venda_veiculo where id_venda_veiculo = ? order by id";
         PreparedStatement prep = conn.prepareStatement(query);
-        prep.setInt(1, idControleVendas);
+        prep.setInt(1, idVendaVeiculo);
 
         ResultSet rs = prep.executeQuery();
         while (rs.next()) {
@@ -309,6 +312,106 @@ public class ControleVendasDAO {
 
         return listaParcelas;
 
+    }
+
+    public boolean verificaPagamentoVeiculo(Connection conn, int idVendaVeiculo) throws SQLException {
+        String query = "select * from controle_venda_veiculo c where c.id_venda_veiculo = ? and c.status = 1";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idVendaVeiculo);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+
+        return false;
+    }
+
+    public boolean verificaValorRestante(Connection conn, int idVendaVeiculo) throws SQLException {
+        String query = "select * from venda_veiculo v where v.id = ? and v.valor_restante > 0";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idVendaVeiculo);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+
+        return false;
+    }
+
+    public void excluirControleVendaVeiculo(Connection conn, int idControleVenda) throws SQLException {
+        String query = "DELETE FROM controle_venda_veiculo WHERE id = ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idControleVenda);
+        prep.execute();
+        prep.close();
+    }
+
+    public boolean isUltimaParcelaAberta(Connection conn, int id) throws SQLException {
+        boolean isUltimaParcela = true;
+        String query = "select * from controle_venda_veiculo where id_venda_veiculo = ? and status = 0 order by id";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        ResultSet rs = prep.executeQuery();
+        List<ControleVendasModel> listaParcelasAbertas = new ArrayList<>();
+        while (rs.next()) {
+            ControleVendasModel shakenModel = new ControleVendasModel();
+            shakenModel.setIdControleVenda(rs.getInt("id"));
+            listaParcelasAbertas.add(shakenModel);
+        }
+        rs.close();
+        prep.close();
+
+        if (listaParcelasAbertas.size() > 1) {
+            isUltimaParcela = false;
+        }
+
+        return isUltimaParcela;
+    }
+
+    public void atualizarParcelaVeiculo(Connection conn, ControleVendasModel controleVendas) throws SQLException {
+        String query = "UPDATE controle_venda_veiculo SET data_pagamento_realizado=?, valor_pago=?, status=1 WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setString(1, controleVendas.getDataPagamentoRealizado());
+        prep.setString(2, controleVendas.getValorParcelaPaga().replace(",", "").replace(".", "").replace(" ", ""));
+        prep.setInt(3, controleVendas.getIdControleVenda());
+        prep.execute();
+        prep.close();
+    }
+
+    public void atualizarValorRestante(Connection conn, int valorRestanteAtualizado, int id) throws SQLException {
+        String query = "UPDATE venda_veiculo SET valor_restante=? WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, valorRestanteAtualizado);
+        prep.setInt(2, id);
+        prep.execute();
+        prep.close();
+    }
+
+    public List<ControleVendasModel> obterPessoasComVendaVeiculo(Connection conn) throws SQLException {
+        List<ControleVendasModel> listaPessoasVendaVeiculo = new ArrayList<>();
+        String query = "select p.id, p.nome "
+                + " from pessoa p, venda_veiculo v"
+                + " where p.id = v.id_pessoa"
+                + " group by p.id"
+                + " order by p.nome;";
+
+        PreparedStatement prep = conn.prepareStatement(query);
+        ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+            ControleVendasModel controleVendas = new ControleVendasModel();
+            controleVendas.setIdPessoa(rs.getInt("id"));
+            controleVendas.setNomePessoa(rs.getString("nome"));
+
+            listaPessoasVendaVeiculo.add(controleVendas);
+        }
+        rs.close();
+        prep.close();
+
+        return listaPessoasVendaVeiculo;
     }
 
 }

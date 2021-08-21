@@ -17,7 +17,7 @@
 
         <script type="text/javascript">
 
-            function fAtualizar(idControle, i) {
+            function fAtualizar(idControleVenda, i) {
                 var dataPgto = document.getElementById("dataPagamentoRealizado" + i).value;
                 var valorParcela = document.getElementById("valorParcela" + i).value;
 
@@ -25,8 +25,8 @@
                     alert("Deve ser inserido a data de pagamento e o valor da parcela!!");
                 } else {
                     if (confirm("Deseja realmente Atualizar esses dados?")) {
-                        document.ShakenModel.action = "Shaken.do?action=atualizarParcelaShaken&idControle=" + idControle+"&dataPagamentoRealizado="+dataPgto+"&valorParcelaPaga="+valorParcela;
-                        document.ShakenModel.submit();
+                        document.ControleVendasModel.action = "ControleVendas.do?action=atualizarPacela&idControleVenda=" + idControleVenda+"&dataPagamentoRealizado="+dataPgto+"&valorParcelaPaga="+valorParcela;
+                        document.ControleVendasModel.submit();
                     }
                 }
 
@@ -120,7 +120,7 @@
                                 </tr>
                                 <tr>
                                     <td width="5%">
-                                        <b>ID:</b> <bean:write name="lista" property="idControle"/>
+                                        <b>ID:</b> <bean:write name="lista" property="idControleVenda"/>
                                     </td>
 
                                     <td width="25%">
@@ -158,7 +158,7 @@
                                     <td>
                                         <br/>
                                         <logic:equal name="lista" property="status" value="0">
-                                            <input class="btn btn-success" style="width: 200px" type="button" value="Atualizar" onClick="fAtualizar(<bean:write name="lista" property="idControle"/>, <%=i%>);">
+                                            <input class="btn btn-success" style="width: 200px" type="button" value="Atualizar" onClick="fAtualizar(<bean:write name="lista" property="idControleVenda"/>, <%=i%>);">
                                         </logic:equal>
                                     </td>
                                 </tr>

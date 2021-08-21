@@ -146,6 +146,9 @@ public class NomeVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
+            
+            //verificar se o veiculo esta sendo utilizado
+            boolean isExisteVeiculoEmUso = VeiculoDAO.getInstance().isExisteVeiculoEmUso(conn, veiculoModel.getIdVeiculo());
 
             //excluir marca do veiculo
             VeiculoDAO.getInstance().excluirVeiculo(conn, veiculoModel.getIdVeiculo());

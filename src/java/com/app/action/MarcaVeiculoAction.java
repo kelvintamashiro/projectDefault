@@ -92,6 +92,9 @@ public class MarcaVeiculoAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
             
+            //verificar se a marca ja esta em uso
+            boolean isExisteMarcaEmUso = VeiculoDAO.getInstance().isExisteMarcaEmUso(conn, veiculoModel.getIdMarcaVeiculo());
+            
             //excluir marca do veiculo
             VeiculoDAO.getInstance().excluirMarcaVeiculo(conn, veiculoModel.getIdMarcaVeiculo());
             errors.error("Marca de Veículo Excluída com Sucesso!!");

@@ -234,15 +234,23 @@ public class PessoaFisicaAction extends IDRAction {
             conn = connectionPool.getConnection();
             String idPessoa = request.getParameter("idPessoa");
 
-            //excluir pessoa por idPessoa
-            PessoaFisicaDAO.getInstance().deletePessoa(conn, idPessoa);
+            //verificar se esse idPessoa, ja esta vinculado em alguma funcionalidade no sistema
+            //ou seja, se ele ja teve shaken ou venda de veiculo realizada
+            boolean isExisteVinculo = PessoaFisicaDAO.getInstance().isExisteVinculo(conn, idPessoa);
+            if (isExisteVinculo) {
+                errors.error("Não pode ser excluído, pois essa pessoa tem vínculo com alguma funcionalidade do sistema!!");
+            } else {
+                //excluir pessoa por idPessoa
+                PessoaFisicaDAO.getInstance().deletePessoa(conn, idPessoa);
 
-            //excluir telefone
-            PessoaFisicaDAO.getInstance().deletePhone(conn, idPessoa);
+                //excluir telefone
+                PessoaFisicaDAO.getInstance().deletePhone(conn, idPessoa);
+                
+                //excluir endereco
+                PessoaFisicaDAO.getInstance().deleteAddress(conn, idPessoa);
+                errors.error("Pessoa Física excluída com Sucesso!!");
 
-            //excluir endereco
-            PessoaFisicaDAO.getInstance().deleteAddress(conn, idPessoa);
-
+            }
             this.pesquisar(pessoaFisicaModel, request, errors);
 
         } catch (Exception e) {

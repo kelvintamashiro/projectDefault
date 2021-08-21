@@ -130,6 +130,7 @@
             <forward name="atualizar"                   path="/controle_vendas_atualizar.jsp"/>
             <forward name="excluir"                     path="/controle_vendas_pesquisar.jsp"/>
             <forward name="pageParcela"                 path="/controle_vendas_parcelas.jsp"/>
+            <forward name="atualizarPacela"             path="/controle_vendas_parcelas.jsp"/>
         </action>  
         
         <action path="/Shaken"

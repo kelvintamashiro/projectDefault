@@ -263,7 +263,7 @@ public class ShakenAction extends IDRAction {
         try {
             conn = connectionPool.getConnection();
 
-            int vlParcelaPaga = Integer.parseInt(shakenModel.getValorParcelaPaga().replace(",", "").replace(".", ""));
+            int vlParcelaPaga = Integer.parseInt(shakenModel.getValorParcelaPaga().replace(",", "").replace(".", "").replace(" ", ""));
             int vlValorRestante = Integer.parseInt(shakenModel.getValorRestante().replace(",", "").replace(".", ""));
             int valorRestanteAtualizado = vlValorRestante - vlParcelaPaga;
 
