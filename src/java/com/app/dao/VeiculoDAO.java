@@ -45,7 +45,7 @@ public class VeiculoDAO {
         ResultSet rs = prep.executeQuery();
         if (rs.next()) {
             return true;
-        } 
+        }
         rs.close();
         prep.close();
 
@@ -221,12 +221,35 @@ public class VeiculoDAO {
         return listaMarcaVeiculo;
     }
 
-    public boolean isExisteMarcaEmUso(Connection conn, int idMarcaVeiculo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean isExisteMarcaEmUso(Connection conn, int idMarcaVeiculo) throws SQLException {
+        String query = "select * from veiculo v where v.id_marca_veiculo = ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idMarcaVeiculo);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+
+        return false;
     }
 
-    public boolean isExisteVeiculoEmUso(Connection conn, int idVeiculo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean isExisteVeiculoEmUso(Connection conn, int idVeiculo) throws SQLException {
+        String query = "select id_veiculo from venda_veiculo v where v.id_veiculo = ?"
+                + " union"
+                + " select id_veiculo from shaken s where s.id_veiculo = ?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, idVeiculo);
+        prep.setInt(2, idVeiculo);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+        rs.close();
+        prep.close();
+
+        return false;
     }
 
 }

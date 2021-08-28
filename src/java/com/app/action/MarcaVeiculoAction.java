@@ -47,7 +47,7 @@ public class MarcaVeiculoAction extends IDRAction {
 
             //obter lista das marcas de veiculos ja cadastradas
             List<VeiculoModel> listaMarcaVeiculo = VeiculoDAO.getInstance().obterListaMarcaVeiculo(conn);
-            
+
             request.setAttribute("listaMarcaVeiculo", listaMarcaVeiculo);
             request.setAttribute("VeiculoModel", veiculoModel);
 
@@ -91,15 +91,18 @@ public class MarcaVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            
+
             //verificar se a marca ja esta em uso
             boolean isExisteMarcaEmUso = VeiculoDAO.getInstance().isExisteMarcaEmUso(conn, veiculoModel.getIdMarcaVeiculo());
-            
-            //excluir marca do veiculo
-            VeiculoDAO.getInstance().excluirMarcaVeiculo(conn, veiculoModel.getIdMarcaVeiculo());
-            errors.error("Marca de Veículo Excluída com Sucesso!!");
+            if (isExisteMarcaEmUso) {
+                errors.error("Existe veículo cadastrado para essa Marca!!");
+            } else {
+                //excluir marca do veiculo
+                VeiculoDAO.getInstance().excluirMarcaVeiculo(conn, veiculoModel.getIdMarcaVeiculo());
+                errors.error("Marca de Veículo Excluída com Sucesso!!");
+
+            }
             this.page(form, request, errors);
-            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

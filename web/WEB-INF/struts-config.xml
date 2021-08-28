@@ -34,6 +34,7 @@
         <form-bean name="VeiculoModel"          type="com.app.model.VeiculoModel"/>
         <form-bean name="ControleVendasModel"   type="com.app.model.ControleVendasModel"/>
         <form-bean name="ShakenModel"           type="com.app.model.ShakenModel"/>
+        <form-bean name="RelatorioModel"        type="com.app.model.RelatorioModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -148,8 +149,15 @@
             <forward name="excluirShaken"               path="/shaken_page_controle.jsp"/>
             <forward name="editarPagamentoShaken"       path="/shaken_editar_pagamento.jsp"/>
             <forward name="atualizarParcelaShaken"      path="/shaken_editar_pagamento.jsp"/>
+        </action> 
+        
+        
+        <action path="/Relatorio"
+                type="com.app.action.RelatorioAction"
+                name="RelatorioModel"
+                scope="request">
             
-            
+            <forward name="relPessoasCadastradas"                        path="/rel_pessoas_cadastradas.jsp"/>
         </action> 
         
         

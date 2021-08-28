@@ -70,7 +70,7 @@ public class NomeVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            
+
             session.removeAttribute("listaVeiculoPorMarca");
 
             //obter lista das marcas de veiculos ja cadastradas
@@ -123,10 +123,10 @@ public class NomeVeiculoAction extends IDRAction {
                 VeiculoDAO.getInstance().saveNomeVeiculo(conn, veiculoModel);
                 veiculoModel.setNomeVeiculo(null);
                 errors.error("Veiculo cadastrado com Sucesso!!");
-                
+
                 //carregar lista de veiculos cadastrados por marca
                 this.carregarVeiculoPorMarca(form, request, errors);
-                
+
             } else {
                 //caso exista nao cadastra e manda mensagem na tela
                 errors.error("Esssa Veiculo já encontra-se cadastrada!!");
@@ -146,16 +146,19 @@ public class NomeVeiculoAction extends IDRAction {
         Connection conn = null;
         try {
             conn = connectionPool.getConnection();
-            
+
             //verificar se o veiculo esta sendo utilizado
             boolean isExisteVeiculoEmUso = VeiculoDAO.getInstance().isExisteVeiculoEmUso(conn, veiculoModel.getIdVeiculo());
+            if (isExisteVeiculoEmUso) {
+                errors.error("Não foi possível excluir esse Veículo, pois já existe uma Venda ou Shaken realizado!");
+            } else {
 
-            
-            //excluir marca do veiculo
-            VeiculoDAO.getInstance().excluirVeiculo(conn, veiculoModel.getIdVeiculo());
-            errors.error("Veículo Excluído com Sucesso!!");
-            this.carregarVeiculoPorMarca(form, request, errors);
+                //excluir marca do veiculo
+                VeiculoDAO.getInstance().excluirVeiculo(conn, veiculoModel.getIdVeiculo());
+                errors.error("Veículo Excluído com Sucesso!!");
 
+                this.carregarVeiculoPorMarca(form, request, errors);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
