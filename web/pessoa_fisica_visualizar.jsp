@@ -101,6 +101,12 @@
                         <bean:write name="TelefoneModel" property="nrTelefone"/> (<bean:write name="TelefoneModel" property="tipoTelefone"/>)     
                     </td>
                 </tr>
+                <tr>
+                    <td align="right"><b>Data de Cadastro:</b></td>
+                    <td>
+                        <bean:write name="PessoaFisicaModel" property="dataCadastro"/>     
+                    </td>
+                </tr>
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2">&nbsp;</td></tr>
                 <tr><td colspan="2">&nbsp;</td></tr>

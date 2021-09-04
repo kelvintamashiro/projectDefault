@@ -6,6 +6,8 @@
 package com.app.util;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 /**
@@ -29,6 +31,15 @@ public class Utilitario {
         String precoFormatado = n.format(valor);
 
         return precoFormatado.substring(1);
+    }
+    
+    public long diferencaDiasEntreData(String dataInicio, String dataFinal) {
+        LocalDate dataInicioF = LocalDate.parse(dataInicio);
+        LocalDate dataFinalF = LocalDate.parse(dataFinal);
+        
+        long diferencaEmDias = ChronoUnit.DAYS.between(dataInicioF, dataFinalF);
+        
+        return diferencaEmDias;
     }
 
 }

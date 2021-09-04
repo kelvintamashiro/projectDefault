@@ -35,7 +35,8 @@ public class Relatorio {
                 + " from pessoa p, telefone t, endereco e"
                 + " where p.id = t.id_pessoa"
                 + " and p.id = e.id_pessoa"
-                + " order by p.nome";
+                + " and p.data_cadastro between ? and ?"
+                + " order by p.id";
         
         PreparedStatement prep = conn.prepareStatement(query);
         ResultSet rs = prep.executeQuery();

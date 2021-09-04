@@ -67,7 +67,7 @@ public class PessoaFisicaDAO {
     public int savePessoa(Connection conn, PessoaFisicaModel pessoaFisicaModel) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Criptografia criptografia = new Criptografia();
         int idPessoa = 0;
-        String query = "INSERT into pessoa (nome, data_nascimento, sexo, login, senha, email, my_number) values (?,?,?,?,?,?,?)";
+        String query = "INSERT into pessoa (nome, data_nascimento, sexo, login, senha, email, my_number, data_cadastro) values (?,?,?,?,?,?,?, now())";
         PreparedStatement prep = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
         prep.setString(1, pessoaFisicaModel.getNome());
         prep.setString(2, pessoaFisicaModel.getDataNascimento());
@@ -147,7 +147,7 @@ public class PessoaFisicaDAO {
     }
 
     public PessoaFisicaModel obterDadosPessoaPorId(Connection conn, String idPessoa) throws SQLException {
-        String query = "select p.id, p.nome, p.data_nascimento, p.sexo, p.email, p.my_number, "
+        String query = "select p.id, p.nome, p.data_nascimento, p.sexo, p.email, p.my_number, p.data_cadastro, "
                 + " ec.provincia, ec.cidade, ec.ds_endereco, ec.bairro, ec.cep, ec.status, "
                 + " t.numero, t.tipo_telefone"
                 + " from pessoa p, endereco ec, telefone t"
@@ -166,6 +166,7 @@ public class PessoaFisicaDAO {
             pessoaFisicaModel.setSexo(rs.getString("sexo"));
             pessoaFisicaModel.setEmail(rs.getString("email"));
             pessoaFisicaModel.setMyNumber(rs.getString("my_number"));
+            pessoaFisicaModel.setDataCadastro(rs.getString("data_cadastro"));
 
             EnderecoModel endereco = new EnderecoModel();
             endereco.setProvincia(rs.getString("provincia"));

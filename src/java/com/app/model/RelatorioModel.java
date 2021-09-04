@@ -11,6 +11,7 @@ package com.app.model;
  */
 public class RelatorioModel extends FormBasico {
     
+    //dados pessoa
     private int idPessoa;
     private String nomePessoa;
     private String dataNascimento;
@@ -24,7 +25,35 @@ public class RelatorioModel extends FormBasico {
     private String endereco;
     private String cep;
     private String bairro;
+    private String dataCadastro;
+    private String dataInicio;
+    private String dataFinal;
 
+    public String getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public String getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(String dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public String getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(String dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    
     public int getIdPessoa() {
         return idPessoa;
     }

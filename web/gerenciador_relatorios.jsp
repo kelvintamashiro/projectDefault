@@ -40,7 +40,8 @@
                         <b>Relatório de Pessoas Cadastradas</b>
                     </td>
                     <td>
-                        <a href="Relatorio.do?action=relPessoasCadastradas" target="_blank" class="btn btn-success">Visualizar</a>
+                        <!--<a href="Relatorio.do?action=relPessoasCadastradas" target="_blank" class="btn btn-success">Visualizar</a>-->
+                        <a href="Relatorio.do?action=relPessoasCadastradasPage" class="btn btn-success">Gerar Relatório</a>
                     </td>
                 </tr>
             </table>

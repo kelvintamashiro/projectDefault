@@ -21,7 +21,16 @@ public class PessoaFisicaModel extends FormBasico {
     private String myNumber;
     private EnderecoModel endereco;
     private TelefoneModel telefone;
+    private String dataCadastro;
 
+    public String getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+    
     public String getMyNumber() {
         return myNumber;
     }
