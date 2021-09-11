@@ -35,6 +35,10 @@ public class RelatorioAction extends IDRAction {
             this.relPessoasCadastradas(form, request, errors);
         } else if (action.equals("filtrarRelPessoa")) {
             this.filtrarRelPessoa(form, request, errors);
+        } else if (action.equals("relVeiculosCadatrados")) {
+            this.relVeiculosCadatrados(form, request, errors);
+        } else if (action.equals("filtrarRelVeiculo")) {
+            this.filtrarRelVeiculo(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -52,7 +56,7 @@ public class RelatorioAction extends IDRAction {
             if (qtdDias > 365) { //no maximo 1 ano
                 errors.error("Deve ser informado uma diferença entre datas no máximo de 1 ano");
             } else {
-                List<RelatorioModel> listaPessoasCadastradas = Relatorio.getInstance().obterPessoasCadastradas(conn);
+                List<RelatorioModel> listaPessoasCadastradas = Relatorio.getInstance().obterPessoasCadastradas(conn, relatorioModel.getDataInicio(), relatorioModel.getDataFinal());
                 session.setAttribute("listaPessoasCadastradas", listaPessoasCadastradas);
                 request.setAttribute("RelatorioModel", relatorioModel);
             }
@@ -102,6 +106,8 @@ public class RelatorioAction extends IDRAction {
                         return collator.compare(o1.getEndereco(), o2.getEndereco());
                     } else if (tipoFiltro.equals("bairro")) {
                         return collator.compare(o1.getBairro(), o2.getBairro());
+                    } else if (tipoFiltro.equals("data_cadastro")) {
+                        return collator.compare(o1.getDataCadastro(), o2.getDataCadastro());
                     } else {
                         return 0;
                     }
@@ -116,6 +122,57 @@ public class RelatorioAction extends IDRAction {
             e.printStackTrace();
         }
 
+    }
+
+    private void relVeiculosCadatrados(ActionForm form, HttpServletRequest request, Errors errors) {
+        RelatorioModel relatorioModel = (RelatorioModel) form;
+        Connection conn = null;
+        HttpSession session = request.getSession();
+        try {
+            conn = connectionPool.getConnection();
+
+            List<RelatorioModel> listaVeiculosCadastrados = Relatorio.getInstance().obterVeiculosCadastrados(conn);
+            session.setAttribute("listaVeiculosCadastrados", listaVeiculosCadastrados);
+            request.setAttribute("RelatorioModel", relatorioModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void filtrarRelVeiculo(ActionForm form, HttpServletRequest request, Errors errors) {
+        RelatorioModel relatorioModel = (RelatorioModel) form;
+        HttpSession session = request.getSession();
+        try {
+            String tipoFiltro = request.getParameter("tipo");
+
+            ArrayList lista = (ArrayList) session.getAttribute("listaVeiculosCadastrados");
+
+            Collections.sort(lista, new Comparator<RelatorioModel>() {
+                @Override
+                public int compare(RelatorioModel o1, RelatorioModel o2) {
+
+                    Collator collator = Collator.getInstance();
+                    if (tipoFiltro.equals("tipo_veiculo")) {
+                        return collator.compare(o1.getDsTipoVeiculo(), o2.getDsTipoVeiculo());
+                    } else if (tipoFiltro.equals("marca_veiculo")) {
+                        return collator.compare(o1.getDsMarcaVeiculo(), o2.getDsMarcaVeiculo());
+                    } else if (tipoFiltro.equals("nome_veiculo")) {
+                        return collator.compare(o1.getDsVeiculo(), o2.getDsVeiculo());
+                    } else {
+                        return 0;
+                    }
+
+                }
+            });
+
+            session.setAttribute("listaVeiculosCadastrados", lista);
+            request.setAttribute("RelatorioModel", relatorioModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

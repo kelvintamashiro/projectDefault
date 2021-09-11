@@ -69,6 +69,7 @@
                     <td><b><a href="javascript:fFiltrar('cep')" style="color: black">CEP <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
                     <td><b><a href="javascript:fFiltrar('endereco')" style="color: black">Endereço <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
                     <td><b><a href="javascript:fFiltrar('bairro')" style="color: black">Bairro <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
+                    <td><b><a href="javascript:fFiltrar('data_cadastro')" style="color: black">Data de Cadastro <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
                 </tr>
                 <logic:present name="listaPessoasCadastradas" scope="session">
                     <logic:iterate name="listaPessoasCadastradas" id="lista" scope="session">
@@ -86,6 +87,7 @@
                             <td><bean:write name="lista" property="cep"/></td>
                             <td><bean:write name="lista" property="endereco"/></td>
                             <td><bean:write name="lista" property="bairro"/></td>
+                            <td><bean:write name="lista" property="dataCadastro"/></td>
                         </tr>
                     </logic:iterate>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>

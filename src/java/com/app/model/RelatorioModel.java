@@ -28,7 +28,45 @@ public class RelatorioModel extends FormBasico {
     private String dataCadastro;
     private String dataInicio;
     private String dataFinal;
+    
+    //dados do veiculos
+    private int idVeiculo;
+    private String dsTipoVeiculo;
+    private String dsMarcaVeiculo;
+    private String dsVeiculo;
 
+    public int getIdVeiculo() {
+        return idVeiculo;
+    }
+
+    public void setIdVeiculo(int idVeiculo) {
+        this.idVeiculo = idVeiculo;
+    }
+
+    public String getDsTipoVeiculo() {
+        return dsTipoVeiculo;
+    }
+
+    public void setDsTipoVeiculo(String dsTipoVeiculo) {
+        this.dsTipoVeiculo = dsTipoVeiculo;
+    }
+
+    public String getDsMarcaVeiculo() {
+        return dsMarcaVeiculo;
+    }
+
+    public void setDsMarcaVeiculo(String dsMarcaVeiculo) {
+        this.dsMarcaVeiculo = dsMarcaVeiculo;
+    }
+
+    public String getDsVeiculo() {
+        return dsVeiculo;
+    }
+
+    public void setDsVeiculo(String dsVeiculo) {
+        this.dsVeiculo = dsVeiculo;
+    }
+    
     public String getDataCadastro() {
         return dataCadastro;
     }

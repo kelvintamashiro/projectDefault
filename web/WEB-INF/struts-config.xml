@@ -35,6 +35,7 @@
         <form-bean name="ControleVendasModel"   type="com.app.model.ControleVendasModel"/>
         <form-bean name="ShakenModel"           type="com.app.model.ShakenModel"/>
         <form-bean name="RelatorioModel"        type="com.app.model.RelatorioModel"/>
+        <form-bean name="RelatorioVendaVeiculoModel"        type="com.app.model.RelatorioVendaVeiculoModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -157,7 +158,22 @@
                 name="RelatorioModel"
                 scope="request">
             
-            <forward name="relPessoasCadastradas"                        path="/rel_pessoas_cadastradas.jsp"/>
+            <forward name="relPessoasCadastradasPage"           path="/rel_pessoas_cadastradas_page.jsp"/>
+            <forward name="relPessoasCadastradas"               path="/rel_pessoas_cadastradas.jsp"/>
+            <forward name="filtrarRelPessoa"                    path="/rel_pessoas_cadastradas.jsp"/>
+            <forward name="relVeiculosCadatrados"               path="/rel_veiculos_cadastrados.jsp"/>
+            <forward name="filtrarRelVeiculo"                   path="/rel_veiculos_cadastrados.jsp"/>
+            
+        </action> 
+        
+        <action path="/RelatorioVendaVeiculo"
+                type="com.app.action.RelatorioVendaVeiculoAction"
+                name="RelatorioVendaVeiculoModel"
+                scope="request">
+            
+            <forward name="relVendasVeiculosRealizadasPage"             path="/rel_venda_veiculo_page.jsp"/>
+            <forward name="relVendasVeiculosRealizadas"                 path="/rel_venda_veiculo.jsp"/>
+            
         </action> 
         
         
