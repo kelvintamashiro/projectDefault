@@ -10,6 +10,7 @@ import com.app.model.EnderecoModel;
 import com.app.model.PessoaFisicaModel;
 import com.app.model.TelefoneModel;
 import com.app.util.Errors;
+import com.app.util.Utilitario;
 import java.sql.Connection;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -81,8 +82,10 @@ public class PessoaFisicaAction extends IDRAction {
 
         String nrTelefone = request.getParameter("nrTelefone");
         String tipoTelefone = request.getParameter("tipoTelefone");
+        
+        String telefoneFormatado = Utilitario.getInstance().telefoneFormatado(nrTelefone, tipoTelefone);
 
-        telefone.setNrTelefone(nrTelefone);
+        telefone.setNrTelefone(telefoneFormatado);
         telefone.setTipoTelefone(tipoTelefone);
 
         pessoaFisicaModel.setTelefone(telefone);

@@ -244,7 +244,7 @@
                         <td colspan="2">
                             <div class="col-lg-12">
                                 Número Telefone:
-                                <html:text styleClass="form-control" name="TelefoneModel" property="nrTelefone" styleId="nrTelefone"/>
+                                <html:text styleClass="form-control" name="TelefoneModel" property="nrTelefone" styleId="nrTelefone" maxlength="11"/>
                             </div>
                         </td>
                     </tr>

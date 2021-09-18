@@ -59,6 +59,22 @@
                         <a href="RelatorioVendaVeiculo.do?action=relVendasVeiculosRealizadasPage" class="btn btn-success">Gerar Relatório</a>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <b>Relatório de Shaken Realizados por Data de Venda</b>
+                    </td>
+                    <td>
+                        <a href="RelatorioShakenVeiculo.do?action=relShakenRealizadasPage" class="btn btn-success">Gerar Relatório</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Relatório de Shaken Realizados por Data do Próximo Vencimento</b>
+                    </td>
+                    <td>
+                        <a href="RelatorioShakenVeiculo.do?action=relShakenVencerPage" class="btn btn-success">Gerar Relatório</a>
+                    </td>
+                </tr>
             </table>
 
         </logic:notEqual>

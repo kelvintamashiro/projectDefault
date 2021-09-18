@@ -36,6 +36,7 @@
         <form-bean name="ShakenModel"           type="com.app.model.ShakenModel"/>
         <form-bean name="RelatorioModel"        type="com.app.model.RelatorioModel"/>
         <form-bean name="RelatorioVendaVeiculoModel"        type="com.app.model.RelatorioVendaVeiculoModel"/>
+        <form-bean name="RelatorioShakenVeiculoModel"        type="com.app.model.RelatorioShakenVeiculoModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -173,6 +174,18 @@
             
             <forward name="relVendasVeiculosRealizadasPage"             path="/rel_venda_veiculo_page.jsp"/>
             <forward name="relVendasVeiculosRealizadas"                 path="/rel_venda_veiculo.jsp"/>
+            
+        </action> 
+        
+        <action path="/RelatorioShakenVeiculo"
+                type="com.app.action.RelatorioShakenVeiculoAction"
+                name="RelatorioShakenVeiculoModel"
+                scope="request">
+            
+            <forward name="relShakenRealizadasPage"             path="/rel_shaken_veiculo_page.jsp"/>
+            <forward name="relShakenRealizadas"                 path="/rel_shaken_veiculo.jsp"/>
+            <forward name="relShakenVencerPage"                 path="/rel_shaken_vencer_page.jsp"/>
+            <forward name="relShakenVencer"                     path="/rel_shaken_vencer.jsp"/>
             
         </action> 
         

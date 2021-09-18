@@ -32,14 +32,33 @@ public class Utilitario {
 
         return precoFormatado.substring(1);
     }
-    
+
     public long diferencaDiasEntreData(String dataInicio, String dataFinal) {
         LocalDate dataInicioF = LocalDate.parse(dataInicio);
         LocalDate dataFinalF = LocalDate.parse(dataFinal);
-        
+
         long diferencaEmDias = ChronoUnit.DAYS.between(dataInicioF, dataFinalF);
-        
+
         return diferencaEmDias;
+    }
+
+    public String telefoneFormatado(String telefone, String tipoTelefone) {
+        String telefoneFinal = "";
+
+        if (tipoTelefone.equals("celular")) {
+            telefoneFinal = telefone.replace("-", "").replace(" ", "");
+            if (telefoneFinal.length() > 11) {
+                telefoneFinal = telefoneFinal.substring(3, telefoneFinal.length());
+            }
+        } else {
+            telefoneFinal = telefone.replace("-", "").replace(" ", "");
+            if (telefoneFinal.length() > 10) {
+                telefoneFinal = telefoneFinal.substring(3, telefoneFinal.length());
+            }
+        }
+
+        return telefoneFinal;
+
     }
 
 }
