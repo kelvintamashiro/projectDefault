@@ -8,6 +8,8 @@ package com.app.util;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 
 /**
@@ -59,6 +61,14 @@ public class Utilitario {
 
         return telefoneFinal;
 
+    }
+    
+    public LocalDate obterPrimeiroDiaMes(int mes, int ano) {
+        return LocalDate.now().withMonth(mes).withYear(ano).with(TemporalAdjusters.firstDayOfMonth());
+    }
+    
+    public LocalDate obterUltimoDiaMes(int mes, int ano) {
+        return LocalDate.now().withMonth(mes).withYear(ano).with(TemporalAdjusters.lastDayOfMonth());
     }
 
 }

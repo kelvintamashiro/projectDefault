@@ -1,6 +1,6 @@
 <%-- 
-    Document   : rel_venda_veiculo
-    Created on : 11 de set de 2021, 11:33:10
+    Document   : rel_parcela_paga
+    Created on : 25 de set de 2021, 11:22:51
     Author     : macuser
 --%>
 
@@ -28,17 +28,12 @@
 
         </style>
         <script language="JavaScript">
-//            function fFiltrar(tipo) {
-//                document.RelatorioModel.action = "Relatorio.do?action=filtrarRelPessoa&tipo=" + tipo;
-//                document.RelatorioModel.submit();
-//            }
-
             function ExportExcel(type, fn, dl) {
                 var elt = document.getElementById('exportable_table');
                 var wb = XLSX.utils.table_to_book(elt, {sheet: "Sheet JS"});
                 return dl ?
                         XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'}) :
-                        XLSX.writeFile(wb, fn || ('RelatorioVendaVeiculos.' + (type || 'xlsx')));
+                        XLSX.writeFile(wb, fn || ('RelatorioParcelasPagas.' + (type || 'xlsx')));
             }
         </script>
 
@@ -56,38 +51,32 @@
         <html:form action="RelatorioVendaVeiculo">
             <table width="90%" class="table-condensed" align="center" id="exportable_table">
                 <tr style="background-color: #D3D3D3">
-                    <td><b>ID</b></td>
-                    <td><b><a href="javascript:fFiltrar('nome')" style="color: black">Tipo Veículo <img src="imagens/up-arrow.png" width="12px"/> </a></b></td>
-                    <td><b><a href="javascript:fFiltrar('data_nascimento')" style="color: black">Marca Veículo <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('sexo')" style="color: black">Veículo <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('email')" style="color: black">Preço Compra <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('my_number')" style="color: black">Preço Venda <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('telefone')" style="color: black">Data Venda <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('tipo_telefone')" style="color: black">Qtd. Parcelas <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('provincia')" style="color: black">Nome Comprador <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('cidade')" style="color: black">E-mail <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
-                    <td><b><a href="javascript:fFiltrar('cep')" style="color: black">Telefone <img src="imagens/up-arrow.png" width="12px"/></a></b></td>
+                    <td><b>Tipo Veículo</b></td>
+                    <td><b>Marca</b></td>
+                    <td><b>Veículo</b></td>
+                    <td><b>Nome Comprador</b></td>
+                    <td><b>E-mail</b></td>
+                    <td><b>Telefone</b></td>
+                    <td><b>Data Pagamento Realizado</b></td>
+                    <td><b>Valor Pago</b></td>
                 </tr>
-                <logic:present name="listaVendasVeiculos" scope="session">
-                    <logic:iterate name="listaVendasVeiculos" id="lista" scope="session">
+                <logic:present name="listaParcelasPagas" scope="session">
+                    <logic:iterate name="listaParcelasPagas" id="lista" scope="session">
                         <tr>
-                            <td><bean:write name="lista" property="idVenda"/></td>
                             <td><bean:write name="lista" property="dsTipoVeiculo"/></td>
                             <td><bean:write name="lista" property="dsMarcaVeiculo"/></td>
                             <td><bean:write name="lista" property="dsVeiculo"/></td>
-                            <td><bean:write name="lista" property="precoCompra"/></td>
-                            <td><bean:write name="lista" property="precoVenda"/></td>
-                            <td><bean:write name="lista" property="dataVenda"/></td>
-                            <td><bean:write name="lista" property="qtdParcelas"/></td>
                             <td><bean:write name="lista" property="nomePessoa"/></td>
                             <td><bean:write name="lista" property="emailPessoa"/></td>
                             <td><bean:write name="lista" property="telefonePessoa"/></td>
+                            <td><bean:write name="lista" property="dataPagamentoRealizado"/></td>
+                            <td><bean:write name="lista" property="valorPago"/></td>
                         </tr>
                     </logic:iterate>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     
-                    <tr>
+<!--                    <tr>
                         <td colspan="13">
                             <b>Valor Total Preço de Compra:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalCompra"/>
                         </td>
@@ -101,7 +90,7 @@
                         <td colspan="13">
                             <b>Valor Total Líquido:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalLucroLiquido"/>
                         </td>
-                    </tr>
+                    </tr>-->
                     
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>

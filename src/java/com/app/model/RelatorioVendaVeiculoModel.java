@@ -28,6 +28,47 @@ public class RelatorioVendaVeiculoModel extends FormBasico {
     private String vlTotalCompra;
     private String vlTotalVenda;
     private String vlTotalLucroLiquido;
+    
+    private int mes;
+    private int ano;
+    
+    private String dataPagamentoRealizado;
+    private String valorPago;
+
+    public String getDataPagamentoRealizado() {
+        return dataPagamentoRealizado;
+    }
+
+    public void setDataPagamentoRealizado(String dataPagamentoRealizado) {
+        this.dataPagamentoRealizado = dataPagamentoRealizado;
+    }
+
+    public String getValorPago() {
+        return valorPago;
+    }
+
+    public void setValorPago(String valorPago) {
+        this.valorPago = valorPago;
+    }
+
+    
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+    
+    
 
     public int getIdVenda() {
         return idVenda;

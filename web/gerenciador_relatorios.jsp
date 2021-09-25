@@ -61,6 +61,14 @@
                 </tr>
                 <tr>
                     <td>
+                        <b>Relatório de Parcelas Pagas de Veículos Vendidos por Mês</b>
+                    </td>
+                    <td>
+                        <a href="RelatorioVendaVeiculo.do?action=relParcelasPagasPage" class="btn btn-success">Gerar Relatório</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <b>Relatório de Shaken Realizados por Data de Venda</b>
                     </td>
                     <td>

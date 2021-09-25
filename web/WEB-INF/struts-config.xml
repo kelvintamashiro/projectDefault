@@ -174,7 +174,8 @@
             
             <forward name="relVendasVeiculosRealizadasPage"             path="/rel_venda_veiculo_page.jsp"/>
             <forward name="relVendasVeiculosRealizadas"                 path="/rel_venda_veiculo.jsp"/>
-            
+            <forward name="relParcelasPagasPage"                        path="/rel_parcela_paga_page.jsp"/>
+            <forward name="relParcelasPagas"                            path="/rel_parcela_paga.jsp"/>
         </action> 
         
         <action path="/RelatorioShakenVeiculo"
