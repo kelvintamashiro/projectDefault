@@ -29,6 +29,8 @@ public class ControleFinanceiroAction extends IDRAction {
             this.pageAdicionar(form, request, errors);
         } else if (action.equals("adicionar")) {
             this.adicionar(form, request, errors);
+        } else if (action.equals("excluir")) {
+            this.excluir(form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -61,6 +63,8 @@ public class ControleFinanceiroAction extends IDRAction {
             //adicionar na tabela controle_financeiro
             ControleFinanceiro.getInstance().inserir(conn, controleFinanceiroModel);
             
+            controleFinanceiroModel = new ControleFinanceiroModel();
+            
             this.pageAdicionar(form, request, errors);
 
             request.setAttribute("ControleFinanceiroModel", controleFinanceiroModel);
@@ -69,5 +73,9 @@ public class ControleFinanceiroAction extends IDRAction {
         } finally {
             connectionPool.free(conn);
         }
+    }
+
+    private void excluir(ActionForm form, HttpServletRequest request, Errors errors) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

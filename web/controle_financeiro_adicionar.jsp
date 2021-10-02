@@ -41,6 +41,13 @@
                     document.ControleFinanceiroModel.submit();
                 }
             }
+
+            function fExcluir(id) {
+                if (confirm("Deseja realmente excluir?")) {
+                    document.ControleFinanceiroModel.action = "ControleFinanceiro.do?action=excluir&id=" + id;
+                    document.ControleFinanceiroModel.submit();
+                }
+            }
         </script>
     </head>
     <body>
@@ -107,6 +114,9 @@
                                 </td>
                                 <td>
                                     <bean:write name="lista" property="descricao"/>
+                                </td>
+                                <td>
+                                    <a href="javascript:fExcluir(<bean:write name="lista" property="id"/>)" class="btn btn-danger">Excluir</a>
                                 </td>
                             </tr>
                         </logic:iterate>
