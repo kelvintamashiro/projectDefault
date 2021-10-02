@@ -28,15 +28,16 @@
 
 <struts-config>
     <form-beans>
-        <form-bean name="PessoaFisicaModel"     type="com.app.model.PessoaFisicaModel"/>
-        <form-bean name="LoginModel"            type="com.app.model.LoginModel"/>
-        <form-bean name="SenhaModel"            type="com.app.model.SenhaModel"/>
-        <form-bean name="VeiculoModel"          type="com.app.model.VeiculoModel"/>
-        <form-bean name="ControleVendasModel"   type="com.app.model.ControleVendasModel"/>
-        <form-bean name="ShakenModel"           type="com.app.model.ShakenModel"/>
-        <form-bean name="RelatorioModel"        type="com.app.model.RelatorioModel"/>
-        <form-bean name="RelatorioVendaVeiculoModel"        type="com.app.model.RelatorioVendaVeiculoModel"/>
-        <form-bean name="RelatorioShakenVeiculoModel"        type="com.app.model.RelatorioShakenVeiculoModel"/>
+        <form-bean name="PessoaFisicaModel"                                     type="com.app.model.PessoaFisicaModel"/>
+        <form-bean name="LoginModel"                                            type="com.app.model.LoginModel"/>
+        <form-bean name="SenhaModel"                                            type="com.app.model.SenhaModel"/>
+        <form-bean name="VeiculoModel"                                          type="com.app.model.VeiculoModel"/>
+        <form-bean name="ControleVendasModel"                                   type="com.app.model.ControleVendasModel"/>
+        <form-bean name="ShakenModel"                                           type="com.app.model.ShakenModel"/>
+        <form-bean name="RelatorioModel"                                        type="com.app.model.RelatorioModel"/>
+        <form-bean name="RelatorioVendaVeiculoModel"                            type="com.app.model.RelatorioVendaVeiculoModel"/>
+        <form-bean name="RelatorioShakenVeiculoModel"                           type="com.app.model.RelatorioShakenVeiculoModel"/>
+        <form-bean name="ControleFinanceiroModel"                               type="com.app.model.ControleFinanceiroModel"/>
     </form-beans>
     
     <global-exceptions>
@@ -187,6 +188,16 @@
             <forward name="relShakenRealizadas"                 path="/rel_shaken_veiculo.jsp"/>
             <forward name="relShakenVencerPage"                 path="/rel_shaken_vencer_page.jsp"/>
             <forward name="relShakenVencer"                     path="/rel_shaken_vencer.jsp"/>
+            
+        </action> 
+        
+        <action path="/ControleFinanceiro"
+                type="com.app.action.ControleFinanceiroAction"
+                name="ControleFinanceiroModel"
+                scope="request">
+            
+            <forward name="pageAdicionar"                       path="/controle_financeiro_adicionar.jsp"/>
+            <forward name="adicionar"                           path="/controle_financeiro_adicionar.jsp"/>
             
         </action> 
         

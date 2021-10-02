@@ -76,22 +76,11 @@
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     
-<!--                    <tr>
-                        <td colspan="13">
-                            <b>Valor Total Preço de Compra:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalCompra"/>
-                        </td>
-                    </tr>
                     <tr>
                         <td colspan="13">
-                            <b>Valor Total Preço de Venda:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalVenda"/>
+                            <b>Valor Total Pago:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalPago"/>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="13">
-                            <b>Valor Total Líquido:</b> ¥<bean:write name="RelatorioVendaVeiculoModel" property="vlTotalLucroLiquido"/>
-                        </td>
-                    </tr>-->
-                    
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     <tr><td colspan="13" align="center">&nbsp;</td></tr>
                     <tr>

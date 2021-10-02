@@ -98,6 +98,14 @@ public class RelatorioVendaVeiculoAction extends IDRAction {
 
             List<RelatorioVendaVeiculoModel> listaParcelasPagas = RelatorioVendaVeiculo.getInstance().obterParcelasPagasPorPeriodo(conn, dataInicio, dataFinal);
 
+            if(!listaParcelasPagas.isEmpty()){
+                int vlPago = 0;
+                for (RelatorioVendaVeiculoModel parcelasPaga : listaParcelasPagas) {
+                    vlPago += Integer.parseInt(parcelasPaga.getValorPago());
+                }
+                relModel.setVlTotalPago(Utilitario.getInstance().formatacaoIene(vlPago));
+            }
+            
             session.setAttribute("listaParcelasPagas", listaParcelasPagas);
             request.setAttribute("RelatorioVendaVeiculoModel", relModel);
         } catch (Exception e) {
