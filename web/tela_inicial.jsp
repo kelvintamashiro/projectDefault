@@ -43,9 +43,12 @@
                     <button class="btn-tela" onclick="window.location.href = 'NomeVeiculo.do'">
                         Cadastro <br/>Nome Veículos
                     </button>
-                    <button class="btn-tela" onclick="window.location.href = 'ControleFinanceiro.do?action=pageAdicionar'">
+                    <button class="btn-tela" onclick="window.location.href = 'controle_financeiro.jsp'">
                         Controle <br/>Financeiro
                     </button>
+                    <!--                    <button class="btn-tela" onclick="window.location.href = 'ControleFinanceiro.do?action=pageAdicionar'">
+                                            Controle <br/>Financeiro
+                                        </button>-->
 
                 </div>
             </div>

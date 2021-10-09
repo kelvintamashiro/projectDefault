@@ -76,6 +76,20 @@ public class ControleFinanceiroAction extends IDRAction {
     }
 
     private void excluir(ActionForm form, HttpServletRequest request, Errors errors) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ControleFinanceiroModel controleFinanceiroModel = (ControleFinanceiroModel) form;
+        Connection conn = null;
+        try {
+            conn = connectionPool.getConnection();
+            
+            //excluir lancamento por ID
+            ControleFinanceiro.getInstance().excluir(conn, controleFinanceiroModel.getId());
+            this.pageAdicionar(form, request, errors);
+
+            request.setAttribute("ControleFinanceiroModel", controleFinanceiroModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
     }
 }

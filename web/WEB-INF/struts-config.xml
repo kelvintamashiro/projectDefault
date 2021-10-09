@@ -199,6 +199,7 @@
             <forward name="pageAdicionar"                       path="/controle_financeiro_adicionar.jsp"/>
             <forward name="adicionar"                           path="/controle_financeiro_adicionar.jsp"/>
             <forward name="excluir"                             path="/controle_financeiro_adicionar.jsp"/>
+            <forward name="pagePesquisar"                       path="/controle_financeiro_pesquisar.jsp"/>
             
         </action> 
         

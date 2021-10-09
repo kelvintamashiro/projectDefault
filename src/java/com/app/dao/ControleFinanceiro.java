@@ -67,4 +67,12 @@ public class ControleFinanceiro {
         
         return listaControleFinanceiro;
     }
+
+    public void excluir(Connection conn, int id) throws SQLException {
+        String query = "DELETE FROM controle_financeiro WHERE id=?";
+        PreparedStatement prep = conn.prepareStatement(query);
+        prep.setInt(1, id);
+        prep.execute();
+        prep.close();
+    }
 }
