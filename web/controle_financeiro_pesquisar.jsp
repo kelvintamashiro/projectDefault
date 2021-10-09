@@ -34,6 +34,13 @@
                     document.ControleFinanceiroModel.submit();
                 }
             }
+
+            function fExcluir(id) {
+                if (confirm("Deseja realmente excluir?")) {
+                    document.ControleFinanceiroModel.action = "ControleFinanceiro.do?action=excluirPorMes&id=" + id;
+                    document.ControleFinanceiroModel.submit();
+                }
+            }
         </script>
     </head>
     <body>
