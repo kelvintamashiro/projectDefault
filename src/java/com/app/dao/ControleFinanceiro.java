@@ -37,19 +37,19 @@ public class ControleFinanceiro {
         PreparedStatement prep = conn.prepareStatement(query);
         prep.setString(1, controleFinanceiroModel.getTipo());
         prep.setString(2, controleFinanceiroModel.getDataReferencia());
-        prep.setString(3, controleFinanceiroModel.getValor());
+        prep.setString(3, controleFinanceiroModel.getValor().replace(",", "").replace(".", ""));
         prep.setString(4, controleFinanceiroModel.getDescricao());
         prep.execute();
         prep.close();
         
     }
 
-    public List<ControleFinanceiroModel> obterControleFinanceiroMesVigente(Connection conn) throws SQLException {
+    public List<ControleFinanceiroModel> obterControleFinanceiroPorMes(Connection conn, String dataInicio, String dataFinal) throws SQLException {
         List<ControleFinanceiroModel> listaControleFinanceiro = new ArrayList<>();
         String query = "select * from controle_financeiro c where c.data_referencia between ? and ?";
         PreparedStatement prep = conn.prepareStatement(query);
-        prep.setString(1, String.valueOf(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth())));
-        prep.setString(2, String.valueOf(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth())));
+        prep.setString(1, dataInicio);
+        prep.setString(2, dataFinal);
         ResultSet rs = prep.executeQuery();
         while(rs.next()) {
             ControleFinanceiroModel controleFinanceiroModel = new ControleFinanceiroModel();
