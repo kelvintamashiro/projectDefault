@@ -38,6 +38,8 @@ public class ControleFinanceiroAction extends IDRAction {
             this.pagePesquisar(form, request, errors);
         } else if (action.equals("pesquisar")) {
             this.pesquisar(form, request, errors);
+        } else if (action.equals("paginacao")) {
+            this.paginacao(mapping, form, request, errors);
         }
 
         return mapping.findForward(forward);
@@ -130,11 +132,72 @@ public class ControleFinanceiroAction extends IDRAction {
             //obter os dados da tabela controle_financeiro pelo mês vigente
             List<ControleFinanceiroModel> listaControleFinanceiro = ControleFinanceiro.getInstance().obterControleFinanceiroPorMes(conn, dataInicio, dataFinal);
             if (!listaControleFinanceiro.isEmpty()) {
+                int vlTotalEntrada = 0;
+                int vlTotalSaida = 0;
+
+                for (ControleFinanceiroModel dadoFinanceiro : listaControleFinanceiro) {
+                    if (dadoFinanceiro.getTipo().equals("entrada")) {
+                        vlTotalEntrada += dadoFinanceiro.getValorInteiro();
+                    }
+                    if (dadoFinanceiro.getTipo().equals("saida")) {
+                        vlTotalSaida += dadoFinanceiro.getValorInteiro();
+                    }
+                }
+
+                String vlTotalEntradaFormat = Utilitario.getInstance().formatacaoIeneNegativo(vlTotalEntrada);
+                controleFinanceiroModel.setVlTotalEntrada(vlTotalEntradaFormat);
+                controleFinanceiroModel.setVlTotalEntradaGrafico(vlTotalEntrada);
+
+                String vlTotalSaidaFormat = Utilitario.getInstance().formatacaoIeneNegativo(vlTotalSaida);
+                controleFinanceiroModel.setVlTotalSaida(vlTotalSaidaFormat);
+                controleFinanceiroModel.setVlTotalSaidaGrafico(vlTotalSaida);
+
+                int vlTotalLiquido = vlTotalEntrada - vlTotalSaida;
+                String vlTotalLiquidoFormat = Utilitario.getInstance().formatacaoIeneNegativo(vlTotalLiquido);
+                controleFinanceiroModel.setVlTotalLiquido(vlTotalLiquidoFormat);
+                controleFinanceiroModel.setVlTotalLiquidoGrafico(vlTotalLiquido);
+
                 request.setAttribute("listaControleFinanceiro", listaControleFinanceiro);
             }
             request.setAttribute("result", "true");
             request.setAttribute("ControleFinanceiroModel", controleFinanceiroModel);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.free(conn);
+        }
+    }
+
+    private void paginacao(ActionMapping mapping, ActionForm form, HttpServletRequest request, Errors errors) {
+        ControleFinanceiroModel controleFinanceiroModel = (ControleFinanceiroModel) form;
+        Connection conn = null;
+        int length = 5;
+//        String url = request.getContextPath() + mapping.getPath() + ".do?action=paginacao";
+        try {
+            conn = connectionPool.getConnection();
+
+            //obter controle financeiro por mes - passar 1 dia e ultimo dia do mes
+            LocalDate dataInicioLocal = Utilitario.getInstance().obterPrimeiroDiaMes(controleFinanceiroModel.getMes(), controleFinanceiroModel.getAno());
+            LocalDate dataFinalLocal = Utilitario.getInstance().obterUltimoDiaMes(controleFinanceiroModel.getMes(), controleFinanceiroModel.getAno());
+
+            String dataInicio = String.valueOf(dataInicioLocal);
+            String dataFinal = String.valueOf(dataFinalLocal);
+            
+            //obter os dados da tabela controle_financeiro pelo mes vigente paginado
+            List<ControleFinanceiroModel> listaControleFinanceiro = ControleFinanceiro.getInstance().obterControleFinanceiroPorMesPaginado(conn, dataInicio, dataFinal, controleFinanceiroModel.getOffset());
+
+            //obter qtd total pelo mes vigente
+            int qtdTotal = ControleFinanceiro.getInstance().obterQtdTotalControleFinanceiroPorMes(conn, dataInicio, dataFinal);
+            
+            //criar tezto das paginas
+            String pagerHeader = Utilitario.getInstance().pageGenerate(controleFinanceiroModel.getOffset(), qtdTotal, length);
+            
+            request.setAttribute("pagerHeader", pagerHeader);
+            request.setAttribute("listaControleFinanceiro", listaControleFinanceiro);
+            request.setAttribute("result", "true");
+            request.setAttribute("ControleFinanceiroModel", controleFinanceiroModel);
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

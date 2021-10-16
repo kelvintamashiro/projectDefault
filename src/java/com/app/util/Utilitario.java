@@ -35,6 +35,14 @@ public class Utilitario {
         return precoFormatado.substring(1);
     }
 
+    public String formatacaoIeneNegativo(long valor) {
+
+        NumberFormat n = NumberFormat.getCurrencyInstance(Locale.JAPAN);
+        String precoFormatado = n.format(valor);
+
+        return precoFormatado;
+    }
+
     public long diferencaDiasEntreData(String dataInicio, String dataFinal) {
         LocalDate dataInicioF = LocalDate.parse(dataInicio);
         LocalDate dataFinalF = LocalDate.parse(dataFinal);
@@ -62,13 +70,33 @@ public class Utilitario {
         return telefoneFinal;
 
     }
-    
+
     public LocalDate obterPrimeiroDiaMes(int mes, int ano) {
         return LocalDate.now().withMonth(mes).withYear(ano).with(TemporalAdjusters.firstDayOfMonth());
     }
-    
+
     public LocalDate obterUltimoDiaMes(int mes, int ano) {
         return LocalDate.now().withMonth(mes).withYear(ano).with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    public String pageGenerate(int offset, int qtdTotal, int length) {
+        int MAX_PAGE_INDEX = 20;
+        if (qtdTotal > length) {
+            String header = "Paginas: ";
+            int start = 0;
+
+            for (int i = start; i < qtdTotal && i < start + MAX_PAGE_INDEX * length; i += length) {
+                if (i == offset) {
+                    header += "&nbsp;&nbsp;<b>" + (i / length + 1) + "</b>";
+                } else {
+                    header += "&nbsp;&nbsp;<a href=\"javascript:fPesquisa(" + i + ")\">" + (i / length + 1) + "</a>";
+                }
+            }
+            return header;
+
+        } else {
+            return "";
+        }
     }
 
 }

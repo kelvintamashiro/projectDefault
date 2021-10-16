@@ -14,16 +14,55 @@ public class ControleFinanceiroModel extends FormBasico {
     private int id;
     private String tipo; //entrada ou saida
     private String dataReferencia;
+    private int valorInteiro;
     private String valor;
     private String descricao;
     
     private String vlTotalSaida;
     private String vlTotalEntrada;
     private String vlTotalLiquido;
+    private int vlTotalSaidaGrafico;
+    private int vlTotalEntradaGrafico;
+    private int vlTotalLiquidoGrafico;
     
     private int mes;
     private int ano;
+    
+    private int offset;
 
+    public int getVlTotalSaidaGrafico() {
+        return vlTotalSaidaGrafico;
+    }
+
+    public void setVlTotalSaidaGrafico(int vlTotalSaidaGrafico) {
+        this.vlTotalSaidaGrafico = vlTotalSaidaGrafico;
+    }
+
+    public int getVlTotalEntradaGrafico() {
+        return vlTotalEntradaGrafico;
+    }
+
+    public void setVlTotalEntradaGrafico(int vlTotalEntradaGrafico) {
+        this.vlTotalEntradaGrafico = vlTotalEntradaGrafico;
+    }
+
+    public int getVlTotalLiquidoGrafico() {
+        return vlTotalLiquidoGrafico;
+    }
+
+    public void setVlTotalLiquidoGrafico(int vlTotalLiquidoGrafico) {
+        this.vlTotalLiquidoGrafico = vlTotalLiquidoGrafico;
+    }
+
+    
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+    
     public int getMes() {
         return mes;
     }
@@ -66,6 +105,14 @@ public class ControleFinanceiroModel extends FormBasico {
 
     public String getValor() {
         return valor;
+    }
+
+    public int getValorInteiro() {
+        return valorInteiro;
+    }
+
+    public void setValorInteiro(int valorInteiro) {
+        this.valorInteiro = valorInteiro;
     }
 
     public void setValor(String valor) {

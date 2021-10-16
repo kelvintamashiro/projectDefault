@@ -202,6 +202,7 @@
             <forward name="pagePesquisar"                       path="/controle_financeiro_pesquisar.jsp"/>
             <forward name="pesquisar"                           path="/controle_financeiro_pesquisar.jsp"/>
             <forward name="excluirPorMes"                       path="/controle_financeiro_pesquisar.jsp"/>
+            <forward name="paginacao"                           path="/controle_financeiro_paginacao.jsp"/>
             
         </action> 
         
