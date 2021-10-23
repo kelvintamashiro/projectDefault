@@ -7,7 +7,7 @@
         driverClassName="com.mysql.jdbc.Driver"
         password="admin"
         username="sitesn59_java"
-        url="jdbc:mysql://br966.hostgator.com.br:3306/sitesn59_java?autoReconnect=true"
+        url="jdbc:mysql://162.241.2.245:3306/sitesn59_java?useSSL=false"
         maxActive="300"
         initialSize="10"
         maxIdle="20"

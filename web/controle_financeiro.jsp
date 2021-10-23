@@ -38,6 +38,9 @@
                     <button class="btn-tela" onclick="window.location.href = 'ControleFinanceiro.do?action=pageAdicionar'">
                         Registrar
                     </button>
+                    <button class="btn-tela" onclick="window.location.href = 'ControleFinanceiro.do?action=pageComparacao'">
+                        Comparar Registros
+                    </button>
 
                 </div>
             </div>

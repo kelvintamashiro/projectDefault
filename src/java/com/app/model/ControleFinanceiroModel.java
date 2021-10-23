@@ -28,6 +28,9 @@ public class ControleFinanceiroModel extends FormBasico {
     private int mes;
     private int ano;
     
+    private int mesComparacao;
+    private int anoComparacao;
+    
     private int offset;
 
     public int getVlTotalSaidaGrafico() {
@@ -77,6 +80,22 @@ public class ControleFinanceiroModel extends FormBasico {
 
     public void setAno(int ano) {
         this.ano = ano;
+    }
+
+    public int getMesComparacao() {
+        return mesComparacao;
+    }
+
+    public void setMesComparacao(int mesComparacao) {
+        this.mesComparacao = mesComparacao;
+    }
+
+    public int getAnoComparacao() {
+        return anoComparacao;
+    }
+
+    public void setAnoComparacao(int anoComparacao) {
+        this.anoComparacao = anoComparacao;
     }
     
     public int getId() {
